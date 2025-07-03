@@ -1,9 +1,10 @@
+import SignUpParentForm from '@/features/auth/signup/ui/SignUpParentForm';
+import SignUpSpecialistForm from '@/features/auth/signup/ui/SignUpSpecialistForm';
 import ProfilePage from '@/pages/home/ui/ProfilePage';
 import Layout from '@/pages/layout/ui/Layout';
 import MainPage from '@/pages/main/ui/MainPage';
 import NotFound from '@/pages/not-found/ui/NotFound';
 import SignInPage from '@/pages/signin/ui/SignInPage';
-import SignUpPage from '@/pages/signup/ui/SignUpPage';
 import { useAppSelector } from '@/shared/lib/hooks';
 import ProtectedRoute from '@/shared/lib/ProtectedRoute';
 import React from 'react';
@@ -29,7 +30,8 @@ function AppRoutes(): React.JSX.Element {
           <Route>
             <Route element={<ProtectedRoute isAllowed={!isLoggest} redirectTo="/" />}>
               <Route path="/signin" element={<SignInPage />} />
-              <Route path="/signup" element={<SignUpPage />} />
+              <Route path="/signup/parent" element={<SignUpParentForm />} />
+              <Route path="/signup/specialist" element={<SignUpSpecialistForm />} />
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} />

@@ -24,7 +24,6 @@ module.exports = {
       },
       role: {
         type: Sequelize.ENUM('parent', 'specialist', 'admin'),
-        allowNull: false,
       },
       isApproved: {
         type: Sequelize.BOOLEAN,

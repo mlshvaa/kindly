@@ -7,24 +7,30 @@ const jwt = require('jsonwebtoken');
 class AuthController {
   static async signup(req, res) {
     try {
-      const { email, name, password } = req.body;
-      // console.log(req.body);
-      if (!email || !name || !password)
+      const { email, name, password, role } = req.body;
+
+      if (!email || !name || !password || !role)
         return res.status(400).json({ message: 'Не указаны требуемые поля' });
 
-      const [targetUser, created] = await AuthService.createAccount(req.body);
+      const [targetUser, created] = await AuthService.createAccount({
+        email,
+        name,
+        password,
+        role,
+      });
 
-      // console.log({targetUser, getUser: targetUser.get()})
       if (!created) return res.status(400).json({ message: 'Почта уже используется' });
-      // метод get используем чтобы убрать все лишнее
-      const user = targetUser.get();
-      delete user.hashpass;
 
-      const { accessToken, refreshToken } = generateTokens({ user });
+      const user = await targetUser.reload({ include: ['profile'] });
+      const plainUser = user.get({ plain: true });
+      delete plainUser.hashpass;
+
+      const { accessToken, refreshToken } = generateTokens({ user: plainUser });
+
       res
         .status(200)
         .cookie('refreshToken', refreshToken, cookieConfig)
-        .json({ user, accessToken });
+        .json({ user: plainUser, accessToken });
     } catch (error) {
       console.log(error);
       res.status(500).json(error);
@@ -38,10 +44,12 @@ class AuthController {
       if (!email || !password)
         return res.status(400).json({ message: 'Не указаны требуемые поля' });
       const targetUser = await AuthService.signin({ email, password });
-      const user = targetUser.get();
+
+      const user = targetUser.get({ plain: true });
       delete user.hashpass;
 
       const { accessToken, refreshToken } = generateTokens({ user });
+
       res
         .status(200)
         .cookie('refreshToken', refreshToken, cookieConfig)

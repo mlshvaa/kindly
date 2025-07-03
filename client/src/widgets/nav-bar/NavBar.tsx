@@ -37,7 +37,10 @@ function NavBar(): React.JSX.Element {
       ) : (
         <>
           <div>
-            <Link to="/signup">Регистрация</Link>
+            <Link to="/signup/parent">Регистрация родителя</Link>
+          </div>
+          <div>
+            <Link to="/signup/specialist">Регистрация специалиста</Link>
           </div>
           <div>
             <Link to="/signin">Войти</Link>
