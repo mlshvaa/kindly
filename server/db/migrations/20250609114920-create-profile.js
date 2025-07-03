@@ -29,7 +29,7 @@ module.exports = {
       },
       specialization: {
         type: Sequelize.ARRAY(Sequelize.STRING), // няня, педагог, логопед
-        allowNull: false,
+        allowNull: true,
       },
       experience: {
         type: Sequelize.INTEGER,
@@ -37,7 +37,7 @@ module.exports = {
       },
       pricePerHour: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       ageRange: {
         type: Sequelize.STRING,

@@ -1,27 +1,32 @@
-const { User } = require('../../db/models');
+const { User, Profile } = require('../../db/models');
 const bcrypt = require('bcrypt');
 
 class AuthService {
-  static async createAccount({ email, name, password }) {
+  static async createAccount({ email, name, password, role }) {
     const hashpass = await bcrypt.hash(password, 10);
-    const user = User.findOrCreate({
-      where: {
-        email,
-      },
-      defaults: {
-        name,
-        hashpass,
-      },
+
+    const [user, created] = await User.findOrCreate({
+      where: { email },
+      defaults: { name, hashpass, role },
     });
-    return user;
+
+    if (created && role === 'specialist') {
+      await Profile.create({
+        userId: user.id,
+        // можно добавить другие поля по умолчанию
+        fullName: name,
+        role,
+        isApproved: false,
+      });
+    }
+
+    return [user, created];
   }
 
   static async signin({ email, password }) {
-    // console.log(email, '****************************');
-    const user = await User.findOne({ where: { email } });
-
+    const user = await User.findOne({ where: { email }, include: ['profile'] });
     if (!user) throw new Error('Пользователь не найден');
-    // метод compare сравнивает введенный пароль (преобразуя в хэш с захешированным паролем из базы)
+
     const isPasswordValid = await bcrypt.compare(password, user.hashpass);
     if (!isPasswordValid) throw new Error('Неверный пароль');
     return user;
