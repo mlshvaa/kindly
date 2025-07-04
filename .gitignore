@@ -1,1 +1,40 @@
+# macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+
+# node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.env
+.env.*.local
+
+# VS Code
+.vscode/
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# Build output
+dist/
+build/
+
+# TypeScript
+*.tsbuildinfo
+
+# Coverage
+coverage/
+
+# OS metadata
+Thumbs.db
+Desktop.ini
+
+# Others
+*.local
+*.swp
+*.swo
