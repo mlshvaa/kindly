@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-function ProfilePage(): React.JSX.Element {
+function ProfileSpecialistPage(): React.JSX.Element {
   return (
     <>
       <div>Home</div>
@@ -8,4 +8,4 @@ function ProfilePage(): React.JSX.Element {
   );
 }
 
-export default ProfilePage;
+export default ProfileSpecialistPage;
