@@ -3,8 +3,11 @@
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Parent extends Model {
-    static associate({ User }) {
+    static associate({ User, Review, Request }) {
       this.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+      this.hasMany(Review, { foreignKey: 'parentId', as: 'reviews' });
+      this.hasMany(Request, { foreignKey: 'parentId', as: 'requests' });
+
     }
   }
 

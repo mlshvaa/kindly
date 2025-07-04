@@ -1,0 +1,56 @@
+.footerMainContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: Arial, Helvetica, sans-serif;
+  height: 400px;
+  background-color: #121a2b;
+  color: white;
+  padding: 28px;
+}
+
+.leftPartFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.imgAndHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.imgAndHeader h4 {
+  font-size: 40px;
+}
+
+.imgAndHeader img {
+  width: 88px;
+  height: 88px;
+}
+
+.leftPartParagraphs {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.leftPartParagraphs {
+  font-size: 22px;
+}
+
+.madeWithLoveParapraph {
+  color: #f6519d;
+}
+
+h5 {
+  font-size: 32px;
+}
+
+.footerAllParagraphs {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
