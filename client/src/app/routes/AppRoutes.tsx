@@ -1,6 +1,6 @@
 import SignUpParentForm from '@/features/auth/signup/ui/SignUpParentForm';
 import SignUpSpecialistForm from '@/features/auth/signup/ui/SignUpSpecialistForm';
-import ProfilePage from '@/pages/home/ui/ProfilePage';
+import ProfileSpecialistPage from '@/pages/home/ui/ProfileSpecialistPage';
 import Layout from '@/pages/layout/ui/Layout';
 import MainPage from '@/pages/main/ui/MainPage';
 import NotFound from '@/pages/not-found/ui/NotFound';
@@ -25,7 +25,7 @@ function AppRoutes(): React.JSX.Element {
         <Route element={<Layout />}>
           <Route element={<MainPage />} path="/" />
           <Route element={<ProtectedRoute isAllowed={!!isLoggest} />}>
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/specialist/home" element={<ProfileSpecialistPage />} />
           </Route>
           <Route>
             <Route element={<ProtectedRoute isAllowed={!isLoggest} redirectTo="/" />}>
