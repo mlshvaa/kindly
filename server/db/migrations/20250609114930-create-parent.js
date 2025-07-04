@@ -3,23 +3,14 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Requests', {
+    await queryInterface.createTable('Parents', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      specialistId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'Specialists',
-          key: 'id',
-        },
-        onDelete: 'CASCADE',
-      },
-      clientId: {
+      userId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -28,13 +19,21 @@ module.exports = {
         },
         onDelete: 'CASCADE',
       },
-      message: {
-        type: Sequelize.TEXT,
+      phone: {
+        type: Sequelize.STRING,
+        allowNull: true,
       },
-      status: {
-        type: Sequelize.ENUM('pending', 'approved', 'declined'),
-        allowNull: false,
-        defaultValue: 'pending',
+      adress: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      child: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      childAge: {
+        type: Sequelize.STRING,
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,
@@ -48,6 +47,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Requests');
+    await queryInterface.dropTable('Parents');
   },
 };

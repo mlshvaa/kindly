@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Profiles', {
+    await queryInterface.createTable('Specialists', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -19,38 +19,29 @@ module.exports = {
         },
         onDelete: 'CASCADE',
       },
-      bio: {
-        type: Sequelize.TEXT,
+      age: {
+        type: Sequelize.STRING,
         allowNull: true,
       },
       photo: {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      specialization: {
-        type: Sequelize.ARRAY(Sequelize.STRING), // няня, педагог, логопед
+      diplomaPhoto: {
+        type: Sequelize.TEXT,
         allowNull: true,
       },
-      experience: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-      },
-      pricePerHour: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-      },
-      ageRange: {
+      clescription: {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      availableSlots: {
-        type: Sequelize.ARRAY(Sequelize.STRING), // можно ISO-строки или ["Пн 10-12"]
+      education: {
+        type: Sequelize.STRING,
         allowNull: true,
       },
-      isActive: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
-        allowNull: false,
+      position: {
+        type: Sequelize.STRING,
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,
@@ -64,6 +55,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Profiles');
+    await queryInterface.dropTable('Specialists');
   },
 };

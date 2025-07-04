@@ -1,4 +1,4 @@
-const { User, Profile } = require('../../db/models');
+const { User, Specialist, Parent } = require('../../db/models');
 const bcrypt = require('bcrypt');
 
 class AuthService {
@@ -11,7 +11,17 @@ class AuthService {
     });
 
     if (created && role === 'specialist') {
-      await Profile.create({
+      await Specialist.create({
+        userId: user.id,
+        // можно добавить другие поля по умолчанию
+        fullName: name,
+        role,
+        isApproved: false,
+      });
+    }
+
+    if (created && role === 'parent') {
+      await Parent.create({
         userId: user.id,
         // можно добавить другие поля по умолчанию
         fullName: name,
