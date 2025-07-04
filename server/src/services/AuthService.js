@@ -34,7 +34,7 @@ class AuthService {
   }
 
   static async signin({ email, password }) {
-    const user = await User.findOne({ where: { email }, include: ['profile'] });
+    const user = await User.findOne({ where: { email }, include: ['specialist'] });
     if (!user) throw new Error('Пользователь не найден');
 
     const isPasswordValid = await bcrypt.compare(password, user.hashpass);

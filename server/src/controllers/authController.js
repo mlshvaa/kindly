@@ -21,7 +21,7 @@ class AuthController {
 
       if (!created) return res.status(400).json({ message: 'Почта уже используется' });
 
-      const user = await targetUser.reload({ include: ['profile'] });
+      const user = await targetUser.reload({ include: ['specialist', 'parent'] });
       const plainUser = user.get({ plain: true });
       delete plainUser.hashpass;
 
