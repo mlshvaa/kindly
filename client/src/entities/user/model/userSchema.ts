@@ -5,6 +5,7 @@ export const userSchema = z.object({
   id: z.number(),
   name: z.string(),
   email: z.string(),
+  role: z.enum(['parent', 'specialist']), // ← добавил Денис, чтобы в навбаре использовать role для выбора личного кабинета
 });
 
 // схема для регистрации
