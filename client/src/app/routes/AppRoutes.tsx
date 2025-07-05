@@ -4,6 +4,7 @@ import ProfileSpecialistPage from '@/pages/home/ui/ProfileSpecialistPage';
 import Layout from '@/pages/layout/ui/Layout';
 import MainPage from '@/pages/main/ui/MainPage';
 import NotFound from '@/pages/not-found/ui/NotFound';
+import ParentCabinetPage from '@/pages/parent/ui/ParentCabinetPage';
 import SignInPage from '@/pages/signin/ui/SignInPage';
 import { useAppSelector } from '@/shared/lib/hooks';
 import ProtectedRoute from '@/shared/lib/ProtectedRoute';
@@ -26,6 +27,7 @@ function AppRoutes(): React.JSX.Element {
           <Route element={<MainPage />} path="/" />
           <Route element={<ProtectedRoute isAllowed={!!isLoggest} />}>
             <Route path="/specialist/home" element={<ProfileSpecialistPage />} />
+            <Route path="/parent/cabinet" element={<ParentCabinetPage />} />
           </Route>
           <Route>
             <Route element={<ProtectedRoute isAllowed={!isLoggest} redirectTo="/" />}>

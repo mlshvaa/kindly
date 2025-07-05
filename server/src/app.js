@@ -7,6 +7,7 @@ const servicesRouter = require('./routes/servicesRouter');
 const servicesSpecialistsRouter = require('./routes/servicesSpecialistsRouter');
 const reviewsRouter = require('./routes/reviewsRouter');
 const requestsRouter = require('./routes/requestsRouter');
+const parentsRouter = require('./routes/parentsRouter');
 
 const app = express();
 
@@ -22,5 +23,6 @@ app.use('/api/services', servicesRouter);
 app.use('/api/services-specialists', servicesSpecialistsRouter);
 app.use('/api/reviews', reviewsRouter);
 app.use('/api/requests', requestsRouter);
+app.use('/api/parents', parentsRouter);
 
 module.exports = app;
