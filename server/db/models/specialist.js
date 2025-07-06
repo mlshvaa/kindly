@@ -3,7 +3,7 @@
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Specialist extends Model {
-    static associate({ User, Calendar, Service, ServiceSpecialist, Review  }) {
+    static associate({ User, Calendar, Service, ServiceSpecialist, Review }) {
       this.belongsTo(User, { foreignKey: 'userId', as: 'user' });
       this.hasMany(Calendar, { foreignKey: 'specialistId', as: 'calendar' });
       this.belongsToMany(Service, {
@@ -13,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
         as: 'services',
       });
       this.hasMany(Review, { foreignKey: 'specialistId', as: 'reviews' });
-
     }
   }
 
@@ -25,7 +24,8 @@ module.exports = (sequelize, DataTypes) => {
       },
       age: DataTypes.STRING,
       photo: DataTypes.STRING,
-      diplomaPhoto: DataTypes.TEXT,
+      // Переделал в json
+      diplomaPhoto: DataTypes.JSON,
       clescription: DataTypes.STRING,
       education: DataTypes.STRING,
       position: DataTypes.STRING,

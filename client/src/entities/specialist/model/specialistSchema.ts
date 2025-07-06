@@ -6,7 +6,7 @@ export const specialistSchema = z.object({
   userId: z.number(),
   age: z.string().nullable(),
   photo: z.string().nullable(),
-  diplomaPhoto: z.string().nullable(),
+  diplomaPhoto: z.array(z.string()).nullable().default([]), // <--- Ключевое изменение: массив строк
   clescription: z.string().nullable(),
   education: z.string().nullable(),
   position: z.string().nullable(),

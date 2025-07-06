@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks';
-import { updateSpecialistPhoto } from '@/entities/specialist/model/specialistThunks';
+import {
+  updateSpecialistPhoto,
+  updateSpecialistDiplomas,
+} from '@/entities/specialist/model/specialistThunks';
 
 type Props = {
   field: 'photo' | 'diplomaPhoto';
-  currentPhoto?: string | null;
+  currentPhoto?: string | string[] | null;
+  userId: number;
 };
 
-function UploadPhoto({ field, currentPhoto }: Props): React.JSX.Element {
+function UploadPhoto({ field, currentPhoto, userId }: Props): React.JSX.Element {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.user);
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
 
@@ -20,19 +23,26 @@ function UploadPhoto({ field, currentPhoto }: Props): React.JSX.Element {
   };
 
   const onUpload = async (): Promise<void> => {
-    if (!file || !user) return;
+    if (!file) return;
 
     setUploading(true);
     const formData = new FormData();
-    formData.append('photo', file); // поле 'photo' для multer
-    formData.append('field', field); // чтобы сервер знал, куда сохранить (photo или diplomaPhoto)
+
+    if (field === 'photo') {
+      formData.append('photo', file);
+    } else {
+      formData.append('photos', file);
+    }
 
     try {
-      await dispatch(updateSpecialistPhoto({ userId: user.id, data: formData })).unwrap();
+      if (field === 'photo') {
+        await dispatch(updateSpecialistPhoto({ userId, data: formData })).unwrap();
+      } else {
+        await dispatch(updateSpecialistDiplomas({ userId, data: formData })).unwrap();
+      }
       setFile(null);
     } catch (error) {
       console.error('Ошибка загрузки фото:', error);
-      // Можно добавить уведомление об ошибке пользователю
     } finally {
       setUploading(false);
     }
@@ -40,14 +50,16 @@ function UploadPhoto({ field, currentPhoto }: Props): React.JSX.Element {
 
   return (
     <div>
-      {currentPhoto && (
-        <div style={{ marginBottom: 8 }}>
-          <img
-            src={`/${currentPhoto}`}
-            alt={field}
-            style={{ maxWidth: 200, maxHeight: 200, objectFit: 'cover' }}
-          />
-        </div>
+      {currentPhoto && field === 'photo' && typeof currentPhoto === 'string' && (
+        <img
+          src={
+            currentPhoto.startsWith('http')
+              ? currentPhoto
+              : `http://localhost:3000/${currentPhoto.replace(/^\/?/, '')}`
+          }
+          alt="Фото"
+          style={{ maxWidth: 300, maxHeight: 300, objectFit: 'cover' }}
+        />
       )}
       <input type="file" accept="image/*" onChange={onFileChange} />
       <button onClick={onUpload} disabled={!file || uploading}>

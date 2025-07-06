@@ -28,8 +28,9 @@ module.exports = {
         allowNull: true,
       },
       diplomaPhoto: {
-        type: Sequelize.TEXT,
+        type: Sequelize.JSON,
         allowNull: true,
+        defaultValue: [],
       },
       clescription: {
         type: Sequelize.STRING,

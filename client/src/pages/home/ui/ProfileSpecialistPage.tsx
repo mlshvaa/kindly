@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
 import UpdateProfileForm from '@/features/update-profile-form/UpdateProfileForm';
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks';
-import { getAllSpecialistUser } from '@/entities/specialist/model/specialistThunks'; // твой thunk для загрузки
+import { getAllSpecialistUser } from '@/entities/specialist/model/specialistThunks';
 import UploadPhoto from '@/features/upload-photo/UploadPhoto';
+import DiplomaGallery from '@/features/diploma-gallery/DiplomaGallery';
+
+const BACKEND_URL = 'http://localhost:3000';
 
 function ProfileSpecialistPage(): React.JSX.Element {
   const dispatch = useAppDispatch();
@@ -28,35 +31,19 @@ function ProfileSpecialistPage(): React.JSX.Element {
       </div>
       <div>
         Личное фото:
-        {specialist.photo && (
-          <img
-            src={
-              specialist.photo.startsWith('http')
-                ? specialist.photo
-                : `http://localhost:3000/${specialist.photo.replace(/^\/?/, '')}`
-            }
-            alt="Фото"
-            style={{ maxWidth: 300, maxHeight: 300, objectFit: 'cover' }}
-          />
-        )}
         <UploadPhoto field="photo" currentPhoto={specialist.photo} userId={user.id} />
       </div>
       <div>
-        Диплом:
-        {specialist.diplomaPhoto && (
-          <img
-            src={
-              specialist.diplomaPhoto.startsWith('http')
-                ? specialist.diplomaPhoto
-                : `http://localhost:3000/${specialist.diplomaPhoto.replace(/^\/?/, '')}`
-            }
-            alt="diplomaPhoto"
-            style={{ maxWidth: 300, maxHeight: 300, objectFit: 'cover' }}
+        Дипломы:
+        {specialist.diplomaPhoto && specialist.diplomaPhoto.length > 0 && (
+          <DiplomaGallery
+            photos={specialist.diplomaPhoto}
+            userId={user.id}
+            backendUrl={BACKEND_URL}
           />
         )}
         <UploadPhoto field="diplomaPhoto" currentPhoto={specialist.diplomaPhoto} userId={user.id} />
       </div>
-
       <div>
         Опыт работы: {specialist.clescription}
         <UpdateProfileForm field="clescription" value={specialist.clescription} userId={user.id} />

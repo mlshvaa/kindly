@@ -1,49 +1,67 @@
+const fs = require('fs').promises;
+const path = require('path');
 const { Specialist } = require('../../db/models');
 
 class SpecialistService {
-  // Найти все данные педагога по userId (обычно один специалист на пользователя, но если несколько — вернёт массив)
+  // Получить специалиста по userId
   static async getSpecialistByUserId(userId) {
-    const specialist = await Specialist.findOne({
-      where: { userId },
-    });
-    return specialist;
+    return Specialist.findOne({ where: { userId } });
   }
 
-  // Обновить данные педагога по userId
+  // Обновить данные педагога (текстовые поля)
   static async editSpecialistByUserId(userId, updateData) {
     const specialist = await Specialist.findOne({ where: { userId } });
-    if (!specialist) {
-      throw new Error('Педагог не найден');
-    }
-    const updatedSpecialist = await specialist.update(updateData);
-    return updatedSpecialist;
+    if (!specialist) throw new Error('Педагог не найден');
+    return specialist.update(updateData);
   }
 
-  // Загрузка одного файла с полем 'photo'
-  static async updatePhoto(userId, field, photoPath) {
+  // Обновить одно фото (photo) с удалением старого файла
+  static async updateSinglePhoto(userId, newPhotoPath) {
     const specialist = await Specialist.findOne({ where: { userId } });
-    if (!specialist) {
-      throw new Error('Педагог не найден');
+    if (!specialist) throw new Error('Педагог не найден');
+
+    const oldPhotoPath = specialist.photo;
+    if (oldPhotoPath && oldPhotoPath !== newPhotoPath) {
+      try {
+        await fs.unlink(path.resolve(oldPhotoPath));
+      } catch (err) {
+        console.warn(`Не удалось удалить старый файл ${oldPhotoPath}:`, err.message);
+      }
     }
-    specialist[field] = photoPath;
+
+    specialist.photo = newPhotoPath;
     await specialist.save();
     return specialist;
   }
 
-  // Создать новую фичу педагога, привязанную к userId
-  static async createSpecialist(data) {
-    // data должен содержать userId и остальные поля
-    const specialist = await Specialist.create(data);
+  // Добавить дипломы (массив путей)
+  static async addDiplomaPhotos(userId, newPhotoPaths) {
+    const specialist = await Specialist.findOne({ where: { userId } });
+    if (!specialist) throw new Error('Педагог не найден');
+
+    const currentPhotos = specialist.diplomaPhoto || [];
+    specialist.diplomaPhoto = [...currentPhotos, ...newPhotoPaths];
+    await specialist.save();
     return specialist;
   }
 
-  // Удалить педагога по userId
-  static async deleteSpecialistByUserId(userId) {
+  // Удалить диплом по пути и из массива
+  static async removeDiplomaPhoto(userId, photoToRemove) {
     const specialist = await Specialist.findOne({ where: { userId } });
-    if (!specialist) {
-      throw new Error('Педагог не найден');
+    if (!specialist) throw new Error('Педагог не найден');
+
+    const currentPhotos = specialist.diplomaPhoto || [];
+    const updatedPhotos = currentPhotos.filter((p) => p !== photoToRemove);
+
+    try {
+      await fs.unlink(path.resolve(photoToRemove));
+    } catch (err) {
+      console.warn(`Не удалось удалить файл ${photoToRemove}:`, err.message);
     }
-    await specialist.destroy();
+
+    specialist.diplomaPhoto = updatedPhotos;
+    await specialist.save();
+    return specialist;
   }
 }
 
