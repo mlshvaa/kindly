@@ -1,12 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from '@/entities/user/model/userSlice';
+import specialistReducer from '@/entities/specialist/model/specialistSlice';
 import parentReducer from '@/entities/parent/model/parentSlice';
 import requestReducer from '@/entities/request/model/requestSlice';
-
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
+    specialist: specialistReducer,
     parent: parentReducer,
     request: requestReducer,
   },
