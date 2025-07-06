@@ -27,13 +27,20 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      child: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      childAge: {
-        type: Sequelize.STRING,
-        allowNull: true,
+      // child: {
+      //   type: Sequelize.STRING,
+      //   allowNull: true,
+      // },
+      // childAge: {
+      //   type: Sequelize.STRING,
+      //   allowNull: true,
+      // },
+
+      // Денис исправил миграции для того, чтобы в личном кабинете дети были массивом и можно было отобразить их списком
+      children: {
+        type: Sequelize.JSONB,
+        allowNull: false,
+        defaultValue: [],
       },
       createdAt: {
         allowNull: false,

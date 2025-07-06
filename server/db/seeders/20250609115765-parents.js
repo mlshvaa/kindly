@@ -7,8 +7,7 @@ module.exports = {
         userId: 1, // Мама Анна
         phone: '+79991112233',
         adress: 'г. Москва, ул. Ленина, д. 1',
-        child: 'Маша',
-        childAge: '6',
+        children: JSON.stringify([{ name: 'Маша', age: '6' }]),
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -16,8 +15,7 @@ module.exports = {
         userId: 2, // Папа Иван
         phone: '+79992223344',
         adress: 'г. Санкт-Петербург, ул. Пушкина, д. 2',
-        child: 'Ваня',
-        childAge: '8',
+        children: JSON.stringify([{ name: 'Ваня', age: '8' }]),
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -25,8 +23,7 @@ module.exports = {
         userId: 3, // Мама Светлана
         phone: '+79993334455',
         adress: 'г. Екатеринбург, ул. Мира, д. 3',
-        child: 'Светик',
-        childAge: '5',
+        children: JSON.stringify([{ name: 'Светик', age: '5' }]),
         createdAt: new Date(),
         updatedAt: new Date(),
       },

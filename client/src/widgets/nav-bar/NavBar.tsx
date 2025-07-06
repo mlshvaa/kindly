@@ -27,8 +27,10 @@ function NavBar(): React.JSX.Element {
       {user ? (
         <div>
           {/* <Link to="/users">Все пользователи</Link> */}
-
-          <Link to="/specialist/home">Личный кабинет</Link>
+         {user.role === 'parent' && <Link to="/parent/cabinet">Личный кабинет родителя</Link>}
+          {user.role === 'specialist' && (
+            <Link to="/specialist/home">Личный кабинет специалиста</Link>
+          )}
 
           <div>
             <button onClick={handleLogout}>Выйти</button>
