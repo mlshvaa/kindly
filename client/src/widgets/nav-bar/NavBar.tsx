@@ -28,7 +28,7 @@ function NavBar(): React.JSX.Element {
         <div>
           {/* <Link to="/users">Все пользователи</Link> */}
 
-          <Link to="/profile">Личный кабинет</Link>
+          <Link to="/specialist/home">Личный кабинет</Link>
 
           <div>
             <button onClick={handleLogout}>Выйти</button>
