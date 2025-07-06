@@ -24,3 +24,15 @@ export const updateSpecialistPhoto = createAsyncThunk(
   async ({ userId, data }: UpdateSpecialistPayload) =>
     await specialistService.updateSpecialistPhoto(userId, data),
 );
+// Загрузка нескольких дипломов
+export const updateSpecialistDiplomas = createAsyncThunk(
+  'specialist/updateSpecialistDiplomas',
+  async ({ userId, data }: UpdateSpecialistPayload) =>
+    await specialistService.updateSpecialistDiplomas(userId, data),
+);
+// Удаление диплома
+export const deleteSpecialistDiploma = createAsyncThunk(
+  'specialist/deleteSpecialistDiploma',
+  async ({ userId, photoPath }: { userId: number; photoPath: string }) =>
+    await specialistService.deleteSpecialistDiploma(userId, photoPath),
+);

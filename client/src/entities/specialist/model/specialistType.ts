@@ -12,9 +12,9 @@ export type SpecialistStateType = {
   error: string | null;
 };
 
-export type UpdateSpecialistData = Record<string, string | null>;
+export type UpdateSpecialistData = Record<string, string | null | string[] | FormData>;
 
 export type UpdateSpecialistPayload = {
   userId: number;
-  data: UpdateSpecialistData;
+  data: UpdateSpecialistData | FormData;
 };

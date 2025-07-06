@@ -22,19 +22,36 @@ router.put(
   SpecialistController.editSpecialist,
 );
 
-// Загрузка одного файла с полем 'photo'
+// Обновление одного фото
 router.put(
   '/photo/:userId',
   isValide('userId'),
   verifyAccessToken,
-  upload.single('photo'), // middleware multer
+  upload.single('photo'),
   SpecialistController.uploadPhoto,
 );
 
+// Загрузка нескольких дипломов
+router.put(
+  '/diplomaPhotos/:userId',
+  isValide('userId'),
+  verifyAccessToken,
+  upload.array('photos', 10),
+  SpecialistController.uploadDiplomaPhotos,
+);
+
+// Удаление диплома
+router.delete(
+  '/diplomaPhoto/:userId',
+  isValide('userId'),
+  verifyAccessToken,
+  SpecialistController.deleteDiplomaPhoto,
+);
+
 // Создать данные педагога для текущего пользователя
-router.post('/', verifyAccessToken, SpecialistController.createSpecialist);
+// router.post('/', verifyAccessToken, SpecialistController.createSpecialist);
 
 // Удалить данные педагога текущего пользователя
-router.delete('/', verifyAccessToken, SpecialistController.deleteSpecialist);
+// router.delete('/', verifyAccessToken, SpecialistController.deleteSpecialist);
 
 module.exports = router;

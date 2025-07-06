@@ -23,6 +23,20 @@ class SpecialistService {
     const response = await this.client.put(`/specialist/photo/${id.toString()}`, data);
     return specialistSchema.parse(response.data);
   }
+
+  // Загрузка нескольких дипломов
+  async updateSpecialistDiplomas(id: number, data: FormData): Promise<SpecialistType> {
+    const response = await this.client.put(`/specialist/diplomaPhotos/${id.toString()}`, data);
+    return specialistSchema.parse(response.data);
+  }
+
+  // Удаление диплома
+  async deleteSpecialistDiploma(id: number, photoPath: string): Promise<SpecialistType> {
+    const response = await this.client.delete(`/specialist/diplomaPhoto/${id.toString()}`, {
+      data: { photoPath },
+    });
+    return specialistSchema.parse(response.data);
+  }
 }
 
 export default new SpecialistService(axiosInstance);

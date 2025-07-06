@@ -1,8 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
   getAllSpecialistUser,
-  updateSpecialistPhoto,
   updateSpecialistUser,
+  updateSpecialistPhoto,
+  updateSpecialistDiplomas,
+  deleteSpecialistDiploma,
 } from './specialistThunks';
 import type { SpecialistStateType } from './specialistType';
 
@@ -57,7 +59,7 @@ export const specialistSlice = createSlice({
         state.specialist = action.payload;
       });
 
-    // Загрузка и обновление фото педагога
+    // Загрузка одного файла с полем 'photo'
     builder
       .addCase(updateSpecialistPhoto.pending, (state) => {
         state.loading = true;
@@ -65,9 +67,41 @@ export const specialistSlice = createSlice({
       })
       .addCase(updateSpecialistPhoto.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message ?? 'Ошибка при загрузке фото';
+        state.error = action.error.message ?? 'Ошибка загрузки фото';
       })
       .addCase(updateSpecialistPhoto.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.specialist = action.payload;
+      });
+
+    // Загрузка нескольких дипломов
+    builder
+      .addCase(updateSpecialistDiplomas.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateSpecialistDiplomas.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message ?? 'Ошибка загрузки дипломов';
+      })
+      .addCase(updateSpecialistDiplomas.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.specialist = action.payload;
+      });
+
+    // Удаление диплома
+    builder
+      .addCase(deleteSpecialistDiploma.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteSpecialistDiploma.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message ?? 'Ошибка удаления диплома';
+      })
+      .addCase(deleteSpecialistDiploma.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
         state.specialist = action.payload;
