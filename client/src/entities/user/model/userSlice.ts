@@ -5,7 +5,7 @@ import type { userStateType } from './userType';
 // Define the initial state using that type
 const initialState: userStateType = {
   user: null,
-  loading: false,
+  loading: true,
   error: null,
 };
 

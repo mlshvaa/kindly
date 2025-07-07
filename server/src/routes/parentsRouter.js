@@ -11,6 +11,9 @@ parentsRouter.get('/', ParentsController.getAllParents);
 // Получить профиль текущего родителя, только авторизованный родитель
 parentsRouter.get('/me', verifyAccessToken, ParentsController.getMyParentProfile);
 
+// Получить заявки от этого родителя к текущему специалисту
+parentsRouter.get('/:id/full', verifyAccessToken, isIdValid('id'), ParentsController.getFullParentById);
+
 // Возвращать информацию о конкретном родителе по его id, чтобы няньки могли посмотреть
 parentsRouter.get('/:id', verifyAccessToken, ParentsController.getParentById);
 

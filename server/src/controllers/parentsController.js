@@ -1,4 +1,5 @@
 const ParentsService = require('../services/parentsService');
+const RequestsService = require('../services/RequestsService');
 
 class ParentsController {
   // Получить всех родителей (например, для админа)
@@ -76,7 +77,7 @@ class ParentsController {
     }
   }
 
-   // ➕ Добавить ребёнка
+  // ➕ Добавить ребёнка
   static async addChild(req, res) {
     try {
       const userId = res.locals.user.id;
@@ -99,7 +100,12 @@ class ParentsController {
       const index = parseInt(req.params.index, 10);
       const childData = req.body;
 
-      const updated = await ParentsService.updateChild(parentId, userId, index, childData);
+      const updated = await ParentsService.updateChild(
+        parentId,
+        userId,
+        index,
+        childData,
+      );
       res.status(200).json(updated);
     } catch (error) {
       console.error('Ошибка при обновлении ребёнка:', error);
@@ -119,6 +125,28 @@ class ParentsController {
     } catch (error) {
       console.error('Ошибка при удалении ребёнка:', error);
       res.status(500).json({ message: 'Ошибка сервера' });
+    }
+  }
+
+  static async getFullParentById(req, res) {
+    const user = res.locals.user;
+    if (user.role !== 'specialist') {
+      return res.status(403).json({ message: 'Доступ запрещён' });
+    }
+    try {
+      const { id } = req.params;
+
+      const parent = await ParentsService.getParentWithUserById(id);
+      if (!parent) {
+        return res.status(404).json({ message: 'Родитель не найден' });
+      }
+
+      const requests = await RequestsService.getByParentId(id);
+
+      res.status(200).json({ parent, requests });
+    } catch (error) {
+      console.error('Ошибка при получении полного профиля родителя:', error);
+      res.status(500).json({ message: error.message });
     }
   }
 }

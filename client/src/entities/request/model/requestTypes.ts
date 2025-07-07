@@ -15,4 +15,7 @@ export type RequestState = {
   myRequests: RequestType[];   // все заявки текущего родителя
   loading: boolean;
   error: string | null;
+  requestsFromParent: RequestType[];
+  loadingFromParent: boolean;
+  errorFromParent: string | null;
 };

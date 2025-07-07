@@ -58,6 +58,23 @@ class RequestsService {
     if (!request) throw new Error('Заявка не найдена');
     await request.destroy();
   }
+
+    // Заявки от этого родителя к текущему специалисту
+  static async getRequestsFromParentToSpecialist(parentId, specialistId) {
+    const requests = await Request.findAll({
+      where: { parentId },
+      include: [
+        {
+          model: Calendar,
+          as: 'calendar',
+          where: { specialistId },
+        },
+      ],
+      order: [['createdAt', 'DESC']],
+    });
+
+    return requests;
+  }
 }
 
 module.exports = RequestsService;

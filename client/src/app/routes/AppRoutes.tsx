@@ -5,6 +5,7 @@ import Layout from '@/pages/layout/ui/Layout';
 import MainPage from '@/pages/main/ui/MainPage';
 import NotFound from '@/pages/not-found/ui/NotFound';
 import ParentCabinetPage from '@/pages/parent/ui/ParentCabinetPage';
+import ParentDetailsPage from '@/pages/parent/ui/ParentDetailsPage';
 import SignInPage from '@/pages/signin/ui/SignInPage';
 import { useAppSelector } from '@/shared/lib/hooks';
 import ProtectedRoute from '@/shared/lib/ProtectedRoute';
@@ -14,6 +15,8 @@ import { BrowserRouter, Route, Routes } from 'react-router';
 function AppRoutes(): React.JSX.Element {
   // вытаскиваем из состояния
   const isLoggest = useAppSelector((store) => store.user.user);
+  
+
   const loading = useAppSelector((store) => store.user.loading);
 
   if (loading) {
@@ -28,6 +31,7 @@ function AppRoutes(): React.JSX.Element {
           <Route element={<ProtectedRoute isAllowed={!!isLoggest} />}>
             <Route path="/specialist/home" element={<ProfileSpecialistPage />} />
             <Route path="/parent/cabinet" element={<ParentCabinetPage />} />
+            <Route path="/parents/:id/details" element={<ParentDetailsPage />} />
           </Route>
           <Route>
             <Route element={<ProtectedRoute isAllowed={!isLoggest} redirectTo="/" />}>
