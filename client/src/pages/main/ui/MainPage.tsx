@@ -5,10 +5,27 @@ import clayImage from '@/images/clay.PNG';
 import likeLogo from '@/images/likeLogo.png';
 import peopleLogo from '@/images/peopleLogo.png';
 import calendarLogo from '@/images/calendarLogo.png';
+import starLogo from '@/images/starLogo1.png';
+import checkLogo from '@/images/checkLogo1.png';
+import guardLogo from '@/images/guardLogo1.png';
 
 function MainPage(): React.JSX.Element {
   const onClickNannies = (): void => {
     const section = document.getElementById('bestNannies');
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const onClickHowItWorks = (): void => {
+    const section = document.getElementById('howItWorks');
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const onClickReviews = (): void => {
+    const section = document.getElementById('reviews');
     if (section) {
       section.scrollIntoView({ behavior: 'smooth' });
     }
@@ -37,7 +54,9 @@ function MainPage(): React.JSX.Element {
             <button className="findNannyButton" onClick={onClickNannies}>
               Найти идеального педагога
             </button>
-            <button className="learMoreButton">Узнать о нас больше</button>
+            <button className="learMoreButton" onClick={onClickHowItWorks}>
+              Узнать о нас больше
+            </button>
           </div>
           <div className="logoContainer">
             <div className="happyFamilies">
@@ -61,7 +80,7 @@ function MainPage(): React.JSX.Element {
           <img src={clayImage} alt="няня и ребёнок лепят из пластилина" className="clayImage" />
         </div>
       </div>
-      <div className="secondPartContainer">
+      <div className="secondPartContainer" id="howItWorks">
         <div className="howItWorks">
           <div className="howItWorksHeader">
             <h2>
@@ -100,10 +119,13 @@ function MainPage(): React.JSX.Element {
               </p>
             </div>
           </div>
+          <button className="reviewsNavigateButton" onClick={onClickReviews}>
+            Почему нам доверяют?
+          </button>
         </div>
       </div>
-      <div className="thirdPartContainer">
-        <h2 id="bestNannies">
+      <div className="thirdPartContainer" id="bestNannies">
+        <h2>
           <span className="pink">Лучшие</span> няни для <span className="blue">Вашего Ребёнка</span>
         </h2>
         <div className="meetNanniesParagraph">
@@ -114,8 +136,78 @@ function MainPage(): React.JSX.Element {
             Каждая анкета проходит отбор, чтобы вы могли сделать выбор с уверенностью и
             спокойствием.
           </p>
-          <div className='nanniesCardContainer'>
-
+          <div className="nanniesCardContainer"></div>
+        </div>
+      </div>
+      <div className="forthPartContainer" id="reviews">
+        <div className="reviewsHeader">
+          <h2>
+            Что говорят <span className="pink">Родители</span>
+          </h2>
+          <p className="howItWorksParagraph">
+            Мы бережно собираем впечатления родителей, чтобы вы делали выбор с уверенностью и
+            спокойствием.
+          </p>
+        </div>
+        <div className="reviewsCards">
+          <div className="oneReviewCard">
+            <div className="parentInfo">
+              <h5>Ирина Ефимова</h5>
+              <p>Мама Полины (10 лет)</p>
+            </div>
+            <div className="reviewParagraph">
+              <p>
+                Татьяна — настоящее открытие для нашей семьи: дочка сразу влюбилась в глину
+                благодаря её подходу и доброму сердцу. Атмосфера была уютной и вдохновляющей, дочка
+                создала целую коллекцию фигурок. Спасибо за фотографии и видео — было очень приятно
+                видеть, как горят глаза у Полины 💛
+              </p>
+            </div>
+            {/* <button className="readFullReview">Читать отзыв</button> */}
+          </div>
+          <div className="oneReviewCard">
+            <div className="parentInfo">
+              <h5>Юлия Горячева</h5>
+              <p>Мама Артёма и Арсения (6 и 8 лет)</p>
+            </div>
+            <div className="reviewParagraph">
+              <p>
+                Татьяна провела волшебное занятие: сын, сначала стеснительный, уже через несколько
+                минут лепил с увлечением. Атмосфера была тёплой и творческой, Татьяна вдохновляла и
+                поддерживала каждого. Фото, видео и подробный отчёт стали приятным бонусом после
+                настоящего приключения 🎨
+              </p>{' '}
+            </div>
+            {/* <button className="readFullReview">Читать отзыв</button> */}
+          </div>
+          <div className="oneReviewCard">
+            <div className="parentInfo">
+              <h5>Светлана Белова</h5>
+              <p>Мама Лизы (7 лет)</p>
+            </div>
+            <div className="reviewParagraph">
+              <p>
+                С Татьяной даже застенчивая Лиза раскрылась, как цветок: уже через пару минут они
+                смеялись и лепили кружку из глины. Каждое занятие — это сказка, в которой ребёнок
+                чувствует себя художником. Фотоотчёт с комментариями тронул нас до глубины души —
+                спасибо за эту магию 💫💕
+              </p>{' '}
+            </div>
+            {/* <button className="readFullReview">Читать отзыв</button> */}
+          </div>
+        </div>
+        <div className="reviewesLogos">
+          <div className="guaranted">
+            <img src={checkLogo} alt="галочка" />
+            <p>Проверенные отзывы</p>
+          </div>
+          <div className="guaranted">
+            <img src={guardLogo} alt="" />
+            <p>Гарантия качества</p>
+          </div>
+          <div className="guaranted">
+            <img src={starLogo} alt="" />
+            <p>Высокая оценка родителей</p>
           </div>
         </div>
       </div>
