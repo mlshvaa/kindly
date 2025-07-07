@@ -6,6 +6,9 @@ const upload = require('../middlewares/upload');
 
 const router = Router();
 
+// Получить данные педагога по id
+router.get('/id/:specialistId', SpecialistController.getSpecialistById);
+
 // Получить данные педагога текущего пользователя
 router.get(
   '/:userId',
