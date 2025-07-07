@@ -1,56 +1,70 @@
 .footerMainContainer {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  font-family: Arial, Helvetica, sans-serif;
-  height: 400px;
+  padding: 48px 72px;
   background-color: #121a2b;
-  color: white;
-  padding: 28px;
+  color: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+  flex-wrap: wrap;
+  gap: 40px;
 }
 
-.leftPartFooter {
+.footerColumn {
   display: flex;
   flex-direction: column;
+  max-width: 320px;
   gap: 20px;
 }
 
-.imgAndHeader {
+.logoAndName {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.imgAndHeader h4 {
-  font-size: 40px;
+.logoAndName img {
+  width: 60px;
+  height: 60px;
 }
 
-.imgAndHeader img {
-  width: 88px;
-  height: 88px;
+.logoAndName h4 {
+  font-size: 32px;
+  margin: 0;
 }
 
-.leftPartParagraphs {
+.footerDescription {
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.madeWithLove {
+  color: #f6519d;
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+.middleColumn h5,
+.rightColumn h5 {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.middleColumn ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 18px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 8px;
 }
 
-.leftPartParagraphs {
-  font-size: 22px;
+.rightColumn p {
+  font-size: 18px;
+  margin: 0;
+  line-height: 1.5;
 }
 
-.madeWithLoveParapraph {
-  color: #f6519d;
-}
-
-h5 {
-  font-size: 32px;
-}
-
-.footerAllParagraphs {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    gap: 10px;
+.contactText {
+  margin-bottom: 12px;
 }

@@ -6,6 +6,8 @@ import {
   updateSpecialistDiplomas,
   deleteSpecialistDiploma,
   getSpecialistById,
+  getAllSpecialists,
+
 } from './specialistThunks';
 import type { SpecialistStateType } from './specialistType';
 
@@ -13,6 +15,7 @@ import type { SpecialistStateType } from './specialistType';
 const initialState: SpecialistStateType = {
   specialist: null,
   specialistWithLinks: null,
+  specialists: [],
   loading: false,
   error: null,
 };
@@ -36,6 +39,21 @@ export const specialistSlice = createSlice({
       .addCase(getSpecialistById.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message ?? 'Ошибка загрузки специалиста';
+      });
+    // Получение всех специалистов
+    builder
+      .addCase(getAllSpecialists.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getAllSpecialists.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message ?? 'Ошибка загрузки';
+      })
+      .addCase(getAllSpecialists.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.specialists = action.payload;
       });
     // Получить данные педагога текущего пользователя
     //  загрузка pending
