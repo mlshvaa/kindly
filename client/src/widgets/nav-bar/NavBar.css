@@ -1,0 +1,88 @@
+.navbarMainContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(34, 34, 34);
+  padding: 12px;
+  height: 76px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fffbfd;
+}
+
+.teddyBearNavbar {
+  width: 72px;
+  height: 72px;
+}
+
+.imgAndHeaderContainer {
+  display: flex;
+  align-items: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.imgAndHeaderContainer h1 {
+  padding: 0;
+  font-size: 44px;
+}
+
+.kindlyMain {
+  text-decoration: none;
+  color: rgb(34, 34, 34);
+}
+
+.homeNavigation {
+  text-decoration: none;
+  color: rgb(34, 34, 34);
+  font-size: 24px;
+}
+
+.homeNavigation:hover {
+  color: #f6519d;
+}
+
+.parentRegNavigation {
+  text-decoration: none;
+  color: rgb(34, 34, 34);
+  font-size: 24px;
+}
+
+.parentRegNavigation:hover {
+  color: #f6519d;
+}
+
+.nannyRegNavigation {
+  text-decoration: none;
+  color: rgb(34, 34, 34);
+  font-size: 24px;
+}
+
+.nannyRegNavigation:hover {
+  color: #f6519d;
+}
+
+.loginNavigation {
+  text-decoration: none;
+  color: rgb(34, 34, 34);
+  font-size: 24px;
+}
+
+.loginNavigation:hover {
+  color: #f6519d;
+}
+
+.logoutNavigation {
+  text-decoration: none;
+  color: rgb(34, 34, 34);
+  font-size: 24px;
+}
+
+.logoutNavigation:hover {
+  color: #f6519d;
+}
