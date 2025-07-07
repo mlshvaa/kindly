@@ -7,6 +7,7 @@ import {
   createParentProfile,
   updateParentProfile,
   deleteParentProfile,
+  getFullParentById,
 } from './parentThunks';
 
 const initialState: ParentState = {
@@ -120,6 +121,20 @@ export const parentSlice = createSlice({
     builder.addCase(deleteParentProfile.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message ?? 'Ошибка при удалении профиля родителя';
+    });
+
+    builder.addCase(getFullParentById.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(getFullParentById.fulfilled, (state, action) => {
+      state.currentParent = action.payload.parent;
+      state.loading = false;
+      // отдельно можно сохранять requests, если нужно
+    });
+    builder.addCase(getFullParentById.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message ?? 'Ошибка при загрузке родителя';
     });
   },
 });

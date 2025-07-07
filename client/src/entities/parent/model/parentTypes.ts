@@ -1,11 +1,14 @@
 import type { z } from 'zod';
-import type { parentSchema, newParentSchema, childSchema } from './parentSchema';
+import type { parentSchema, newParentSchema, childSchema, userShortSchema } from './parentSchema';
 
 // Один ребёнок
 export type ChildType = z.infer<typeof childSchema>;
 
 // Один родитель (с полной информацией)
 export type ParentType = z.infer<typeof parentSchema>;
+
+// Для короткой схема пользователя (id, name, email)
+export type UserShort = z.infer<typeof userShortSchema>;
 
 // Новый родитель (без id и прочего)
 export type NewParentType = z.infer<typeof newParentSchema>;

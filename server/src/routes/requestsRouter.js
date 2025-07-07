@@ -11,6 +11,9 @@ requestsRouter.get('/parent', verifyAccessToken, RequestsController.getByParent)
 // Все заявки по специалисту (для календаря)
 requestsRouter.get('/specialist/:specialistId', isIdValid('specialistId'), RequestsController.getBySpecialist);
 
+// Все заявки по текущему специалисту (личный кабинет специалиста)
+requestsRouter.get('/specialist', verifyAccessToken, RequestsController.getForCurrentSpecialist);
+
 // Создать заявку
 requestsRouter.post('/', verifyAccessToken, RequestsController.createRequest);
 

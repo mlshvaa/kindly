@@ -104,6 +104,13 @@ class ParentsService {
     const updatedParent = await parent.update({ children });
     return updatedParent;
   }
+
+  static async getParentWithUserById(id) {
+    const parent = await Parent.findByPk(id, {
+      include: ['user'],
+    });
+    return parent;
+  }
 }
 
 module.exports = ParentsService;

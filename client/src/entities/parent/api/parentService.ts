@@ -2,6 +2,7 @@ import type { AxiosInstance } from 'axios';
 import axiosInstance from '@/shared/api/axiosInstance';
 import type { ChildType, NewParentType, ParentType } from '../model/parentTypes';
 import { parentSchema } from '../model/parentSchema';
+import { RequestType } from '@/entities/request/model/requestTypes';
 
 class ParentService {
   constructor(private readonly client: AxiosInstance) {}
@@ -48,6 +49,11 @@ class ParentService {
   async deleteChild(parentId: number, index: number): Promise<ParentType> {
     const res = await this.client.delete(`/parents/${parentId}/children/${index}`);
     return parentSchema.parse(res.data);
+  }
+
+  async getFullParentById(id: number): Promise<{ parent: ParentType; requests: RequestType[] }> {
+    const res = await this.client.get(`/parents/${id}/full`);
+    return res.data;
   }
 }
 

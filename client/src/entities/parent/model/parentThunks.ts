@@ -37,3 +37,17 @@ export const getAllParents = createAsyncThunk(
   'parent/getAll',
   () => parentService.getAllParents(),
 );
+
+export const getFullParentById = createAsyncThunk(
+  'parent/getFullParentById',
+  async (id: number, thunkAPI) => {
+    try {
+      return await parentService.getFullParentById(id);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message ?? 'Ошибка при получении данных родителя',
+      );
+    }
+  }
+);
+
