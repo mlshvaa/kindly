@@ -1,9 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import UpdateProfileForm from '@/features/update-profile-form/UpdateProfileForm';
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks';
 import { getAllSpecialistUser } from '@/entities/specialist/model/specialistThunks';
 import UploadPhoto from '@/features/upload-photo/UploadPhoto';
 import DiplomaGallery from '@/features/diploma-gallery/DiplomaGallery';
+import ServiseSpecialistList from '@/features/servise-specialist-list/ServiseSpecialistList';
+import { getServiceSpecialistsBySpecialistId } from '@/entities/service-specialist/model/serviceSpecialistThunks';
+import AllServiseSpecialistList from '@/features/all-servise-specialist-list/AllServiseSpecialistList';
 
 const BACKEND_URL = 'http://localhost:3000';
 
@@ -11,6 +14,9 @@ function ProfileSpecialistPage(): React.JSX.Element {
   const dispatch = useAppDispatch();
   const { specialist } = useAppSelector((store) => store.specialist);
   const { user } = useAppSelector((store) => store.user);
+  const { myServiceSpecialists, services } = useAppSelector((store) => store.serviceSpecialist);
+
+  const [activeTab, setActiveTab] = useState<'myServices' | 'allServices'>('myServices');
 
   useEffect(() => {
     if (user?.id) {
@@ -18,9 +24,18 @@ function ProfileSpecialistPage(): React.JSX.Element {
     }
   }, [dispatch, user?.id]);
 
+  useEffect(() => {
+    if (specialist?.id) {
+      void dispatch(getServiceSpecialistsBySpecialistId(specialist.id));
+    }
+  }, [dispatch, specialist?.id]);
+
   if (!user || !specialist) {
     return <div>Загрузка...</div>;
   }
+
+  // Получаем массив serviceId услуг специалиста для удобства
+  const specialistServiceIds = myServiceSpecialists?.map((s) => s.serviceId) ?? [];
 
   return (
     <>
@@ -55,6 +70,45 @@ function ProfileSpecialistPage(): React.JSX.Element {
       <div>
         Специализация: {specialist.position}
         <UpdateProfileForm field="position" value={specialist.position} userId={user.id} />
+      </div>
+
+      <div style={{ marginTop: 20 }}>
+        <button
+          onClick={() => setActiveTab('myServices')}
+          style={{ fontWeight: activeTab === 'myServices' ? 'bold' : 'normal', marginRight: 10 }}
+        >
+          Мои услуги
+        </button>
+        <button
+          onClick={() => setActiveTab('allServices')}
+          style={{ fontWeight: activeTab === 'allServices' ? 'bold' : 'normal' }}
+        >
+          Все услуги
+        </button>
+      </div>
+
+      <div style={{ marginTop: 20 }}>
+        {activeTab === 'myServices' && (
+          <div>
+            {myServiceSpecialists?.length ? (
+              myServiceSpecialists.map((serviceSpecialist) => (
+                <div key={`my-${serviceSpecialist.service.id.toString()}`}>
+                  <ServiseSpecialistList serviceSpecialist={serviceSpecialist} />
+                </div>
+              ))
+            ) : (
+              <div>Услуги не найдены</div>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'allServices' && (
+          <AllServiseSpecialistList
+            specialistId={specialist.id}
+            specialistServicesIds={specialistServiceIds}
+            allServices={services}
+          />
+        )}
       </div>
     </>
   );

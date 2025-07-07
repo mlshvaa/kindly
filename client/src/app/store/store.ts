@@ -3,6 +3,7 @@ import userReducer from '@/entities/user/model/userSlice';
 import specialistReducer from '@/entities/specialist/model/specialistSlice';
 import parentReducer from '@/entities/parent/model/parentSlice';
 import requestReducer from '@/entities/request/model/requestSlice';
+import serviceSpecialistReducer from '@/entities/service-specialist/model/serviceSpecialistSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     specialist: specialistReducer,
     parent: parentReducer,
     request: requestReducer,
+    serviceSpecialist: serviceSpecialistReducer,
   },
 });
 

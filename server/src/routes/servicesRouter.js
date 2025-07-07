@@ -9,6 +9,11 @@ servicesRouter.get('/', ServicesController.getAllServices); // список вс
 
 servicesRouter.post('/', verifyAccessToken, ServicesController.createService); // добавить новую услугу
 
-servicesRouter.delete('/:id', isIdValid('id'), verifyAccessToken, ServicesController.deleteServiceById); // удалить услугу
+servicesRouter.delete(
+  '/:id',
+  isIdValid('id'),
+  verifyAccessToken,
+  ServicesController.deleteServiceById,
+); // удалить услугу
 
 module.exports = servicesRouter;
