@@ -5,17 +5,36 @@ const ServicesSpecialistsController = require('../controllers/servicesSpecialist
 
 const servicesSpecialistsRouter = express.Router();
 
+// Получить связки специалист-услуга конкретного специалиста
+servicesSpecialistsRouter.get(
+  '/specialist/:specialistId',
+  isIdValid('specialistId'),
+  ServicesSpecialistsController.getServicesSpecialistsBySpecialistId,
+);
+
 // Получить все связки специалист-услуга
 servicesSpecialistsRouter.get('/', ServicesSpecialistsController.getAll);
 
+// // Назначить услугу конкретному специалисту
+// servicesSpecialistsRouter.post(
+//   '/specialist/:specialistId',
+//   isIdValid('specialistId'),
+//   verifyAccessToken,
+//   ServicesSpecialistsController.assignServiceToSpecialist,
+// );
+
 // Назначить услугу специалисту
-servicesSpecialistsRouter.post('/', verifyAccessToken, ServicesSpecialistsController.assignService);
+servicesSpecialistsRouter.post(
+  '/',
+  verifyAccessToken,
+  ServicesSpecialistsController.assignService,
+);
 
 // Удалить связку
 servicesSpecialistsRouter.delete(
   '/',
   verifyAccessToken,
-  ServicesSpecialistsController.removeServiceFromSpecialist
+  ServicesSpecialistsController.removeServiceFromSpecialist,
 );
 
 module.exports = servicesSpecialistsRouter;
