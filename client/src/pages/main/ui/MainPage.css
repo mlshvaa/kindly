@@ -401,3 +401,10 @@ h3 {
   align-items: center;
   gap: 4px;
 }
+
+.nanniesCardContainer {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    margin-top: 40px;
+}

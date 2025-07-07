@@ -14,6 +14,9 @@ router.get(
   SpecialistController.getSpecialist,
 );
 
+// 🔓 Публичный маршрут — все специалисты для главной страницы
+router.get('/', SpecialistController.getAll);
+
 // Обновить данные педагога текущего пользователя
 router.put(
   '/:userId',

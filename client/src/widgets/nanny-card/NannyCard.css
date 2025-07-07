@@ -1,0 +1,33 @@
+.nannyCard {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  width: 300px;
+  height: 400px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.nannyCard:hover {
+  transform: scale(1.05);
+}
+
+.nannyCard img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.nannyCard h4 {
+  margin-top: 12px;
+  font-size: 22px;
+  color: #121a2b;
+}
+
+.nannyCard p {
+  font-size: 16px;
+  color: #444;
+  margin-top: 6px;
+}

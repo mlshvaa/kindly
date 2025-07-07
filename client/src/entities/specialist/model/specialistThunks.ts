@@ -5,6 +5,12 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import specialistService from '../api/specialistService';
 import type { UpdateSpecialistPayload } from './specialistType';
 
+// Получить данные всех педагогов
+export const getAllSpecialists = createAsyncThunk(
+  'specialist/getAllSpecialists',
+  async () => await specialistService.getAllSpecialists(),
+);
+
 // Получить данные педагога текущего пользователя
 export const getAllSpecialistUser = createAsyncThunk(
   'specialist/getAllSpecialistUser',

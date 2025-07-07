@@ -10,8 +10,7 @@ function Footer(): React.JSX.Element {
           <h4>Kindly</h4>
         </div>
         <p className="footerDescription">
-          Заботливые няни и педагоги, проверенные временем —<br />
-          чтобы каждый ребёнок чувствовал себя в безопасности.
+          Заботливые няни и педагоги, проверенные временем — чтобы каждый ребёнок чувствовал себя в безопасности.
         </p>
         <p className="madeWithLove">🩷 С любовью для каждой семьи</p>
       </div>
@@ -29,7 +28,7 @@ function Footer(): React.JSX.Element {
       <div className="footerColumn rightColumn">
         <h5>Связаться с нами</h5>
         <p className="contactText">
-          Оставайтесь на связи и узнавайте первыми <br />о новых специалистах и сервисах.
+          Оставайтесь на связи и узнавайте первыми о новых специалистах и сервисах.
         </p>
         <p>Email: example@email.com</p>
         <p>Телефон: +7 (999) 123-45-67</p>
