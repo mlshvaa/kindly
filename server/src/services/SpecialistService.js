@@ -1,8 +1,22 @@
 const fs = require('fs').promises;
 const path = require('path');
-const { Specialist } = require('../../db/models');
+const { Specialist, ServiceSpecialist, Service } = require('../../db/models');
 
 class SpecialistService {
+  // Получить данные педагога по id
+  static async getSpecialistById(id) {
+    const data = await Specialist.findByPk(id);
+    const linksRaw = await ServiceSpecialist.findAll({
+      where: { specialistId: id },
+      include: { model: Service, as: 'service' },
+      order: [['createdAt', 'DESC']],
+    });
+
+    // Оставляем только поле service из каждой связки
+    const links = linksRaw.map((link) => link.service);
+    return { data, links };
+  }
+
   // Получить специалиста по userId
   static async getSpecialistByUserId(userId) {
     return Specialist.findOne({ where: { userId } });

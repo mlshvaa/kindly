@@ -12,7 +12,7 @@ function AddNewService(): React.JSX.Element {
     // Преобразуем price в число
     const parsedData = {
       ...data,
-      price: Math.floor(Number(data.price)),
+      price: Math.abs(Number(data.price)),
     };
     const validated = newServiceSchema.parse(parsedData);
     dispatch(addService(validated))
@@ -24,7 +24,7 @@ function AddNewService(): React.JSX.Element {
   return (
     <form onSubmit={handleSubmit}>
       <input name="name" type="text" placeholder="Название услуги" />
-      <input name="price" type="number" placeholder="Цена" />
+      <input name="price" type="number" placeholder="Цена" min="0" />
       <button type="submit">Добавить новую услугу</button>
     </form>
   );

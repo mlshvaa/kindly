@@ -1,5 +1,5 @@
 import type { z } from 'zod';
-import type { specialistSchema } from './specialistSchema';
+import type { specialistSchema, specialistWithLinksSchema } from './specialistSchema';
 
 export type SpecialistType = z.infer<typeof specialistSchema>;
 
@@ -8,6 +8,7 @@ export type CreateUpdateSpecialistType = Partial<Omit<SpecialistType, 'id' | 'us
 // тип для состояния данных педагога
 export type SpecialistStateType = {
   specialist: SpecialistType | null;
+  specialistWithLinks: SpecialistWithLinksType | null;
   loading: boolean;
   error: string | null;
 };
@@ -18,3 +19,6 @@ export type UpdateSpecialistPayload = {
   userId: number;
   data: UpdateSpecialistData | FormData;
 };
+
+// тип для возвращения данных специалиста с его услугами
+export type SpecialistWithLinksType = z.infer<typeof specialistWithLinksSchema>;

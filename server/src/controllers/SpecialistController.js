@@ -1,6 +1,23 @@
 const SpecialistService = require('../services/SpecialistService');
 
 class SpecialistController {
+  // Получить данные педагога по id
+  static async getSpecialistById(req, res) {
+    try {
+      const { specialistId } = req.params;
+      const { data, links } = await SpecialistService.getSpecialistById(
+        Number(specialistId),
+      );
+      if (!data) {
+        return res.status(404).json({ message: 'Специалист не найден' });
+      }
+      res.status(200).json({ data, links });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Ошибка сервера' });
+    }
+  }
+
   static async getSpecialist(req, res) {
     try {
       const { userId } = req.params;

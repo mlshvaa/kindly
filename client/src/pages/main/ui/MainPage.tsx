@@ -114,9 +114,7 @@ function MainPage(): React.JSX.Element {
             Каждая анкета проходит отбор, чтобы вы могли сделать выбор с уверенностью и
             спокойствием.
           </p>
-          <div className='nanniesCardContainer'>
-
-          </div>
+          <div className="nanniesCardContainer"></div>
         </div>
       </div>
     </>
