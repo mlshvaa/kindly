@@ -8,8 +8,19 @@ import calendarLogo from '@/images/calendarLogo.png';
 import starLogo from '@/images/starLogo1.png';
 import checkLogo from '@/images/checkLogo1.png';
 import guardLogo from '@/images/guardLogo1.png';
+import NannyCard from '@/widgets/nanny-card/NannyCard';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks';
+import { getAllSpecialists } from '@/entities/specialist/model/specialistThunks';
 
 function MainPage(): React.JSX.Element {
+  const dispatch = useAppDispatch();
+  const { specialists, loading, error } = useAppSelector((state) => state.specialist);
+
+  useEffect(() => {
+    void dispatch(getAllSpecialists());
+  }, [dispatch]);
+
   const onClickNannies = (): void => {
     const section = document.getElementById('bestNannies');
     if (section) {
@@ -136,7 +147,13 @@ function MainPage(): React.JSX.Element {
             Каждая анкета проходит отбор, чтобы вы могли сделать выбор с уверенностью и
             спокойствием.
           </p>
-          <div className="nanniesCardContainer"></div>
+          <div className="nanniesCardContainer">
+            {loading && <p>Загрузка...</p>}
+            {error && <p>Ошибка: {error}</p>}
+            {specialists.slice(0, 3).map((specialist) => (
+              <NannyCard key={specialist.id} specialist={specialist} />
+            ))}
+          </div>
         </div>
       </div>
       <div className="forthPartContainer" id="reviews">

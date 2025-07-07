@@ -13,6 +13,16 @@ class SpecialistController {
     }
   }
 
+  static async getAll(req, res) {
+    try {
+      const specialists = await SpecialistService.findAllWithUsers();
+      res.status(200).json(specialists);
+    } catch (error) {
+      console.error('Ошибка при получении специалистов:', error);
+      res.status(500).json({ message: 'Ошибка сервера' });
+    }
+  }
+
   static async editSpecialist(req, res) {
     try {
       const { user } = res.locals;

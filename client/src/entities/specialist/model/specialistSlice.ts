@@ -5,12 +5,13 @@ import {
   updateSpecialistPhoto,
   updateSpecialistDiplomas,
   deleteSpecialistDiploma,
+  getAllSpecialists,
 } from './specialistThunks';
 import type { SpecialistStateType } from './specialistType';
 
 // Define the initial state using that type
 const initialState: SpecialistStateType = {
-  specialist: null,
+  specialists: [],
   loading: false,
   error: null,
 };
@@ -21,6 +22,22 @@ export const specialistSlice = createSlice({
   reducers: {},
   // Экстроредьюсер прописываем дополнительный редуктор (передаем конструктор)
   extraReducers: (builder) => {
+    // Получение всех специалистов
+    builder
+      .addCase(getAllSpecialists.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getAllSpecialists.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message ?? 'Ошибка загрузки';
+      })
+      .addCase(getAllSpecialists.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.specialists = action.payload;
+      });
+
     // Получить данные педагога текущего пользователя
     //  загрузка pending
     builder

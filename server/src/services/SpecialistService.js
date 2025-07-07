@@ -1,12 +1,28 @@
 const fs = require('fs').promises;
 const path = require('path');
-const { Specialist } = require('../../db/models');
+const { User, Specialist } = require('../../db/models');
 
 class SpecialistService {
   // Получить специалиста по userId
   static async getSpecialistByUserId(userId) {
     return Specialist.findOne({ where: { userId } });
   }
+
+  // Получить всех специалистов
+  static async findAllWithUsers() {
+    const specialists = await Specialist.findAll({
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['name', 'email', 'isApproved'],
+        },
+      ],
+      order: [['createdAt', 'DESC']],
+    });
+    return specialists;
+  }
+
 
   // Обновить данные педагога (текстовые поля)
   static async editSpecialistByUserId(userId, updateData) {

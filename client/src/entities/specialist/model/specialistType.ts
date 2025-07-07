@@ -7,7 +7,7 @@ export type CreateUpdateSpecialistType = Partial<Omit<SpecialistType, 'id' | 'us
 
 // тип для состояния данных педагога
 export type SpecialistStateType = {
-  specialist: SpecialistType | null;
+  specialists: SpecialistType[];
   loading: boolean;
   error: string | null;
 };

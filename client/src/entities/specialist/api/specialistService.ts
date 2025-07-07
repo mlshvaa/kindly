@@ -2,9 +2,16 @@ import axiosInstance from '@/shared/api/axiosInstance';
 import type { AxiosInstance } from 'axios';
 import type { SpecialistType, UpdateSpecialistData } from '../model/specialistType';
 import { specialistSchema } from '../model/specialistSchema';
+import { z } from 'zod';
 
 class SpecialistService {
   constructor(private readonly client: AxiosInstance) {}
+
+  // Получить данные всех специалистов
+  async getAllSpecialists(): Promise<SpecialistType[]> {
+    const response = await this.client.get('/specialist');
+    return z.array(specialistSchema).parse(response.data);
+  }
 
   // Получить данные педагога текущего пользователя
   async getAllSpecialistUser(id: number): Promise<SpecialistType> {
