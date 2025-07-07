@@ -12,10 +12,16 @@ import NannyCard from '@/widgets/nanny-card/NannyCard';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks';
 import { getAllSpecialists } from '@/entities/specialist/model/specialistThunks';
+import { useNavigate } from 'react-router';
 
 function MainPage(): React.JSX.Element {
   const dispatch = useAppDispatch();
   const { specialists, loading, error } = useAppSelector((state) => state.specialist);
+  const navigate = useNavigate();
+
+  const onClickSpecialist = (id: number): void => {
+    void navigate(`/parent/specialist/${id.toString()}`);
+  };
 
   useEffect(() => {
     void dispatch(getAllSpecialists());
@@ -151,7 +157,11 @@ function MainPage(): React.JSX.Element {
             {loading && <p>Загрузка...</p>}
             {error && <p>Ошибка: {error}</p>}
             {specialists.slice(0, 3).map((specialist) => (
-              <NannyCard key={specialist.id} specialist={specialist} />
+              <NannyCard
+                key={specialist.id}
+                specialist={specialist}
+                onClick={() => onClickSpecialist(specialist.id)}
+              />
             ))}
           </div>
         </div>

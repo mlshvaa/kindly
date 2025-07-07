@@ -1,12 +1,19 @@
 const fs = require('fs').promises;
 const path = require('path');
-const { Specialist, ServiceSpecialist, Service } = require('../../db/models');
-const { User, Specialist } = require('../../db/models');
+const { User, Specialist, ServiceSpecialist, Service } = require('../../db/models');
 
 class SpecialistService {
   // Получить данные педагога по id
   static async getSpecialistById(id) {
-    const data = await Specialist.findByPk(id);
+    const data = await Specialist.findByPk(id, {
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['name'],
+        },
+      ],
+    });
     const linksRaw = await ServiceSpecialist.findAll({
       where: { specialistId: id },
       include: { model: Service, as: 'service' },
@@ -15,7 +22,14 @@ class SpecialistService {
 
     // Оставляем только поле service из каждой связки
     const links = linksRaw.map((link) => link.service);
-    return { data, links };
+    // Преобразуем data в JSON и добавляем поле name из связанного пользователя
+    const specialistData = data ? data.toJSON() : null;
+    if (specialistData && specialistData.user) {
+      specialistData.name = specialistData.user.name;
+      delete specialistData.user; // удаляем вложенный объект, если не нужен
+    }
+
+    return { data: specialistData, links };
   }
 
   // Получить специалиста по userId
@@ -37,7 +51,6 @@ class SpecialistService {
     });
     return specialists;
   }
-
 
   // Обновить данные педагога (текстовые поля)
   static async editSpecialistByUserId(userId, updateData) {

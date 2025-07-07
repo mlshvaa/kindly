@@ -20,8 +20,13 @@ export const specialistSchema = z.object({
   position: z.string().nullable(),
 });
 
+// Расширяем specialistSchema, добавляя поле name
+const specialistSchemaWithName = specialistSchema.extend({
+  name: z.string(),
+});
+
 // cxeма для возвращения данных специалиста с его услугами
 export const specialistWithLinksSchema = z.object({
-  data: specialistSchema,
+  data: specialistSchemaWithName,
   links: z.array(serviceSchema),
 });

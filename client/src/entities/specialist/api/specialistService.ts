@@ -8,21 +8,19 @@ import type {
 import { specialistSchema, specialistWithLinksSchema } from '../model/specialistSchema';
 import { z } from 'zod';
 
-
 class SpecialistService {
   constructor(private readonly client: AxiosInstance) {}
 
-
   // получение данных педагога по id для родителей
   async getSpecialistById(id: number): Promise<SpecialistWithLinksType> {
-    const response = await this.client.get(`/specialist/${id.toString()}`);
+    const response = await this.client.get(`/specialist/id/${id.toString()}`);
     return specialistWithLinksSchema.parse(response.data);
+  }
 
   // Получить данные всех специалистов
   async getAllSpecialists(): Promise<SpecialistType[]> {
     const response = await this.client.get('/specialist');
     return z.array(specialistSchema).parse(response.data);
-
   }
 
   // Получить данные педагога текущего пользователя

@@ -1,54 +1,57 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router'; // Используем react-router-dom вместо react-router
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks';
 import { getSpecialistById } from '@/entities/specialist/model/specialistThunks';
-import {
-  getServiceSpecialistsBySpecialistId,
-  getAllServiceSpecialists,
-} from '@/entities/service-specialist/model/serviceSpecialistThunks';
+import { getAllServiceSpecialists } from '@/entities/service-specialist/model/serviceSpecialistThunks'; // Оставили только этот
 import DiplomaGallery from '@/features/diploma-gallery/DiplomaGallery';
 
 const BACKEND_URL = 'http://localhost:3000';
 
 function OneSpecialistCard(): React.JSX.Element {
   const dispatch = useAppDispatch();
-  const { specialistId } = useParams<{ specialistId: string }>();
-  const { user } = useAppSelector((state) => state.user);
+  const { id } = useParams<{ id: string }>();
+  console.log(useParams(), '**********');
 
-  const specialistWithLinks = useAppSelector((state) => state.specialist.specialistWithLinks);
-  const { myServiceSpecialists, services } = useAppSelector((state) => state.serviceSpecialist);
+  // Получаем данные специалиста с услугами и состояние загрузки/ошибки
+  const { specialistWithLinks, loading, error } = useAppSelector((state) => state.specialist);
+  // Получаем все услуги (для вкладки "Все услуги")
+  const { services: allServices } = useAppSelector((state) => state.serviceSpecialist);
 
   const [activeTab, setActiveTab] = useState<'myServices' | 'allServices'>('myServices');
 
   useEffect(() => {
-    if (specialistId) {
-      void dispatch(getSpecialistById(Number(specialistId)));
-      void dispatch(getServiceSpecialistsBySpecialistId(Number(specialistId)));
+    if (id) {
+      void dispatch(getSpecialistById(Number(id)));
+      // Загружаем все услуги, если они нужны для отдельной вкладки "Все услуги"
       void dispatch(getAllServiceSpecialists());
     }
-  }, [dispatch, specialistId]);
+  }, [dispatch, id]);
 
-  if (!specialistWithLinks) return <div>Загрузка специалиста...</div>;
+  // Обработка состояний загрузки и ошибок
+  if (loading) return <div>Загрузка специалиста...</div>;
+  if (error) return <div>Ошибка загрузки: {error}</div>;
+  if (!specialistWithLinks) return <div>Специалист не найден.</div>; // Если данных нет после загрузки
 
+  // Деструктурируем данные после проверки specialistWithLinks
   const { data: specialist, links: specialistServices } = specialistWithLinks;
 
-  // Ищем пользователя, связанного с этим специалистом
-  const specialistUser = users?.find((u) => u.id === specialist.userId);
-  const name = specialistUser?.name ?? 'Имя не найдено';
+  // Если имя не приходит с бэка в specialist.name, то нужно использовать логику из предыдущего решения:
+  // const specialistUser = users?.find((u) => u.id === specialist.userId);
+  // const name = specialistUser?.name ?? 'Имя не найдено';
+  // НО, как я выше написал, лучше, чтобы name приходило прямо с бэка в specialist.data
 
   return (
     <div>
-      <h2>{name}</h2>
+      <h2>{specialist.name || 'Имя не указано'}</h2> {/* Используем specialist.name */}
       <img
         src={specialist.photo ? `${BACKEND_URL}/${specialist.photo}` : '/default-avatar.png'}
-        alt={specialist.photo}
+        alt={specialist.name || 'Фото специалиста'}
         style={{ width: 150, height: 150, borderRadius: '50%', objectFit: 'cover' }}
       />
       <div>Возраст: {specialist.age}</div>
       <div>Опыт работы: {specialist.clescription}</div>
       <div>Образование: {specialist.education}</div>
       <div>Специализация: {specialist.position}</div>
-
       {specialist.diplomaPhoto && specialist.diplomaPhoto.length > 0 && (
         <DiplomaGallery
           photos={specialist.diplomaPhoto}
@@ -56,29 +59,13 @@ function OneSpecialistCard(): React.JSX.Element {
           backendUrl={BACKEND_URL}
         />
       )}
-
-      <div style={{ marginTop: 20 }}>
-        <button
-          onClick={() => setActiveTab('myServices')}
-          style={{ fontWeight: activeTab === 'myServices' ? 'bold' : 'normal', marginRight: 10 }}
-        >
-          Услуги специалиста
-        </button>
-        <button
-          onClick={() => setActiveTab('allServices')}
-          style={{ fontWeight: activeTab === 'allServices' ? 'bold' : 'normal' }}
-        >
-          Все услуги
-        </button>
-      </div>
-
       <div style={{ marginTop: 20 }}>
         {activeTab === 'myServices' && (
           <ul>
-            {myServiceSpecialists.length ? (
-              myServiceSpecialists.map((serviceSpecialist) => (
-                <li key={serviceSpecialist.serviceId}>
-                  {serviceSpecialist.service.name} — {serviceSpecialist.service.price} ₽
+            {specialistServices.length ? (
+              specialistServices.map((service) => (
+                <li key={service.id}>
+                  {service.name} — {service.price} ₽
                 </li>
               ))
             ) : (
@@ -89,8 +76,8 @@ function OneSpecialistCard(): React.JSX.Element {
 
         {activeTab === 'allServices' && (
           <ul>
-            {services.length ? (
-              services.map((service) => (
+            {allServices.length ? ( // Используем allServices из стора serviceSpecialist
+              allServices.map((service) => (
                 <li key={service.id}>
                   {service.name} — {service.price} ₽
                 </li>
