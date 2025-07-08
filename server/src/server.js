@@ -1,9 +1,33 @@
+const { createServer } = require('http');
+const { WebSocketServer } = require('ws');
 const app = require('./app');
+const authenticate = require('../src/middlewares/authenticateSocket');
+const chatSocketHandler = require('../src/ws/chatSocketHandler');
 
-require('dotenv').config();
+const server = createServer(app);
+const wss = new WebSocketServer({ noServer: true });
 
-const PORT = process.env.PORT || 3000;
+// Подключение клиента
+wss.on('connection', (ws, req, user) => {
+  chatSocketHandler(ws, req, user, wss); // Логика общения
+});
 
-app.listen(PORT, () => {
-  console.log('Server has started on port', PORT);
+// Подключение WS с авторизацией
+server.on('upgrade', (req, socket, head) => {
+  authenticate(req, (err, user) => {
+    if (err || !user) {
+      socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
+      socket.destroy();
+      return;
+    }
+
+    wss.handleUpgrade(req, socket, head, (ws) => {
+      wss.emit('connection', ws, req, user);
+    });
+  });
+});
+
+// Запуск сервера
+server.listen(3000, () => {
+  console.log('🚀 Сервер запущен на порту 3000');
 });
