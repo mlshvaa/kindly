@@ -1,8 +1,37 @@
 const fs = require('fs').promises;
 const path = require('path');
-const { User, Specialist } = require('../../db/models');
+const { User, Specialist, ServiceSpecialist, Service } = require('../../db/models');
 
 class SpecialistService {
+  // Получить данные педагога по id
+  static async getSpecialistById(id) {
+    const data = await Specialist.findByPk(id, {
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['name'],
+        },
+      ],
+    });
+    const linksRaw = await ServiceSpecialist.findAll({
+      where: { specialistId: id },
+      include: { model: Service, as: 'service' },
+      order: [['createdAt', 'DESC']],
+    });
+
+    // Оставляем только поле service из каждой связки
+    const links = linksRaw.map((link) => link.service);
+    // Преобразуем data в JSON и добавляем поле name из связанного пользователя
+    const specialistData = data ? data.toJSON() : null;
+    if (specialistData && specialistData.user) {
+      specialistData.name = specialistData.user.name;
+      delete specialistData.user; // удаляем вложенный объект, если не нужен
+    }
+
+    return { data: specialistData, links };
+  }
+
   // Получить специалиста по userId
   static async getSpecialistByUserId(userId) {
     return Specialist.findOne({ where: { userId } });
@@ -22,7 +51,6 @@ class SpecialistService {
     });
     return specialists;
   }
-
 
   // Обновить данные педагога (текстовые поля)
   static async editSpecialistByUserId(userId, updateData) {
@@ -78,6 +106,13 @@ class SpecialistService {
     specialist.diplomaPhoto = updatedPhotos;
     await specialist.save();
     return specialist;
+  }
+
+  // удалить профиль педагога
+  static async deleteSpecialist(userId) {
+    const specialist = await Specialist.findOne({ where: { userId } });
+    if (!specialist) throw new Error('Педагог не найден');
+    await specialist.destroy();
   }
 }
 

@@ -1,11 +1,21 @@
 import axiosInstance from '@/shared/api/axiosInstance';
 import type { AxiosInstance } from 'axios';
-import type { SpecialistType, UpdateSpecialistData } from '../model/specialistType';
-import { specialistSchema } from '../model/specialistSchema';
+import type {
+  SpecialistType,
+  SpecialistWithLinksType,
+  UpdateSpecialistData,
+} from '../model/specialistType';
+import { specialistSchema, specialistWithLinksSchema } from '../model/specialistSchema';
 import { z } from 'zod';
 
 class SpecialistService {
   constructor(private readonly client: AxiosInstance) {}
+
+  // получение данных педагога по id для родителей
+  async getSpecialistById(id: number): Promise<SpecialistWithLinksType> {
+    const response = await this.client.get(`/specialist/id/${id.toString()}`);
+    return specialistWithLinksSchema.parse(response.data);
+  }
 
   // Получить данные всех специалистов
   async getAllSpecialists(): Promise<SpecialistType[]> {

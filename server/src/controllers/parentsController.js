@@ -1,5 +1,5 @@
 const ParentsService = require('../services/parentsService');
-const RequestsService = require('../services/RequestsService');
+const RequestsService = require('../services/requestsService');
 
 class ParentsController {
   // Получить всех родителей (например, для админа)
@@ -129,7 +129,7 @@ class ParentsController {
   }
 
   static async getFullParentById(req, res) {
-    const user = res.locals.user;
+    const { user } = res.locals;
     if (user.role !== 'specialist') {
       return res.status(403).json({ message: 'Доступ запрещён' });
     }

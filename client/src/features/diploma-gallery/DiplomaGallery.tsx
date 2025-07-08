@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAppDispatch } from '@/shared/lib/hooks';
+import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks';
 import { deleteSpecialistDiploma } from '@/entities/specialist/model/specialistThunks';
 
 type Props = {
@@ -8,12 +8,14 @@ type Props = {
   backendUrl: string;
 };
 
-const DiplomaGallery: React.FC<Props> = ({ photos, userId, backendUrl }) => {
+const DiplomaGallery = ({ photos, userId, backendUrl }: Props): React.JSX.Element => {
   const dispatch = useAppDispatch();
-
-  const onDelete = (photoPath: string) => {
+  const currentUser = useAppSelector((state) => state.user.user);
+  const onDelete = (photoPath: string): void => {
     void dispatch(deleteSpecialistDiploma({ userId, photoPath }));
   };
+  // Проверяем, совпадает ли текущий пользователь с владельцем дипломов
+  const isOwner = currentUser && currentUser.id === userId;
 
   return (
     <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
@@ -24,24 +26,27 @@ const DiplomaGallery: React.FC<Props> = ({ photos, userId, backendUrl }) => {
             alt="Диплом"
             style={{ width: 120, height: 120, objectFit: 'cover', borderRadius: 8 }}
           />
-          <button
-            onClick={() => onDelete(photo)}
-            style={{
-              position: 'absolute',
-              top: 4,
-              right: 4,
-              background: 'rgba(255,0,0,0.7)',
-              color: 'white',
-              border: 'none',
-              borderRadius: '50%',
-              width: 24,
-              height: 24,
-              cursor: 'pointer',
-            }}
-            title="Удалить диплом"
-          >
-            ×
-          </button>
+          {isOwner && (
+            <button
+              onClick={() => onDelete(photo)}
+              disabled={!isOwner} // кнопка активна только если владелец
+              style={{
+                position: 'absolute',
+                top: 4,
+                right: 4,
+                background: 'rgba(255,0,0,0.7)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '50%',
+                width: 24,
+                height: 24,
+                cursor: 'pointer',
+              }}
+              title="Удалить диплом"
+            >
+              ×
+            </button>
+          )}
         </div>
       ))}
     </div>

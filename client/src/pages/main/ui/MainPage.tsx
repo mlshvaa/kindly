@@ -1,7 +1,7 @@
 // import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks';
 // import React, { useEffect } from 'react';
 import './MainPage.css';
-import clayImage from '@/images/clay.PNG';
+import clayImage from '@/images/clay.png';
 import likeLogo from '@/images/likeLogo.png';
 import peopleLogo from '@/images/peopleLogo.png';
 import calendarLogo from '@/images/calendarLogo.png';
@@ -12,10 +12,20 @@ import NannyCard from '@/widgets/nanny-card/NannyCard';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks';
 import { getAllSpecialists } from '@/entities/specialist/model/specialistThunks';
+import { useNavigate } from 'react-router';
 
 function MainPage(): React.JSX.Element {
   const dispatch = useAppDispatch();
   const { specialists, loading, error } = useAppSelector((state) => state.specialist);
+
+  const headerOffset = 100;
+
+  const navigate = useNavigate();
+
+  const onClickSpecialist = (id: number): void => {
+    void navigate(`/parent/specialist/${id.toString()}`);
+  };
+
 
   useEffect(() => {
     void dispatch(getAllSpecialists());
@@ -24,21 +34,39 @@ function MainPage(): React.JSX.Element {
   const onClickNannies = (): void => {
     const section = document.getElementById('bestNannies');
     if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
+      const elementPosition = section.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+   });
     }
   };
 
   const onClickHowItWorks = (): void => {
     const section = document.getElementById('howItWorks');
     if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
+      const elementPosition = section.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+   });
     }
   };
 
   const onClickReviews = (): void => {
     const section = document.getElementById('reviews');
     if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
+      const elementPosition = section.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+   });
     }
   };
 
@@ -151,7 +179,11 @@ function MainPage(): React.JSX.Element {
             {loading && <p>Загрузка...</p>}
             {error && <p>Ошибка: {error}</p>}
             {specialists.slice(0, 3).map((specialist) => (
-              <NannyCard key={specialist.id} specialist={specialist} />
+              <NannyCard
+                key={specialist.id}
+                specialist={specialist}
+                onClick={() => onClickSpecialist(specialist.id)}
+              />
             ))}
           </div>
         </div>

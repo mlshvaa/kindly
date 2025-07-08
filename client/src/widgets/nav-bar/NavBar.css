@@ -1,0 +1,76 @@
+.navbarMainContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  height: 76px;
+  background-color: #fffbfd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: Arial, Helvetica, sans-serif;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbarLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.teddyBearNavbar {
+  width: 64px;
+  height: 64px;
+}
+
+.kindlyMain {
+  text-decoration: none;
+  color: rgb(34, 34, 34);
+}
+
+.kindlyMain h1 {
+  font-size: 36px;
+  margin: 0;
+}
+
+.navbarCenter {
+  font-size: 20px;
+  color: rgb(34, 34, 34);
+}
+
+.userOrGuest {
+  margin: 0;
+}
+
+.navbarRight {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.navLink {
+  text-decoration: none;
+  color: rgb(34, 34, 34);
+  font-size: 18px;
+  transition: color 0.2s ease;
+}
+
+.navLink:hover {
+  color: #f6519d;
+}
+
+.logoutNavigation {
+  background-color: #f6519d;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.logoutNavigation:hover {
+  background-color: #d82679;
+  transform: scale(1.05);
+}

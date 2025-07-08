@@ -90,7 +90,7 @@ function ProfileSpecialistPage(): React.JSX.Element {
       <div style={{ marginTop: 20 }}>
         {activeTab === 'myServices' && (
           <div>
-            {myServiceSpecialists?.length ? (
+            {myServiceSpecialists.length ? (
               myServiceSpecialists.map((serviceSpecialist) => (
                 <div key={`my-${serviceSpecialist.service.id.toString()}`}>
                   <ServiseSpecialistList serviceSpecialist={serviceSpecialist} />

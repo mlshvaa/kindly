@@ -4,11 +4,12 @@ import type { SpecialistType } from '@/entities/specialist/model/specialistType'
 
 type Props = {
   specialist: SpecialistType;
+  onClick: () => void;
 };
 
-function NannyCard({ specialist }: Props): React.JSX.Element {
+function NannyCard({ specialist, onClick }: Props): React.JSX.Element {
   return (
-    <div className="nannyCard">
+    <div onClick={onClick} className="nannyCard">
       <img src={specialist.photo ?? '/default-avatar.jpg'} alt="Фотография няни" />
       <h4>{specialist.position ?? 'Педагог'}</h4>
       <p>{specialist.age ? `${specialist.age} лет` : ''}</p>
