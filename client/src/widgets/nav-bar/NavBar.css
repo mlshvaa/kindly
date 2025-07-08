@@ -1,35 +1,26 @@
 .navbarMainContainer {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  font-family: Arial, Helvetica, sans-serif;
-  color: rgb(34, 34, 34);
-  padding: 12px;
+  padding: 12px 24px;
   height: 76px;
-  flex-grow: 0;
-  flex-shrink: 0;
+  background-color: #fffbfd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: Arial, Helvetica, sans-serif;
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background-color: #fffbfd;
 }
 
-.teddyBearNavbar {
-  width: 72px;
-  height: 72px;
-}
-
-.imgAndHeaderContainer {
+.navbarLeft {
   display: flex;
-  align-items: center;
   align-items: center;
   gap: 12px;
 }
 
-.imgAndHeaderContainer h1 {
-  padding: 0;
-  font-size: 44px;
+.teddyBearNavbar {
+  width: 64px;
+  height: 64px;
 }
 
 .kindlyMain {
@@ -37,52 +28,49 @@
   color: rgb(34, 34, 34);
 }
 
-.homeNavigation {
+.kindlyMain h1 {
+  font-size: 36px;
+  margin: 0;
+}
+
+.navbarCenter {
+  font-size: 20px;
+  color: rgb(34, 34, 34);
+}
+
+.userOrGuest {
+  margin: 0;
+}
+
+.navbarRight {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.navLink {
   text-decoration: none;
   color: rgb(34, 34, 34);
-  font-size: 24px;
+  font-size: 18px;
+  transition: color 0.2s ease;
 }
 
-.homeNavigation:hover {
-  color: #f6519d;
-}
-
-.parentRegNavigation {
-  text-decoration: none;
-  color: rgb(34, 34, 34);
-  font-size: 24px;
-}
-
-.parentRegNavigation:hover {
-  color: #f6519d;
-}
-
-.nannyRegNavigation {
-  text-decoration: none;
-  color: rgb(34, 34, 34);
-  font-size: 24px;
-}
-
-.nannyRegNavigation:hover {
-  color: #f6519d;
-}
-
-.loginNavigation {
-  text-decoration: none;
-  color: rgb(34, 34, 34);
-  font-size: 24px;
-}
-
-.loginNavigation:hover {
+.navLink:hover {
   color: #f6519d;
 }
 
 .logoutNavigation {
-  text-decoration: none;
-  color: rgb(34, 34, 34);
-  font-size: 24px;
+  background-color: #f6519d;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .logoutNavigation:hover {
-  color: #f6519d;
+  background-color: #d82679;
+  transform: scale(1.05);
 }

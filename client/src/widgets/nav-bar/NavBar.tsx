@@ -1,15 +1,18 @@
 import { logout } from '@/entities/user/model/userThunks';
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks';
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import './NavBar.css';
 import teddyBearLogo from '@/images/teddyBearLogo.png';
+import sidebarButton from '@/images/sidebarButton.png';
+import sidebarButtonHover from '@/images/sidebarButtonHover.png';
 
 function NavBar(): React.JSX.Element {
-  // достаем user
   const user = useAppSelector((store) => store.user.user);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  const [buttonSrc, setButtonSrc] = useState(sidebarButton);
 
   const handleLogout: React.MouseEventHandler<HTMLButtonElement> = () => {
     void dispatch(logout())
@@ -20,7 +23,8 @@ function NavBar(): React.JSX.Element {
 
   return (
     <div className="navbarMainContainer">
-      <div className="imgAndHeaderContainer">
+      {/* Логотип и название */}
+      <div className="navbarLeft">
         <Link to="/">
           <img src={teddyBearLogo} alt="плюшевый мишка логотип сайта" className="teddyBearNavbar" />
         </Link>
@@ -28,44 +32,57 @@ function NavBar(): React.JSX.Element {
           <h1>Kindly</h1>
         </Link>
       </div>
-      {/* <p>{user?.id ? `Привет, ${user.name}` : 'Гость'}</p> */}
-      <div>
-        <Link to="/" className="homeNavigation">
+
+      {/* Центр — имя или гость */}
+      <div className="navbarCenter">
+        <p className="userOrGuest">Привет, {user?.name || 'Гость'}!</p>
+      </div>
+
+      {/* Правая часть — навигация */}
+      <div className="navbarRight">
+        <Link to="/" className="navLink">
           Домой
         </Link>
-      </div>
-      {user ? (
-        <div>
-          {user.role === 'parent' && <Link to="/parent/cabinet">Личный кабинет родителя</Link>}
-          {user.role === 'specialist' && (
-            <Link to="/specialist/home">Личный кабинет специалиста</Link>
-          )}
 
-          <div>
+        {user ? (
+          <>
+            {user.role === 'parent' && (
+              <Link to="/parent/cabinet" className="navLink">
+                Кабинет родителя
+              </Link>
+            )}
+            {user.role === 'specialist' && (
+              <Link to="/specialist/home" className="navLink">
+                Кабинет специалиста
+              </Link>
+            )}
             <button onClick={handleLogout} className="logoutNavigation">
               Выйти
             </button>
-          </div>
-        </div>
-      ) : (
-        <>
-          <div>
-            <Link to="/signup/parent" className="parentRegNavigation">
-              Ищу няню
+          </>
+        ) : (
+          <>
+            <Link to="/signup/parent" className="navLink">
+              Регистрация
             </Link>
-          </div>
-          <div>
-            <Link to="/signup/specialist" className="nannyRegNavigation">
+            <Link to="/signup/specialist" className="navLink">
               Стать няней
             </Link>
-          </div>
-          <div>
-            <Link to="/signin" className="loginNavigation">
+            <Link to="/signin" className="navLink">
               Войти
             </Link>
-          </div>
-        </>
-      )}
+          </>
+        )}
+
+        {/* Меню (можно включить позже) */}
+        {/* <img
+          src={buttonSrc}
+          alt="кнопка меню"
+          className="sideMenuButton"
+          onMouseEnter={() => setButtonSrc(sidebarButtonHover)}
+          onMouseLeave={() => setButtonSrc(sidebarButton)}
+        /> */}
+      </div>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 // import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks';
 // import React, { useEffect } from 'react';
 import './MainPage.css';
-import clayImage from '@/images/clay.PNG';
+import clayImage from '@/images/clay.png';
 import likeLogo from '@/images/likeLogo.png';
 import peopleLogo from '@/images/peopleLogo.png';
 import calendarLogo from '@/images/calendarLogo.png';
@@ -16,6 +16,7 @@ import { getAllSpecialists } from '@/entities/specialist/model/specialistThunks'
 function MainPage(): React.JSX.Element {
   const dispatch = useAppDispatch();
   const { specialists, loading, error } = useAppSelector((state) => state.specialist);
+  const headerOffset = 100;
 
   useEffect(() => {
     void dispatch(getAllSpecialists());
@@ -24,21 +25,39 @@ function MainPage(): React.JSX.Element {
   const onClickNannies = (): void => {
     const section = document.getElementById('bestNannies');
     if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
+      const elementPosition = section.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+   });
     }
   };
 
   const onClickHowItWorks = (): void => {
     const section = document.getElementById('howItWorks');
     if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
+      const elementPosition = section.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+   });
     }
   };
 
   const onClickReviews = (): void => {
     const section = document.getElementById('reviews');
     if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
+      const elementPosition = section.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+   });
     }
   };
 
