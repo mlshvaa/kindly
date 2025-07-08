@@ -107,6 +107,13 @@ class SpecialistService {
     await specialist.save();
     return specialist;
   }
+
+  // удалить профиль педагога
+  static async deleteSpecialist(userId) {
+    const specialist = await Specialist.findOne({ where: { userId } });
+    if (!specialist) throw new Error('Педагог не найден');
+    await specialist.destroy();
+  }
 }
 
 module.exports = SpecialistService;
