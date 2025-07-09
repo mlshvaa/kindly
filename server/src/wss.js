@@ -1,14 +1,14 @@
 const { WebSocketServer } = require('ws');
 const { Message } = require('../db/models');
 
-function setupWebSocket(server) {
+function setupWebSocket() {
   const wss = new WebSocketServer({ noServer: true });
 
   // Карта: chatId -> Set of clients (WebSocket connections)
   const chatRooms = new Map();
 
   wss.on('connection', (ws, req, user) => {
-    console.log(`✅ Пользователь ${user.id} подключился`);
+    console.log(`Пользователь ${user.id} подключился`);
 
     ws.on('message', async (data) => {
       try {
@@ -16,7 +16,7 @@ function setupWebSocket(server) {
 
         // Подключение к определённому чату
         if (parsed.type === 'subscribe') {
-          const chatId = parsed.chatId;
+          const {chatId} = parsed.chatId;
           if (!chatRooms.has(chatId)) {
             chatRooms.set(chatId, new Set());
           }

@@ -1,8 +1,8 @@
 const db = require('../../db/models');
-const { Message } = db;
+const { Message, User } = db;
 
 function chatSocketHandler(ws, req, user, wss) {
-  console.log(`🔌 Пользователь ${user.id} (${user.role}) подключился к WebSocket`);
+  console.log(`Пользователь ${user.name} (${user.role}) подключился к WebSocket`);
 
   ws.on('message', async (data) => {
     try {
@@ -11,7 +11,7 @@ function chatSocketHandler(ws, req, user, wss) {
       // Первый шаг — подписка на чат
       if (parsed.type === 'subscribe') {
         ws.chatId = parsed.chatId;
-        console.log(`📥 Подписка на чат ${ws.chatId}`);
+        console.log(`Подписка на чат ${ws.chatId}`);
         return;
       }
 
@@ -23,18 +23,24 @@ function chatSocketHandler(ws, req, user, wss) {
         const newMessage = await Message.create({
           text,
           chatId,
+          senderId: user.id,
           senderRole: user.role,
           read: false,
+        });
+
+        const fullMessage = await Message.findByPk(newMessage.id, {
+          include: [{ model: User, as: 'sender', attributes: ['id', 'name', 'role'] }],
         });
 
         const payload = {
           type: 'chat/newMessage',
           payload: {
-            id: newMessage.id,
-            chatId: newMessage.chatId,
-            text: newMessage.text,
-            senderRole: newMessage.senderRole,
-            createdAt: newMessage.createdAt,
+            id: fullMessage.id,
+            chatId: fullMessage.chatId,
+            text: fullMessage.text,
+            senderRole: fullMessage.senderRole,
+            sender: fullMessage.sender, // ⬅️ теперь имя и роль будут доступны
+            createdAt: fullMessage.createdAt,
           },
         };
 
@@ -46,19 +52,21 @@ function chatSocketHandler(ws, req, user, wss) {
         });
       }
     } catch (err) {
-      console.error('❌ Ошибка в WebSocket:', err);
+      console.error('Ошибка в WebSocket:', err);
     }
   });
 
   ws.on('close', () => {
-    console.log(`❎ Пользователь ${user.id} отключился`);
+    console.log(`Пользователь ${user.id} отключился`);
   });
 
   // Отправляем подтверждение подключения
-  ws.send(JSON.stringify({
-    type: 'chat/connected',
-    payload: { userId: user.id, role: user.role },
-  }));
+  ws.send(
+    JSON.stringify({
+      type: 'chat/connected',
+      payload: { userId: user.id, role: user.role },
+    }),
+  );
 }
 
 module.exports = chatSocketHandler;
