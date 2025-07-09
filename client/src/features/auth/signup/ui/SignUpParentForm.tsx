@@ -28,7 +28,7 @@ function SignUpForm(): React.JSX.Element {
     }));
   };
 
-  const handleRoleSelect = (role: 'parent' | 'specialist') => {
+  const handleRoleSelect = (role: 'parent' | 'specialist'): void => {
     setSelectedRole(role);
     setFormData((prev) => ({ ...prev, role }));
   };
@@ -89,7 +89,7 @@ function SignUpForm(): React.JSX.Element {
 
       <div className="leftAndRight">
         <div className="leftPartContainer">
-          <h2 className="chooseYourRole">Выберите свою роль</h2>
+          <h2 className={`${!selectedRole ? 'center-align' : ''} chooseYourRole`}>Выберите свою роль</h2>
           <div className="yourRoles">
             <div
               className={`imParent ${selectedRole === 'parent' ? 'selected' : ''}`}

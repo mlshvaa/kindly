@@ -23,7 +23,6 @@ function NavBar(): React.JSX.Element {
 
   return (
     <div className="navbarMainContainer">
-      {/* Логотип и название */}
       <div className="navbarLeft">
         <Link to="/">
           <img src={teddyBearLogo} alt="плюшевый мишка логотип сайта" className="teddyBearNavbar" />
@@ -33,12 +32,10 @@ function NavBar(): React.JSX.Element {
         </Link>
       </div>
 
-      {/* Центр — имя или гость */}
       <div className="navbarCenter">
-        <p className="userOrGuest">Привет, {user?.name || 'Гость'}!</p>
+        <p className="userOrGuest">Привет, {user?.name ?? 'Гость'}!</p>
       </div>
 
-      {/* Правая часть — навигация */}
       <div className="navbarRight">
         <Link to="/" className="navLink">
           Домой
@@ -65,16 +62,12 @@ function NavBar(): React.JSX.Element {
             <Link to="/signup/parent" className="navLink">
               Регистрация
             </Link>
-            <Link to="/signup/specialist" className="navLink">
-              Стать няней
-            </Link>
             <Link to="/signin" className="navLink">
               Войти
             </Link>
           </>
         )}
 
-        {/* Меню (можно включить позже) */}
         {/* <img
           src={buttonSrc}
           alt="кнопка меню"
