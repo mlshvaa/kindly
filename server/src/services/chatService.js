@@ -1,9 +1,10 @@
 const { Parent, Specialist, Chat } = require('../../db/models');
 
 class ChatService {
-  static async findOrCreateChat(parentId, specialistId) {
+  static async findOrCreateChat({ parentId, specialistId }) {
+    const specialist = await Specialist.findOne({ where: { userId: specialistId } });
     const [chat] = await Chat.findOrCreate({
-      where: { parentId, specialistId },
+      where: { parentId, specialistId: specialist.id },
     });
     return chat;
   }
@@ -14,7 +15,13 @@ class ChatService {
       return parent
         ? Chat.findAll({
             where: { parentId: parent.id },
-            include: ['specialist', 'messages'],
+            include: [
+              {
+                association: 'specialist',
+                include: [{ association: 'user', attributes: ['id', 'name'] }],
+              },
+              { association: 'messages', separate: true, order: [['createdAt', 'ASC']] },
+            ],
           })
         : [];
     }
@@ -24,7 +31,13 @@ class ChatService {
       return specialist
         ? Chat.findAll({
             where: { specialistId: specialist.id },
-            include: ['parent', 'messages'],
+            include: [
+              {
+                association: 'parent',
+                include: [{ association: 'user', attributes: ['id', 'name'] }],
+              },
+              { association: 'messages', separate: true, order: [['createdAt', 'ASC']] },
+            ],
           })
         : [];
     }

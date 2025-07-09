@@ -1,16 +1,31 @@
+const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
-const { ACCESS_TOKEN_SECRET } = process.env;
+const { User } = require('../../db/models');
+require('dotenv').config();
 
-module.exports = function authenticateSocket(req, done) {
-  const url = new URL(req.url, `http://${req.headers.host}`);
-  const token = url.searchParams.get('token');
+function authenticate(req, next) {
+  cookieParser()(req, null, async () => {
+    try {
+      const { refreshToken } = req.cookies;
+      if (!refreshToken) next(new Error('Unauthorized', null));
+      const { user: tokenUser } = jwt.verify(
+        refreshToken,
+        process.env.REFRESH_TOKEN_SECRET,
+      );
+      // Получаем имя из БД
+      const dbUser = await User.findByPk(tokenUser.id)
+      if (!dbUser) return next(new Error('User not found'));
 
-  if (!token) return done(new Error('Нет токена'));
+      const fullUser = {
+        id: dbUser.id,
+        name: dbUser.name, // теперь будет доступно имя
+        role: dbUser.role,
+      };
+      next(null, fullUser);
+    } catch (error) {
+      next(error, null);
+    }
+  });
+}
 
-  try {
-    const decoded = jwt.verify(token, ACCESS_TOKEN_SECRET);
-    done(null, decoded.user); // прокидываем `user` в `wss.on('connection')`
-  } catch (err) {
-    done(err);
-  }
-};
+module.exports = authenticate;

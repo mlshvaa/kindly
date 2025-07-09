@@ -7,6 +7,6 @@ export async function getMyChats(): Promise<ChatPreview[]> {
 }
 
 export async function getChatMessages(chatId: number): Promise<ChatMessage[]> {
-  const res = await axiosInstance.get(`/messages/${chatId}`);
+  const res = await axiosInstance.get(`/messages/${chatId.toString()}`);
   return res.data;
 }

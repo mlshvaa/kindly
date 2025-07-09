@@ -6,6 +6,7 @@ import {
   getRequestsFromParentToMe,
   updateRequestStatus,
 } from '@/entities/request/model/requestThunks';
+import StartChatButton from '@/features/start-chat/ui/StartChatButton';
 
 export default function ParentDetailsPage(): React.JSX.Element {
   const { id } = useParams<{ id: string }>();
@@ -13,6 +14,7 @@ export default function ParentDetailsPage(): React.JSX.Element {
 
   const parent = useAppSelector((state) => state.parent.currentParent);
   const loading = useAppSelector((state) => state.parent.loading);
+  const specialist = useAppSelector((state) => state.specialist.specialist);
 
   const requests = useAppSelector((state) => state.request.requestsFromParent);
   const loadingRequests = useAppSelector((state) => state.request.loadingFromParent);
@@ -33,15 +35,17 @@ export default function ParentDetailsPage(): React.JSX.Element {
 
   return (
     <div>
+      <StartChatButton parentId={parent.id} specialistId={specialist?.userId ?? 0} />
+
       <h2>Информация о родителе</h2>
       <p>
-        <strong>👤 Имя:</strong> {parent.user?.name || 'Не указано'}
+        <strong>👤 Имя:</strong> {parent.user?.name ?? 'Не указано'}
       </p>
       <p>
-        <strong>📞 Телефон:</strong> {parent.phone || 'Не указано'}
+        <strong>📞 Телефон:</strong> {parent.phone ?? 'Не указано'}
       </p>
       <p>
-        <strong>🏠 Адрес:</strong> {parent.adress || 'Не указано'}
+        <strong>🏠 Адрес:</strong> {parent.adress ?? 'Не указано'}
       </p>
 
       <h3>👧 Дети</h3>
@@ -64,7 +68,7 @@ export default function ParentDetailsPage(): React.JSX.Element {
                 <strong>Дата:</strong> {req.calendar.date}, {req.calendar.time}
               </p>
               <p>
-                <strong>Сообщение:</strong> {req.message || '—'}
+                <strong>Сообщение:</strong> {req.message ?? '—'}
               </p>
               <p>
                 <strong>Статус:</strong> {req.status}

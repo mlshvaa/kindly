@@ -11,11 +11,13 @@ const reviewsRouter = require('./routes/reviewsRouter');
 const requestsRouter = require('./routes/requestsRouter');
 const parentsRouter = require('./routes/parentsRouter');
 const chatRouter = require('./routes/chatRouter');
+const messagesRoutes = require('./routes/messagesRouter');
 const cors = require('cors');
+
 
 const app = express();
 
-// ✅ CORS — вот здесь
+// CORS — вот здесь
 app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true,
@@ -39,5 +41,6 @@ app.use('/api/reviews', reviewsRouter);
 app.use('/api/requests', requestsRouter);
 app.use('/api/parents', parentsRouter);
 app.use('/api/chats', chatRouter);
+app.use('/api/messages', messagesRoutes);
 
 module.exports = app;
