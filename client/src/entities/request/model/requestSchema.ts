@@ -17,13 +17,17 @@ export const calendarSchema = z.object({
 // 🔹 Заявка (request)
 export const requestSchema = z.object({
   id: z.number(),
-  calendarId: z.number(),
+  // calendarId: z.number(),
   parentId: z.number(),
   message: z.string().nullable(),
   status: z.enum(['ожидание', 'одобрено', 'отклонено']),
   createdAt: z.string(),
   updatedAt: z.string(),
-  calendar: calendarSchema,
+  // calendar: calendarSchema,
 });
 
-
+// схема для новой заявки
+export const newRequestSchema = z.object({
+  message: z.string().nullable(),
+  status: z.enum(['ожидание', 'одобрено', 'отклонено']),
+});

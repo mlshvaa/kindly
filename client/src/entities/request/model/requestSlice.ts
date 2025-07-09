@@ -1,6 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { RequestState } from './requestTypes';
-import { getMyRequests, getRequestsFromParentToMe, updateRequestStatus } from './requestThunks';
+import {
+  createRequest,
+  getMyRequests,
+  getRequestsFromParentToMe,
+  updateRequestStatus,
+} from './requestThunks';
 
 const initialState: RequestState = {
   myRequests: [],
@@ -48,6 +53,23 @@ const requestSlice = createSlice({
       // можно дополнительно обновить статус заявки в массиве
       // пока опустим — обновим после нового запроса
     });
+
+    // Создать заявку
+    builder
+      .addCase(createRequest.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(createRequest.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.myRequests.push(action.payload);
+      })
+      .addCase(createRequest.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message ?? 'В слайсе произошла ошибка';
+        console.log(action.error.message);
+      });
   },
 });
 

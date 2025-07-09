@@ -1,48 +1,41 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router'; // Используем react-router-dom вместо react-router
+import { useParams } from 'react-router';
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks';
 import { getSpecialistById } from '@/entities/specialist/model/specialistThunks';
-import { getAllServiceSpecialists } from '@/entities/service-specialist/model/serviceSpecialistThunks'; // Оставили только этот
+import { getAllServiceSpecialists } from '@/entities/service-specialist/model/serviceSpecialistThunks';
 import DiplomaGallery from '@/features/diploma-gallery/DiplomaGallery';
+import AddRequestSpecialist from '@/features/add-request-to-specialist/AddRequestSpecialist';
 
 const BACKEND_URL = 'http://localhost:3000';
 
 function OneSpecialistCard(): React.JSX.Element {
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
-  console.log(useParams(), '**********');
 
-  // Получаем данные специалиста с услугами и состояние загрузки/ошибки
   const { specialistWithLinks, loading, error } = useAppSelector((state) => state.specialist);
-  // Получаем все услуги (для вкладки "Все услуги")
   const { services: allServices } = useAppSelector((state) => state.serviceSpecialist);
 
   const [activeTab, setActiveTab] = useState<'myServices' | 'allServices'>('myServices');
 
+  // Состояние для управления видимостью формы
+  const [showAddRequest, setShowAddRequest] = useState(false);
+
   useEffect(() => {
     if (id) {
       void dispatch(getSpecialistById(Number(id)));
-      // Загружаем все услуги, если они нужны для отдельной вкладки "Все услуги"
       void dispatch(getAllServiceSpecialists());
     }
   }, [dispatch, id]);
 
-  // Обработка состояний загрузки и ошибок
   if (loading) return <div>Загрузка специалиста...</div>;
   if (error) return <div>Ошибка загрузки: {error}</div>;
-  if (!specialistWithLinks) return <div>Специалист не найден.</div>; // Если данных нет после загрузки
+  if (!specialistWithLinks) return <div>Специалист не найден.</div>;
 
-  // Деструктурируем данные после проверки specialistWithLinks
   const { data: specialist, links: specialistServices } = specialistWithLinks;
-
-  // Если имя не приходит с бэка в specialist.name, то нужно использовать логику из предыдущего решения:
-  // const specialistUser = users?.find((u) => u.id === specialist.userId);
-  // const name = specialistUser?.name ?? 'Имя не найдено';
-  // НО, как я выше написал, лучше, чтобы name приходило прямо с бэка в specialist.data
 
   return (
     <div>
-      <h2>{specialist.name || 'Имя не указано'}</h2> {/* Используем specialist.name */}
+      <h2>{specialist.name || 'Имя не указано'}</h2>
       <img
         src={specialist.photo ? `${BACKEND_URL}/${specialist.photo}` : '/default-avatar.png'}
         alt={specialist.name || 'Фото специалиста'}
@@ -59,7 +52,9 @@ function OneSpecialistCard(): React.JSX.Element {
           backendUrl={BACKEND_URL}
         />
       )}
+
       <div style={{ marginTop: 20 }}>
+        Услуги:
         {activeTab === 'myServices' && (
           <ul>
             {specialistServices.length ? (
@@ -73,10 +68,9 @@ function OneSpecialistCard(): React.JSX.Element {
             )}
           </ul>
         )}
-
         {activeTab === 'allServices' && (
           <ul>
-            {allServices.length ? ( // Используем allServices из стора serviceSpecialist
+            {allServices.length ? (
               allServices.map((service) => (
                 <li key={service.id}>
                   {service.name} — {service.price} ₽
@@ -88,6 +82,18 @@ function OneSpecialistCard(): React.JSX.Element {
           </ul>
         )}
       </div>
+
+      {/* Кнопка для показа формы */}
+      <button onClick={() => setShowAddRequest(true)} style={{ marginTop: 20 }}>
+        Оказать услугу
+      </button>
+
+      {/* Условный рендеринг формы */}
+      {showAddRequest && (
+        <div style={{ marginTop: 20 }}>
+          <AddRequestSpecialist onClose={() => setShowAddRequest(false)} />
+        </div>
+      )}
     </div>
   );
 }

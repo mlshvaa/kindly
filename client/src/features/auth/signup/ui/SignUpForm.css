@@ -18,6 +18,10 @@
   font-size: 40px;
 }
 
+.center-align {
+    text-align: center;
+}
+
 .leftAndRight {
   display: flex;
   align-items: center;

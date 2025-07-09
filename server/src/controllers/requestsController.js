@@ -24,26 +24,25 @@ class RequestsController {
   }
 
   static async getForCurrentSpecialist(req, res) {
-  try {
-    const userId = res.locals.user.id;
+    try {
+      const userId = res.locals.user.id;
 
-    const specialist = await Specialist.findOne({ where: { userId } });
-    if (!specialist) return res.status(404).json({ message: 'Специалист не найден' });
+      const specialist = await Specialist.findOne({ where: { userId } });
+      if (!specialist) return res.status(404).json({ message: 'Специалист не найден' });
 
-    const requests = await RequestsService.getBySpecialistId(specialist.id);
-    res.status(200).json(requests);
-  } catch (error) {
-    console.error('Ошибка при получении заявок специалиста:', error);
-    res.status(500).json({ message: error.message });
+      const requests = await RequestsService.getBySpecialistId(specialist.id);
+      res.status(200).json(requests);
+    } catch (error) {
+      console.error('Ошибка при получении заявок специалиста:', error);
+      res.status(500).json({ message: error.message });
+    }
   }
-}
-
 
   static async createRequest(req, res) {
     try {
       const parentId = res.locals.user.id;
-      const { calendarId, message } = req.body;
-      const newRequest = await RequestsService.createRequest({ calendarId, parentId, message });
+      const { message } = req.body;
+      const newRequest = await RequestsService.createRequest({ parentId, message });
       res.status(201).json(newRequest);
     } catch (error) {
       console.error('Ошибка при создании заявки:', error);
