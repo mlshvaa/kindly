@@ -12,7 +12,7 @@ module.exports = {
       },
       calendarId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: 'Calendars',
           key: 'id',
