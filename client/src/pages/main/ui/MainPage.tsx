@@ -26,7 +26,6 @@ function MainPage(): React.JSX.Element {
     void navigate(`/parent/specialist/${id.toString()}`);
   };
 
-
   useEffect(() => {
     void dispatch(getAllSpecialists());
   }, [dispatch]);

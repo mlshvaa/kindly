@@ -32,8 +32,8 @@ function AppRoutes(): React.JSX.Element {
             <Route path="/specialist/home" element={<ProfileSpecialistPage />} />
             <Route path="/parent/cabinet" element={<ParentCabinetPage />} />
             <Route path="/parents/:id/details" element={<ParentDetailsPage />} />
-            <Route path="/parent/specialist/:id" element={<OneSpecialistCard />} />
           </Route>
+            <Route path="/parent/specialist/:id" element={<OneSpecialistCard />} />
           <Route>
             <Route element={<ProtectedRoute isAllowed={!isLoggest} redirectTo="/" />}>
               <Route path="/signin" element={<SignInPage />} />
