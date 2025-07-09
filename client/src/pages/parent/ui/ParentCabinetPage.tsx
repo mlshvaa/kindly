@@ -21,7 +21,6 @@ export default function ParentCabinetPage(): React.JSX.Element {
   const dispatch = useAppDispatch();
   const parent = useAppSelector((state) => state.parent.parent);
   const loading = useAppSelector((state) => state.parent.loading);
-  
 
   const [isEditingContact, setIsEditingContact] = useState(false);
 
