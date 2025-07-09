@@ -5,7 +5,7 @@ import { getMyRequests } from '@/entities/request/model/requestThunks';
 export default function MyRequests(): React.JSX.Element {
   const dispatch = useAppDispatch();
   const { myRequests, loading, error } = useAppSelector((state) => state.request);
-  console.log(myRequests);
+  // console.log(myRequests);
 
   useEffect(() => {
     void dispatch(getMyRequests());
@@ -25,10 +25,10 @@ export default function MyRequests(): React.JSX.Element {
         {myRequests.map((req) => (
           <li key={req.id}>
             <p>
-              {/* <strong>Специалист:</strong> {req.calendar.specialist?.name || 'не указано'} */}
+              <strong>Специалист:</strong> {req.specialist.user.name || 'не указано'}
             </p>
             <p>
-              <strong>Сообщение:</strong> {req.message || '—'}
+              <strong>Сообщение:</strong> {req.message ?? '—'}
             </p>
             <p>
               <strong>Статус:</strong> {req.status}

@@ -16,6 +16,11 @@ export const getMyRequests = createAsyncThunk<RequestType[]>(
   },
 );
 
+// export const getMyRequests = createAsyncThunk(
+//   'request/getMyRequests',
+//   async (id: number) => await requestService.getMyRequests(id),
+// );
+
 // Получить заявки от конкретного родителя к текущему специалисту
 export const getRequestsFromParentToMe = createAsyncThunk<
   RequestType[],
@@ -29,6 +34,12 @@ export const getRequestsFromParentToMe = createAsyncThunk<
     );
   }
 });
+
+// Все заявки по текущему специалисту (личный кабинет специалиста)
+export const getForCurrentSpecialist = createAsyncThunk(
+  'specialist/getForCurrent',
+  async () => await requestService.getForCurrentSpecialist(),
+);
 
 // 🔸 Обновить статус заявки (одобрить / отклонить)
 export const updateRequestStatus = createAsyncThunk<

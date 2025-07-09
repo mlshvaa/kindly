@@ -19,6 +19,15 @@ module.exports = {
         },
         onDelete: 'CASCADE',
       },
+      specialistId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Specialists',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
+      },
       parentId: {
         type: Sequelize.INTEGER,
         allowNull: false,
