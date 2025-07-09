@@ -1,71 +1,64 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { getChatMessages } from '@/entities/chat/api/chatApi';
-import type { ChatMessage } from '@/entities/chat/model/chatTypes';
 import { useChat } from '@/entities/chat/model/chatContext';
-import { useAppSelector } from '@/shared/lib/hooks';
-import styles from './ChatRoomPage.module.css'; // если используешь CSS-модули
+import { useAppSelector, useAppDispatch } from '@/shared/lib/hooks';
+import { addMessage } from '@/entities/chat/model/chatSlice';
+import type { ChatMessage } from '@/entities/chat/model/chatTypes';
 
 export default function ChatRoomPage(): React.JSX.Element {
-  const { chatId } = useParams<{ chatId: string }>();
-  const user = useAppSelector((state) => state.user.user);
+  const { chatId } = useParams();
+  const dispatch = useAppDispatch();
   const { connect, sendMessage } = useChat();
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [newMessage, setNewMessage] = useState('');
+  const messages = useAppSelector((state) => state.chat.messages);
+
+  const [inputText, setInputText] = useState('');
 
   useEffect(() => {
-    if (!chatId || !user) return;
+    console.log(chatId);
+    if (!chatId) return;
 
-    connect(Number(chatId));
-    getChatMessages(Number(chatId)).then(setMessages);
-  }, [chatId, user]);
+    const numericChatId = Number(chatId);
+    connect(numericChatId);
 
-  const handleSend = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newMessage.trim() || !chatId) return;
+    // Получаем старые сообщения
+    void getChatMessages(numericChatId).then((msgs) => {
+      msgs.forEach((msg: ChatMessage) => dispatch(addMessage(msg)));
+    });
+  }, [chatId, connect, dispatch]);
 
-    sendMessage({ chatId: Number(chatId), text: newMessage.trim() });
-    setNewMessage('');
+  const handleSend = (): void => {
+    if (!chatId || !inputText.trim()) return;
+    sendMessage({ chatId: Number(chatId), text: inputText });
+    setInputText('');
   };
 
   return (
-    <div className={styles.container}>
-      <h2>Чат #{chatId}</h2>
+    <div style={{ padding: '1rem' }}>
+      <h2>Чат №{chatId}</h2>
 
-      <div className={styles.chatBox}>
+      <div style={{ border: '1px solid #ccc', padding: '1rem', height: 300, overflowY: 'scroll' }}>
         {messages.map((msg) => (
-          <div
-            key={msg.id}
-            className={`${styles.message} ${
-              msg.senderRole === user?.role ? styles.ownMessage : styles.foreignMessage
-            }`}
-          >
-            <div className={styles.meta}>
-              <span className={styles.sender}>
-                {msg.senderRole === user?.role
-                  ? 'Вы'
-                  : msg.senderRole === 'parent'
-                  ? 'Родитель'
-                  : 'Специалист'}
-              </span>
-              <span className={styles.time}>
-                {new Date(msg.createdAt).toLocaleTimeString()}
-              </span>
-            </div>
-            <div className={styles.text}>{msg.text}</div>
-          </div>
+          <p key={msg.id}>
+            <strong>{msg.sender.role === 'parent' ? '👩 Родитель -' : '👩‍🏫 Специалист -'}  {msg.sender.name}:</strong>{' '}{msg.text}
+            
+            <br />
+            <small>{new Date(msg.createdAt).toLocaleString()}</small>
+          </p>
         ))}
       </div>
 
-      <form onSubmit={handleSend} className={styles.form}>
+      <div style={{ marginTop: '1rem' }}>
         <input
           type="text"
-          placeholder="Введите сообщение..."
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
+          placeholder="Введите сообщение"
         />
-        <button type="submit">Отправить</button>
-      </form>
+        <button onClick={handleSend} style={{ marginLeft: '1rem' }}>
+          Отправить
+        </button>
+      </div>
     </div>
   );
 }

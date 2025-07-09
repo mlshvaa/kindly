@@ -53,6 +53,9 @@ function NavBar(): React.JSX.Element {
                 Кабинет специалиста
               </Link>
             )}
+            <Link to="/my-chats" className="navLink">
+              Мои чаты
+            </Link>
             <button onClick={handleLogout} className="logoutNavigation">
               Выйти
             </button>

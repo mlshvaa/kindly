@@ -6,6 +6,7 @@ import {
   getRequestsFromParentToMe,
   updateRequestStatus,
 } from '@/entities/request/model/requestThunks';
+import StartChatButton from '@/features/start-chat/ui/StartChatButton';
 
 export default function ParentDetailsPage(): React.JSX.Element {
   const { id } = useParams<{ id: string }>();
@@ -14,7 +15,8 @@ export default function ParentDetailsPage(): React.JSX.Element {
 
   const parent = useAppSelector((state) => state.parent.currentParent);
   const loading = useAppSelector((state) => state.parent.loading);
-  console.log(parent);
+
+  const specialist = useAppSelector((state) => state.specialist.specialist);
 
   const requests = useAppSelector((state) => state.request.requestsFromParent);
   const loadingRequests = useAppSelector((state) => state.request.loadingFromParent);
@@ -39,6 +41,8 @@ export default function ParentDetailsPage(): React.JSX.Element {
 
   return (
     <div>
+      <StartChatButton parentId={parent.id} specialistId={specialist?.userId ?? 0} />
+
       <h2>Информация о родителе</h2>
       <p>
         <strong>👤 Имя:</strong> {parent.user?.name ?? 'Не указано'}

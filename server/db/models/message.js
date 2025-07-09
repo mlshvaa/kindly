@@ -1,16 +1,22 @@
 'use strict';
+
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Message extends Model {
-    static associate({ Chat }) {
+    static associate({ Chat, User }) {
       this.belongsTo(Chat, { foreignKey: 'chatId', as: 'chat' });
+      this.belongsTo(User, { foreignKey: 'senderId', as: 'sender' });
     }
   }
 
   Message.init(
     {
       chatId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      senderId: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -30,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'Message',
-    }
+    },
   );
 
   return Message;
