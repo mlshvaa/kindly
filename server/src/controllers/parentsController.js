@@ -1,5 +1,6 @@
 const ParentsService = require('../services/parentsService');
 const RequestsService = require('../services/requestsService');
+const SpecialistService = require('../services/SpecialistService');
 
 class ParentsController {
   // Получить всех родителей (например, для админа)
@@ -128,21 +129,30 @@ class ParentsController {
     }
   }
 
+  // Получить заявки от конкретного родителя к текущему специалисту
   static async getFullParentById(req, res) {
-    const { user } = res.locals;
+    const { user } = res.locals; // текущий специалист
     if (user.role !== 'specialist') {
       return res.status(403).json({ message: 'Доступ запрещён' });
     }
-    try {
-      const { id } = req.params;
 
-      const parent = await ParentsService.getParentWithUserById(id);
+    try {
+      const { id } = req.params; // id родителя
+
+      const parent = await ParentsService.getParentWithUserById(Number(id));
       if (!parent) {
         return res.status(404).json({ message: 'Родитель не найден' });
       }
 
-      const requests = await RequestsService.getByParentId(id);
+      const specialist = await SpecialistService.getSpecialistByUserId(user.id);
+      if (!specialist) {
+        return res.status(404).json({ message: 'Специалист не найден' });
+      }
 
+      const requests = await RequestsService.getRequestsFromParentToSpecialist(
+        parent.id,
+        specialist.id,
+      );
       res.status(200).json({ parent, requests });
     } catch (error) {
       console.error('Ошибка при получении полного профиля родителя:', error);

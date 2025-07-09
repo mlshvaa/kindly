@@ -105,10 +105,11 @@ class ParentsService {
     return updatedParent;
   }
 
-  static async getParentWithUserById(id) {
-    const parent = await Parent.findByPk(id, {
-      include: ['user'],
+  static async getParentWithUserById(parentId) {
+    const parent = await Parent.findByPk(parentId, {
+      include: ['user'], // или include: { model: User, as: 'user' }
     });
+    if (!parent) throw new Error('Родитель не найден');
     return parent;
   }
 }

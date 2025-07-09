@@ -16,6 +16,7 @@ export type NewRequestType = z.infer<typeof newRequestSchema>;
 // 🔹 Состояние slice заявок (для личного кабинета родителя)
 export type RequestState = {
   myRequests: RequestType[]; // все заявки текущего родителя
+  oneSpecialistRequests: RequestType[]; // все заявки текущего специалиста
   loading: boolean;
   error: string | null;
   requestsFromParent: RequestType[];

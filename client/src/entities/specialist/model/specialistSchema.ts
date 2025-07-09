@@ -8,6 +8,13 @@ const serviceSchema = z.object({
   updatedAt: z.string(),
 });
 
+// Схема пользователя внутри специалиста
+const userSchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  isApproved: z.boolean(),
+});
+
 // cxeма для возвращения данных специалиста
 export const specialistSchema = z.object({
   id: z.number(),
@@ -18,6 +25,7 @@ export const specialistSchema = z.object({
   clescription: z.string().nullable(),
   education: z.string().nullable(),
   position: z.string().nullable(),
+  user: userSchema,
 });
 
 // Расширяем specialistSchema, добавляя поле name

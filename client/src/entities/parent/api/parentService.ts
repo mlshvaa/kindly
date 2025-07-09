@@ -2,7 +2,7 @@ import type { AxiosInstance } from 'axios';
 import axiosInstance from '@/shared/api/axiosInstance';
 import type { ChildType, NewParentType, ParentType } from '../model/parentTypes';
 import { parentSchema } from '../model/parentSchema';
-import { RequestType } from '@/entities/request/model/requestTypes';
+import type { RequestType } from '@/entities/request/model/requestTypes';
 
 class ParentService {
   constructor(private readonly client: AxiosInstance) {}
@@ -13,7 +13,7 @@ class ParentService {
   }
 
   async getParentById(id: number): Promise<ParentType> {
-    const res = await this.client.get(`/parents/${id}`);
+    const res = await this.client.get(`/parents/${id.toString()}`);
     return parentSchema.parse(res.data);
   }
 
@@ -23,12 +23,12 @@ class ParentService {
   }
 
   async updateParent(id: number, data: NewParentType): Promise<ParentType> {
-    const res = await this.client.put(`/parents/${id}`, data);
+    const res = await this.client.put(`/parents/${id.toString()}`, data);
     return parentSchema.parse(res.data);
   }
 
   async deleteParent(id: number): Promise<void> {
-    await this.client.delete(`/parents/${id}`);
+    await this.client.delete(`/parents/${id.toString()}`);
   }
 
   async getAllParents(): Promise<ParentType[]> {
@@ -37,22 +37,27 @@ class ParentService {
   }
 
   async addChild(parentId: number, child: ChildType): Promise<ParentType> {
-    const res = await this.client.post(`/parents/${parentId}/children`, child);
+    const res = await this.client.post(`/parents/${parentId.toString()}/children`, child);
     return parentSchema.parse(res.data);
   }
 
   async updateChild(parentId: number, index: number, child: ChildType): Promise<ParentType> {
-    const res = await this.client.put(`/parents/${parentId}/children/${index}`, child);
+    const res = await this.client.put(
+      `/parents/${parentId.toString()}/children/${index.toString()}`,
+      child,
+    );
     return parentSchema.parse(res.data);
   }
 
   async deleteChild(parentId: number, index: number): Promise<ParentType> {
-    const res = await this.client.delete(`/parents/${parentId}/children/${index}`);
+    const res = await this.client.delete(
+      `/parents/${parentId.toString()}/children/${index.toString()}`,
+    );
     return parentSchema.parse(res.data);
   }
 
   async getFullParentById(id: number): Promise<{ parent: ParentType; requests: RequestType[] }> {
-    const res = await this.client.get(`/parents/${id}/full`);
+    const res = await this.client.get(`/parents/${id.toString()}/full`);
     return res.data;
   }
 }
