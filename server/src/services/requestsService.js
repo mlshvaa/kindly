@@ -35,9 +35,8 @@ class RequestsService {
     return requests;
   }
 
-  static async createRequest({ calendarId, parentId, message }) {
+  static async createRequest({ parentId, message }) {
     const newRequest = await Request.create({
-      calendarId,
       parentId,
       message,
       status: 'ожидание',
@@ -59,7 +58,7 @@ class RequestsService {
     await request.destroy();
   }
 
-    // Заявки от этого родителя к текущему специалисту
+  // Заявки от этого родителя к текущему специалисту
   static async getRequestsFromParentToSpecialist(parentId, specialistId) {
     const requests = await Request.findAll({
       where: { parentId },

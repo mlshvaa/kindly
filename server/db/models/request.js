@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       calendarId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       parentId: {
         type: DataTypes.INTEGER,

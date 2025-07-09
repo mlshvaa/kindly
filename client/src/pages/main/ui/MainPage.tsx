@@ -38,8 +38,8 @@ function MainPage(): React.JSX.Element {
 
       window.scrollTo({
         top: offsetPosition,
-        behavior: "smooth"
-   });
+        behavior: 'smooth',
+      });
     }
   };
 
@@ -51,8 +51,8 @@ function MainPage(): React.JSX.Element {
 
       window.scrollTo({
         top: offsetPosition,
-        behavior: "smooth"
-   });
+        behavior: 'smooth',
+      });
     }
   };
 
@@ -64,8 +64,8 @@ function MainPage(): React.JSX.Element {
 
       window.scrollTo({
         top: offsetPosition,
-        behavior: "smooth"
-   });
+        behavior: 'smooth',
+      });
     }
   };
 

@@ -21,9 +21,10 @@ export default function ParentCabinetPage(): React.JSX.Element {
   const dispatch = useAppDispatch();
   const parent = useAppSelector((state) => state.parent.parent);
   const loading = useAppSelector((state) => state.parent.loading);
-  
 
   const [isEditingContact, setIsEditingContact] = useState(false);
+  const [newChildFormVisible, setNewChildFormVisible] = useState(false);
+  const [newChildData, setNewChildData] = useState<ChildType>({ name: '', age: '' });
 
   useEffect(() => {
     void dispatch(getMyParentProfile());
@@ -43,16 +44,26 @@ export default function ParentCabinetPage(): React.JSX.Element {
     setIsEditingContact(false);
   };
 
-  const handleAddChild = async () => {
+  const handleAddChild = () => {
+    setNewChildFormVisible(true);
+  };
+
+  const handleSaveNewChild = async () => {
     if (!parent?.id) return;
-    const newChild: ChildType = { name: '', age: '' };
-    const updatedChildren = [...(parent.children ?? []), newChild];
+    const updatedChildren = [...(parent.children ?? []), newChildData];
 
     startTransition(() => {
       dispatch(updateChildrenLocally(updatedChildren));
     });
 
-    await parentService.addChild(parent.id, newChild);
+    await parentService.addChild(parent.id, newChildData);
+    setNewChildFormVisible(false);
+    setNewChildData({ name: '', age: '' });
+  };
+
+  const handleCancelNewChild = () => {
+    setNewChildFormVisible(false);
+    setNewChildData({ name: '', age: '' });
   };
 
   const handleUpdateChild = async (index: number, updated: ChildType) => {
@@ -129,10 +140,31 @@ export default function ParentCabinetPage(): React.JSX.Element {
             onDelete={handleDeleteChild}
           />
         ))}
-        <button onClick={handleAddChild} style={{ marginTop: '1rem' }}>
-          Добавить ребёнка
-        </button>
+
+        {newChildFormVisible ? (
+          <div style={{ marginTop: '1rem' }}>
+            <input
+              type="text"
+              placeholder="Имя"
+              value={newChildData.name}
+              onChange={(e) => setNewChildData({ ...newChildData, name: e.target.value })}
+            />
+            <input
+              type="text"
+              placeholder="Возраст"
+              value={newChildData.age}
+              onChange={(e) => setNewChildData({ ...newChildData, age: e.target.value })}
+            />
+            <button onClick={handleSaveNewChild}>Сохранить</button>
+            <button onClick={handleCancelNewChild}>Отмена</button>
+          </div>
+        ) : (
+          <button onClick={handleAddChild} style={{ marginTop: '1rem' }}>
+            Добавить ребёнка
+          </button>
+        )}
       </div>
+
       <h3>Ваши заявки</h3>
       <MyRequests />
 

@@ -1,23 +1,13 @@
 'use strict';
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Requests', {
+    await queryInterface.createTable('Chats', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
-      },
-      calendarId: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-        references: {
-          model: 'Calendars',
-          key: 'id',
-        },
-        onDelete: 'CASCADE',
       },
       parentId: {
         type: Sequelize.INTEGER,
@@ -28,14 +18,14 @@ module.exports = {
         },
         onDelete: 'CASCADE',
       },
-      message: {
-        type: Sequelize.TEXT,
-        allowNull: true,
-      },
-      status: {
-        type: Sequelize.ENUM('ожидание', 'одобрено', 'отклонено'),
+      specialistId: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        defaultValue: 'ожидание',
+        references: {
+          model: 'Specialists',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
       },
       createdAt: {
         allowNull: false,
@@ -48,7 +38,7 @@ module.exports = {
     });
   },
 
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Requests');
+  async down(queryInterface) {
+    await queryInterface.dropTable('Chats');
   },
 };

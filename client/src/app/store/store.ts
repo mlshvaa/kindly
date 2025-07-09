@@ -4,6 +4,7 @@ import specialistReducer from '@/entities/specialist/model/specialistSlice';
 import parentReducer from '@/entities/parent/model/parentSlice';
 import requestReducer from '@/entities/request/model/requestSlice';
 import serviceSpecialistReducer from '@/entities/service-specialist/model/serviceSpecialistSlice';
+import chatReducer from '@/entities/chat/model/chatSlice'
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     parent: parentReducer,
     request: requestReducer,
     serviceSpecialist: serviceSpecialistReducer,
+    chat: chatReducer,
   },
 });
 

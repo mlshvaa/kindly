@@ -10,8 +10,16 @@ const servicesSpecialistsRouter = require('./routes/servicesSpecialistsRouter');
 const reviewsRouter = require('./routes/reviewsRouter');
 const requestsRouter = require('./routes/requestsRouter');
 const parentsRouter = require('./routes/parentsRouter');
+const chatRouter = require('./routes/chatRouter');
+const cors = require('cors');
 
 const app = express();
+
+// ✅ CORS — вот здесь
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true,
+}));
 
 app.use(morgan('dev'));
 app.use(cookieParser());
@@ -30,5 +38,6 @@ app.use('/api/services-specialists', servicesSpecialistsRouter);
 app.use('/api/reviews', reviewsRouter);
 app.use('/api/requests', requestsRouter);
 app.use('/api/parents', parentsRouter);
+app.use('/api/chats', chatRouter);
 
 module.exports = app;
