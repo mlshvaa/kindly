@@ -3,23 +3,28 @@ import axios from 'axios';
 
 const axiosInstance = axios.create({
   baseURL: '/api',
+  withCredentials: true, // важно: иначе кука не передаётся!
 });
 
-let accessToken = '';
+let accessToken = localStorage.getItem('accessToken') ?? '';
 
 axiosInstance.interceptors.request.use((config) => {
-  config.headers.Authorization ??= `Bearer ${accessToken}`;
+  accessToken = localStorage.getItem('accessToken') ?? '';
+  config.headers.Authorization = `Bearer ${accessToken}`;
   return config;
 });
 
 axiosInstance.interceptors.response.use(
   (res) => res,
-  async (err: AxiosError & { config: { sent: boolean } }) => {
+  async (err: AxiosError & { config: { sent?: boolean } }) => {
     const prev = err.config;
-    if (err.status === 403 && !prev.sent) {
+    if (err.response?.status === 403 && !prev.sent) {
       prev.sent = true;
-      const response = await axios.get<{ accessToken: string }>('/api/auth/refresh');
+      const response = await axios.get<{ accessToken: string }>('/api/auth/refresh', {
+        withCredentials: true,
+      });
       accessToken = response.data.accessToken;
+      localStorage.setItem('accessToken', accessToken);
       prev.headers.Authorization = `Bearer ${accessToken}`;
       return axiosInstance(prev);
     }

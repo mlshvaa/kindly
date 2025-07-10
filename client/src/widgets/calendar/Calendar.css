@@ -1,0 +1,56 @@
+.day.slot {
+  background-color: #c2f0c2;
+  font-weight: bold;
+}
+
+.day.readonly {
+  cursor: default;
+}
+
+.day.editable {
+  cursor: pointer;
+}
+
+.day.today {
+  border: 2px solid #ff9999;
+}
+
+.calendar-wrapper {
+  max-width: 400px;
+  margin-top: 20px;
+}
+
+.calendar-header {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.day {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #f9f9f9;
+  transition: 0.3s ease;
+}
+
+.day.slot {
+  background-color: #c3f7c3;
+  font-weight: bold;
+}
+
+.day.today {
+  border: 2px solid #ff9999;
+}
+
+.day:hover {
+  background-color: #ececec;
+}

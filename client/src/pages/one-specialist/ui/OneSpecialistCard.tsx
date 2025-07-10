@@ -5,6 +5,7 @@ import { getSpecialistById } from '@/entities/specialist/model/specialistThunks'
 import { getAllServiceSpecialists } from '@/entities/service-specialist/model/serviceSpecialistThunks';
 import DiplomaGallery from '@/features/diploma-gallery/DiplomaGallery';
 import AddRequestSpecialist from '@/features/add-request-to-specialist/AddRequestSpecialist';
+import Calendar from '@/widgets/calendar/Calendar';
 
 const BACKEND_URL = 'http://localhost:3000';
 
@@ -94,6 +95,7 @@ function OneSpecialistCard(): React.JSX.Element {
           <AddRequestSpecialist id={Number(id)} onClose={() => setShowAddRequest(false)} />
         </div>
       )}
+      <Calendar specialistId={Number(specialist.id)} editable={false} />
     </div>
   );
 }

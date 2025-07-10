@@ -1,0 +1,157 @@
+.specialistProfileMain {
+  color: rgb(34, 34, 34);
+  background-color: #fff6fa;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 30px;
+}
+
+.topPartAndActive {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.topPartYourProfile {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  margin-bottom: 32px;
+}
+
+.topPartYourProfile p {
+  font-size: 20px;
+  color: rgb(72, 72, 72);
+}
+
+.yourProfileHeader {
+  font-size: 40px;
+}
+
+.activeProfileParagraph {
+  font-size: 20px;
+  color: green;
+  background-color: rgb(201, 234, 201);
+  border: 1px solid rgb(187, 224, 187);
+  border-radius: 20px;
+  padding: 8px;
+  margin-bottom: 70px;
+}
+
+.categoriesSectionContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 20px;
+  background-color: white;
+  border-radius: 20px;
+  padding: 8px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  gap: 20px;
+}
+
+.sectionButtonOff {
+  width: 300px;
+  height: 48px;
+  font-size: 19px;
+  padding: 12px;
+  border: none;
+  border-radius: 26px;
+  color: rgb(34, 34, 34);
+  background-color: white;
+}
+
+.sectionButtonOff:hover {
+  color: white;
+  background-color: #f6519d;
+}
+
+.sectionButtonOff.sectionButtonOn {
+    background-color: #f6519d;
+    color: white;
+  }
+
+.editSpecInfoButton {
+  width: 200px;
+  height: 48px;
+  font-size: 19px;
+  padding: 12px;
+  border: none;
+  border-radius: 26px;
+  color: white;
+  background-color: #4fb3d8;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.editSpecInfoButton:hover {
+  background-color: #1e99c6;
+  transform: scale(1.05);
+}
+
+.specialistProfileInfoCard {
+  width: 1400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  background-color: white;
+  border: 1px solid rgb(243, 243, 243);
+  border-radius: 16px;
+  padding: 0px 20px 20px 20px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+.headerAndButton {
+  display: flex;
+  align-items: center;
+  gap: 350px;
+  margin-top: 28px;
+}
+
+.headerAndButton h2 {
+  margin-top: 16px;
+  align-self: center;
+  font-size: 38px;
+}
+
+.specialistInput {
+  width: 300px;
+  height: 20px;
+  border-radius: 14px;
+  border: 1.8px solid rgb(213, 213, 213);
+}
+
+.photoAndCalendar {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.leftAndRightParts {
+  display: flex;
+  align-items: center;
+  gap: 100px;
+}
+
+.specialistInfo {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.specialistMiniInfo {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.specialistMiniInfo p {
+  font-size: 20px;
+}
+
