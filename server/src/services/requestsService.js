@@ -1,14 +1,24 @@
-const { Request, Calendar, Parent, Specialist } = require('../../db/models');
+const { Request, Calendar, Parent, Specialist, User } = require('../../db/models');
 
 class RequestsService {
-  static async getByParentId(parentId) {
+  // Получить заявки текущего родителя
+  static async getByParentId(userId) {
+    // 1. Найти Parent по userId
+    const parent = await Parent.findOne({ where: { userId } });
+    if (!parent) throw new Error('Родитель не найден');
+    // 2. Найти все заявки с найденным parentId
     const requests = await Request.findAll({
-      where: { parentId },
+      where: { parentId: parent.id },
       include: [
+        // {
+        //   model: Calendar,
+        //   as: 'calendar',
+        //   include: [{ model: Specialist, as: 'specialist' }],
+        // },
         {
-          model: Calendar,
-          as: 'calendar',
-          include: [{ model: Specialist, as: 'specialist' }],
+          model: Specialist,
+          as: 'specialist',
+          include: [{ model: User, as: 'user' }],
         },
       ],
       order: [['createdAt', 'DESC']],
@@ -16,18 +26,18 @@ class RequestsService {
     return requests;
   }
 
-  static async getBySpecialistId(specialistId) {
+  static async getBySpecialistId(userId) {
+    // 1. Найти Specialist по userId
+    const specialist = await Specialist.findOne({ where: { userId } });
+    if (!specialist) throw new Error('Специалист не найден');
+    // 2. Найти все заявки с найденным specialistId
     const requests = await Request.findAll({
+      where: { specialistId: specialist.id },
       include: [
         {
-          model: Calendar,
-          as: 'calendar',
-          where: { specialistId },
-        },
-        {
-          model: Parent,
-          as: 'parent',
-          include: ['user'],
+          model: Specialist,
+          as: 'specialist',
+          include: [{ model: User, as: 'user' }],
         },
       ],
       order: [['createdAt', 'DESC']],
@@ -35,12 +45,19 @@ class RequestsService {
     return requests;
   }
 
-  static async createRequest({ parentId, message }) {
+  static async createRequest({ userId, message, specialistId }) {
+    // 1. Найти Parent по userId
+    const parent = await Parent.findOne({ where: { userId } });
+    if (!parent) throw new Error('Родитель не найден');
+
+    // 2. Создать заявку с найденным parentId
     const newRequest = await Request.create({
-      parentId,
+      parentId: parent.id,
+      specialistId,
       message,
       status: 'ожидание',
     });
+
     return newRequest;
   }
 
@@ -61,14 +78,8 @@ class RequestsService {
   // Заявки от этого родителя к текущему специалисту
   static async getRequestsFromParentToSpecialist(parentId, specialistId) {
     const requests = await Request.findAll({
-      where: { parentId },
-      include: [
-        {
-          model: Calendar,
-          as: 'calendar',
-          where: { specialistId },
-        },
-      ],
+      where: { parentId, specialistId },
+
       order: [['createdAt', 'DESC']],
     });
 

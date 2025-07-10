@@ -2,6 +2,7 @@ import SignUpParentForm from '@/features/auth/signup/ui/SignUpParentForm';
 import SignUpSpecialistForm from '@/features/auth/signup/ui/SignUpSpecialistForm';
 import ChatListPage from '@/pages/chat/ui/ChatListPage';
 import ChatRoomPage from '@/pages/chat/ui/ChatRoomPage';
+import MyChatsPage from '@/pages/chat/ui/MyChatsList';
 import ProfileSpecialistPage from '@/pages/home/ui/ProfileSpecialistPage';
 import Layout from '@/pages/layout/ui/Layout';
 import MainPage from '@/pages/main/ui/MainPage';
@@ -36,7 +37,11 @@ function AppRoutes(): React.JSX.Element {
             <Route path="/parent/cabinet" element={<ParentCabinetPage />} />
             <Route path="/parents/:id/details" element={<ParentDetailsPage />} />
             <Route path="/chat" element={<ChatListPage/>} />
-            <Route path="/chat/:id" element={<ChatRoomPage />} />
+
+            <Route path="/chat/:chatId" element={<ChatRoomPage />} /> 
+            <Route path="/parent/specialist/:id" element={<OneSpecialistCard />} />
+            <Route path="/my-chats" element={<MyChatsPage />} />
+
           </Route>
             <Route path="/parent/specialist/:id" element={<OneSpecialistCard />} />
           <Route>

@@ -9,8 +9,15 @@ class RequestService {
   // Получить заявки текущего родителя
   async getMyRequests(): Promise<RequestType[]> {
     const res = await this.client.get('/requests/parent');
+    console.log(res.data);
+
     return requestSchema.array().parse(res.data); // Валидация схемой
   }
+
+  //   async getMyRequests(id: number): Promise<RequestType[]> {
+  //   const response = await this.client.get(`/requests/parent/${id.toString()}`);
+  //   return requestSchema.array().parse(response.data); // Валидация схемой
+  // }
 
   // Получить заявки от конкретного родителя к текущему специалисту
   async getRequestsFromParentToMe(parentId: number): Promise<RequestType[]> {
@@ -21,6 +28,12 @@ class RequestService {
   // Обновить статус заявки
   async updateRequestStatus(id: number, status: 'одобрено' | 'отклонено'): Promise<void> {
     await this.client.patch(`/requests/${id.toString()}/status`, { status });
+  }
+
+  // Все заявки по текущему специалисту (личный кабинет специалиста)
+  async getForCurrentSpecialist(): Promise<RequestType[]> {
+    const res = await this.client.get(`/requests/specialist`);
+    return requestSchema.array().parse(res.data);
   }
 
   // Создать заявку

@@ -33,6 +33,7 @@ class SpecialistController {
   static async getAll(req, res) {
     try {
       const specialists = await SpecialistService.findAllWithUsers();
+      console.log(specialists.user, 'specialists');
       res.status(200).json(specialists);
     } catch (error) {
       console.error('Ошибка при получении специалистов:', error);

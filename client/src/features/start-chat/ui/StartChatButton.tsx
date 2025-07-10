@@ -1,34 +1,26 @@
-import React from 'react';
-import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks';
-import { startChat } from '@/entities/chat/model/chatThunks';
+import { useAppDispatch } from '@/shared/lib/hooks';
+import { startChatThunk } from '@/entities/chat/model/chatThunks';
 import { useNavigate } from 'react-router';
 
-type StartChatButtonProps = {
+export default function StartChatButton({
+  parentId,
+  specialistId,
+}: {
   parentId: number;
-};
-
-export default function StartChatButton({ parentId }: StartChatButtonProps): React.JSX.Element | null {
+  specialistId: number;
+}): React.JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const specialist = useAppSelector((state) => state.specialist.currentSpecialist);
+  const handleStartChat = async (): Promise<void> => {
+    const resultAction = await dispatch(startChatThunk({ parentId, specialistId }));
 
-  if (!specialist) return null;
-
-  const handleStart = async () => {
-    try {
-      const chat = await dispatch(
-        startChat({ parentId, specialistId: specialist.id })
-      ).unwrap();
-      navigate(`/chat/${chat.id}`);
-    } catch (err) {
-      console.error('Не удалось создать чат:', err);
+    if (startChatThunk.fulfilled.match(resultAction)) {
+      void navigate(`/chat/${resultAction.payload.id.toString()}`);
+    } else {
+      console.error('Ошибка при создании чата:', resultAction.payload);
     }
   };
 
-  return (
-    <button onClick={handleStart}>
-      💬 Начать чат
-    </button>
-  );
+  return <button onClick={handleStartChat}>💬 Начать чат</button>;
 }

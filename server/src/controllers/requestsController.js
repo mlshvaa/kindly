@@ -1,10 +1,11 @@
 const RequestsService = require('../services/requestsService');
 
 class RequestsController {
+  // Получить заявки текущего родителя
   static async getByParent(req, res) {
     try {
-      const parentId = res.locals.user.id;
-      const requests = await RequestsService.getByParentId(parentId);
+      const userId = res.locals.user.id;
+      const requests = await RequestsService.getByParentId(userId);
       res.status(200).json(requests);
     } catch (error) {
       console.error('Ошибка при получении заявок родителя:', error);
@@ -26,11 +27,8 @@ class RequestsController {
   static async getForCurrentSpecialist(req, res) {
     try {
       const userId = res.locals.user.id;
-
-      const specialist = await Specialist.findOne({ where: { userId } });
-      if (!specialist) return res.status(404).json({ message: 'Специалист не найден' });
-
-      const requests = await RequestsService.getBySpecialistId(specialist.id);
+      const requests = await RequestsService.getBySpecialistId(userId);
+      console.log(requests, 'requests');
       res.status(200).json(requests);
     } catch (error) {
       console.error('Ошибка при получении заявок специалиста:', error);
@@ -40,9 +38,13 @@ class RequestsController {
 
   static async createRequest(req, res) {
     try {
-      const parentId = res.locals.user.id;
-      const { message } = req.body;
-      const newRequest = await RequestsService.createRequest({ parentId, message });
+      const userId = res.locals.user.id;
+      const { message, specialistId } = req.body;
+      const newRequest = await RequestsService.createRequest({
+        userId,
+        message,
+        specialistId,
+      });
       res.status(201).json(newRequest);
     } catch (error) {
       console.error('Ошибка при создании заявки:', error);

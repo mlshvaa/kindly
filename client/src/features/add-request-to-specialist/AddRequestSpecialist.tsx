@@ -6,9 +6,10 @@ import { useNavigate } from 'react-router';
 
 type AddRequestSpecialistProps = {
   onClose: () => void;
+  id: number;
 };
 
-const AddRequestSpecialist: React.FC<AddRequestSpecialistProps> = ({ onClose }) => {
+const AddRequestSpecialist = ({ onClose, id }: AddRequestSpecialistProps): React.JSX.Element => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -22,6 +23,7 @@ const AddRequestSpecialist: React.FC<AddRequestSpecialistProps> = ({ onClose }) 
     const dataToValidate = {
       message: formData.message ?? null, // если пусто, ставим null
       status: 'ожидание' as const,
+      specialistId: id,
     };
 
     try {

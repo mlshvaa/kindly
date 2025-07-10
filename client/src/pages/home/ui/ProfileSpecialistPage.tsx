@@ -9,8 +9,12 @@ import DiplomaGallery from '@/features/diploma-gallery/DiplomaGallery';
 import ServiseSpecialistList from '@/features/servise-specialist-list/ServiseSpecialistList';
 import { getServiceSpecialistsBySpecialistId } from '@/entities/service-specialist/model/serviceSpecialistThunks';
 import AllServiseSpecialistList from '@/features/all-servise-specialist-list/AllServiseSpecialistList';
+
 import Calendar from '@/widgets/calendar/Calendar';
 import './ProfileSpecialistPage.css';
+
+import RequestSpecialistList from '@/features/request-specialist-list/RequestSpecialistList';
+
 
 const BACKEND_URL = 'http://localhost:3000';
 
@@ -248,6 +252,7 @@ function ProfileSpecialistPage(): React.JSX.Element {
               />
             )}
           </div>
+
         </div>
       )}
 
@@ -258,6 +263,23 @@ function ProfileSpecialistPage(): React.JSX.Element {
         </div>
       )}
     </div>
+
+        )}
+
+        {activeTab === 'allServices' && (
+          <AllServiseSpecialistList
+            specialistId={specialist.id}
+            specialistServicesIds={specialistServiceIds}
+            allServices={services}
+          />
+        )}
+      </div>
+      <div>
+        Заявки родителей:
+        <RequestSpecialistList />
+      </div>
+    </>
+
   );
 }
 

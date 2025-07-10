@@ -92,7 +92,7 @@ function OneSpecialistCard(): React.JSX.Element {
       {/* Условный рендеринг формы */}
       {showAddRequest && (
         <div style={{ marginTop: 20 }}>
-          <AddRequestSpecialist onClose={() => setShowAddRequest(false)} />
+          <AddRequestSpecialist id={Number(id)} onClose={() => setShowAddRequest(false)} />
         </div>
       )}
       <Calendar specialistId={Number(specialist.id)} editable={false} />

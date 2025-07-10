@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { RequestState } from './requestTypes';
 import {
   createRequest,
+  getForCurrentSpecialist,
   getMyRequests,
   getRequestsFromParentToMe,
   updateRequestStatus,
@@ -10,6 +11,7 @@ import {
 const initialState: RequestState = {
   myRequests: [],
   requestsFromParent: [],
+  oneSpecialistRequests: [],
   loading: false,
   error: null,
   loadingFromParent: false,
@@ -66,6 +68,23 @@ const requestSlice = createSlice({
         state.myRequests.push(action.payload);
       })
       .addCase(createRequest.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message ?? 'В слайсе произошла ошибка';
+        console.log(action.error.message);
+      });
+
+    // Все заявки по текущему специалисту (личный кабинет специалиста)
+    builder
+      .addCase(getForCurrentSpecialist.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getForCurrentSpecialist.fulfilled, (state, action) => {
+        state.myRequests = action.payload;
+        state.loading = false;
+        state.oneSpecialistRequests = action.payload;
+      })
+      .addCase(getForCurrentSpecialist.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message ?? 'В слайсе произошла ошибка';
         console.log(action.error.message);
