@@ -11,11 +11,11 @@ type Props = {
 export default function ChildCard({ index, child, onUpdate, onDelete }: Props): React.JSX.Element {
   const [isEditing, setIsEditing] = React.useState(false);
 
-  const handleSave = () => {
+  const handleSave = (): void => {
     setIsEditing(false);
   };
 
-  const handleChange = (field: keyof ChildType, value: string) => {
+  const handleChange = (field: keyof ChildType, value: string):void => {
     onUpdate(index, { ...child, [field]: value });
   };
 

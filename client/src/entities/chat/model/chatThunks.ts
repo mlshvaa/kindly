@@ -7,7 +7,7 @@ export const startChatThunk = createAsyncThunk<
   { parentId: number }
 >('chat/startChat', async ({ parentId }, thunkAPI) => {
   try {
-    const res = await axiosInstance.post('/chats', { parentId });
+    const res = await axiosInstance.post<ChatPreview>('/chats', { parentId });
     return res.data;
   } catch (error) {
     return thunkAPI.rejectWithValue('Не удалось создать чат');
@@ -15,6 +15,6 @@ export const startChatThunk = createAsyncThunk<
 });
 
 export const getMyChats = createAsyncThunk<ChatPreview[]>('chat/getMyChats', async () => {
-  const res = await axiosInstance.get('/chats/my');
+  const res = await axiosInstance.get<ChatPreview[]>('/chats/my');
   return res.data;
 });

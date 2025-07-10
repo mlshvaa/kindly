@@ -1,0 +1,44 @@
+.container {
+  padding: 2rem;
+  background: #feeef5;
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #222;
+}
+
+.title {
+  font-size: 32px;
+  margin-bottom: 24px;
+  color: #4fb3d8;
+}
+
+.chatList {
+  list-style: none;
+  padding: 0;
+}
+
+.chatItem {
+  border: 1px solid #ccc;
+  background-color: white;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.chatItem:hover {
+  transform: scale(1.02);
+}
+
+.chatPartner {
+  font-weight: bold;
+  color: #f6519d;
+}
+
+.lastMessage {
+  color: #444;
+  margin-top: 4px;
+  font-size: 15px;
+}

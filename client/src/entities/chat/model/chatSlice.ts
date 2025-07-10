@@ -42,7 +42,7 @@ const chatSlice = createSlice({
       })
       .addCase(startChatThunk.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload ?? 'Не удалось создать чат';
+        state.error = (action.payload as string) ?? 'Не удалось создать чат';
       })
       // получение всех чатов
     .addCase(getMyChats.pending, (state) => {
