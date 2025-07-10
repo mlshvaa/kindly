@@ -16,10 +16,12 @@ const cors = require('cors');
 const app = express();
 
 // ✅ CORS — вот здесь
-app.use(cors({
-  origin: 'http://localhost:5173',
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: ['http://localhost:5174', 'http://localhost:5174'],
+    credentials: true,
+  }),
+);
 
 app.use(morgan('dev'));
 app.use(cookieParser());

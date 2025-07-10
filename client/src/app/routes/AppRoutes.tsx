@@ -12,6 +12,7 @@ import ParentDetailsPage from '@/pages/parent/ui/ParentDetailsPage';
 import SignInPage from '@/pages/signin/ui/SignInPage';
 import { useAppSelector } from '@/shared/lib/hooks';
 import ProtectedRoute from '@/shared/lib/ProtectedRoute';
+import Calendar from '@/widgets/calendar/Calendar';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router';
 

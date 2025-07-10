@@ -24,8 +24,8 @@ class CalendarsController {
 
   static async createCalendar(req, res) {
     try {
-      const { startDate, endDate } = req.body;
-      const specialistId = res.locals.user.id; // авторизованный специалист
+      const { startDate, endDate, specialistId } = req.body;
+      // const specialistId = res.locals.user.id; // авторизованный специалист
       const newSlot = await CalendarsService.createCalendar({ specialistId, startDate, endDate });
       res.status(201).json(newSlot);
     } catch (error) {

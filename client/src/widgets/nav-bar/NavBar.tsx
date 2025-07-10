@@ -21,6 +21,10 @@ function NavBar(): React.JSX.Element {
       .catch(console.error);
   };
 
+  const handleLogIn: React.MouseEventHandler<HTMLButtonElement> = () => {
+    void navigate('/signin');
+  };
+
   return (
     <div className="navbarMainContainer">
       <div className="navbarLeft">
@@ -62,9 +66,9 @@ function NavBar(): React.JSX.Element {
             <Link to="/signup/parent" className="navLink">
               Регистрация
             </Link>
-            <Link to="/signin" className="navLink">
+            <button onClick={handleLogIn} className="logoutNavigation">
               Войти
-            </Link>
+            </button>
           </>
         )}
 

@@ -1,6 +1,7 @@
 // NannyCard.tsx
 import './NannyCard.css';
 import type { SpecialistType } from '@/entities/specialist/model/specialistType';
+import defaultAvatar from '@/images/defaultAvatar.jpg'
 
 type Props = {
   specialist: SpecialistType;
@@ -10,7 +11,7 @@ type Props = {
 function NannyCard({ specialist, onClick }: Props): React.JSX.Element {
   return (
     <div onClick={onClick} className="nannyCard">
-      <img src={specialist.photo ?? '/default-avatar.jpg'} alt="Фотография няни" />
+      <img src={specialist.photo ?? {defaultAvatar}} alt="Фотография няни" />
       <h4>{specialist.position ?? 'Педагог'}</h4>
       <p>{specialist.age ? `${specialist.age} лет` : ''}</p>
       <p>{specialist.education}</p>
