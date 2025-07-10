@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks';
 import { getSpecialistById } from '@/entities/specialist/model/specialistThunks';
 import { getAllServiceSpecialists } from '@/entities/service-specialist/model/serviceSpecialistThunks';
@@ -17,7 +17,7 @@ function OneSpecialistCard(): React.JSX.Element {
   const { specialistWithLinks, loading, error } = useAppSelector((state) => state.specialist);
   const { services: allServices } = useAppSelector((state) => state.serviceSpecialist);
   const role = useAppSelector((state) => state.user.user?.role);
-
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'myServices' | 'allServices'>('myServices');
 
   // Состояние для управления видимостью формы
@@ -58,7 +58,6 @@ function OneSpecialistCard(): React.JSX.Element {
           backendUrl={BACKEND_URL}
         />
       )}
-
       <div className="specialistServices">
         <h3>Услуги:</h3>
         <div className="serviceTabs">
@@ -92,10 +91,18 @@ function OneSpecialistCard(): React.JSX.Element {
           </ul>
         )}
       </div>
-
       {/* Кнопка для показа формы */}
-      {role === 'parent' && (
-        <button onClick={() => setShowAddRequest(true)} style={{ marginTop: 20 }}>
+      {role !== 'specialist' && (
+        <button
+          onClick={() => {
+            if (role === 'parent') {
+              setShowAddRequest(true);
+            } else {
+              void navigate('/signup/parent');
+            }
+          }}
+          style={{ marginTop: 20 }}
+        >
           Оказать услугу
         </button>
       )}
