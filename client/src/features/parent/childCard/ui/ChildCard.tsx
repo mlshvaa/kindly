@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import type { ChildType } from '@/entities/parent/model/parentTypes';
 
 type Props = {
@@ -9,26 +9,37 @@ type Props = {
 };
 
 export default function ChildCard({ index, child, onUpdate, onDelete }: Props): React.JSX.Element {
-  const [isEditing, setIsEditing] = useState(false);
-  const [name, setName] = useState(child.name);
-  const [age, setAge] = useState(child.age);
+  const [isEditing, setIsEditing] = React.useState(false);
 
   const handleSave = () => {
-    onUpdate(index, { name, age });
     setIsEditing(false);
+  };
+
+  const handleChange = (field: keyof ChildType, value: string) => {
+    onUpdate(index, { ...child, [field]: value });
   };
 
   return (
     <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
       {isEditing ? (
         <>
-          <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Имя" />
-          <input value={age} onChange={(e) => setAge(e.target.value)} placeholder="Возраст" />
+          <input
+            value={child.name}
+            onChange={(e) => handleChange('name', e.target.value)}
+            placeholder="Имя"
+          />
+          <input
+            value={child.age}
+            onChange={(e) => handleChange('age', e.target.value)}
+            placeholder="Возраст"
+          />
           <button onClick={handleSave}>Сохранить</button>
         </>
       ) : (
         <>
-          <span><strong>{child.name}</strong> ({child.age} лет)</span>
+          <span>
+            <strong>{child.name}</strong> ({child.age} лет)
+          </span>
           <button onClick={() => setIsEditing(true)}>Редактировать</button>
         </>
       )}
