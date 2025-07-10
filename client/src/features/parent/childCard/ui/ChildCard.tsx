@@ -11,7 +11,39 @@ type Props = {
 export default function ChildCard({ index, child, onUpdate, onDelete }: Props): React.JSX.Element {
   const [isEditing, setIsEditing] = React.useState(false);
 
-  const handleSave = (): void => {
+  // Функция для форматирования имени: каждое слово с заглавной буквы
+  const formatName = (value: string) =>
+    value
+      .split(' ')
+      .filter(Boolean)
+      .map((word) => {
+        if (word.length === 0) return '';
+        return word[0].toUpperCase() + word.slice(1).toLowerCase();
+      })
+      .join(' ');
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatName(e.target.value);
+    setName(formatted);
+  };
+
+  const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    // Не позволяем вводить отрицательное число
+    if (val === '') {
+      setAge(''); // если пользователь удалил значение — пусть будет пустая строка
+      return;
+    }
+    const num = Number(val);
+    if (!isNaN(num) && num >= 0) {
+      setAge(num.toString());
+    }
+  };
+
+  const handleSave = () => {
+    // Можно добавить валидацию перед сохранением, если нужно
+    onUpdate(index, { name, age });
+
     setIsEditing(false);
   };
 
@@ -23,14 +55,13 @@ export default function ChildCard({ index, child, onUpdate, onDelete }: Props): 
     <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
       {isEditing ? (
         <>
+          <input value={name} onChange={handleNameChange} placeholder="Имя" />
           <input
-            value={child.name}
-            onChange={(e) => handleChange('name', e.target.value)}
-            placeholder="Имя"
-          />
-          <input
-            value={child.age}
-            onChange={(e) => handleChange('age', e.target.value)}
+            type="number"
+            min={0}
+            value={age}
+            onChange={handleAgeChange}
+
             placeholder="Возраст"
           />
           <button onClick={handleSave}>Сохранить</button>

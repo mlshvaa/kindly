@@ -19,7 +19,7 @@
 }
 
 .center-align {
-    text-align: center;
+  text-align: center;
 }
 
 .leftAndRight {
@@ -202,4 +202,17 @@
 .createAccountButton:hover {
   background-color: #d82679;
   transform: scale(1.05);
+}
+
+.inputError {
+  border-color: red !important;
+  outline: none;
+  box-shadow: 0 0 5px red;
+}
+
+.buttonDisabled {
+  background-color: #f8a1c5 !important; /* светло-розовый */
+  cursor: not-allowed !important;
+  transform: none !important;
+  pointer-events: none;
 }

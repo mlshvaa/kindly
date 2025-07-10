@@ -65,7 +65,6 @@ export default function ChatRoomPage(): React.JSX.Element {
   return (
     <div className={styles.chatContainer}>
       <h2>Чат №{chatId}</h2>
-
       <div className={styles.messagesBox}>
         {messages.map((msg) => {
           const isCurrentUser = msg.sender.id === user?.id;

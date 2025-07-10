@@ -1,6 +1,26 @@
 const { Review, Specialist, Parent } = require('../../db/models');
 
 class ReviewsService {
+  // Все отзывы вообще все
+  static async getAllReviews() {
+    const reviews = await Review.findAll({
+      include: [
+        {
+          model: Specialist,
+          as: 'specialist',
+          include: ['user'], // чтобы получить имя специалиста
+        },
+        {
+          model: Parent,
+          as: 'parent',
+          include: ['user'], // чтобы получить имя родителя
+        },
+      ],
+      order: [['createdAt', 'DESC']],
+    });
+    return reviews;
+  }
+
   static async getBySpecialist(specialistId) {
     const reviews = await Review.findAll({
       where: { specialistId },

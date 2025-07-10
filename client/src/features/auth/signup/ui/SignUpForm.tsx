@@ -4,11 +4,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 
 function SignUpForm(): React.JSX.Element {
-  // чтобы получить функцию, с помощью которой можно отправлять (dispatch) действия (actions) в Redux-хранилище из своего React-компонента
-  // dispatch — это главный способ менять данные в Redux из React-компонентов.
-  // получаем его через хук, чтобы отправлять действия, которые изменяют глобальное состояние приложения.
   const dispatch = useAppDispatch();
-  //   на регу делаем контролируемую форму
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -19,17 +15,36 @@ function SignUpForm(): React.JSX.Element {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleChange: React.ChangeEventHandler<HTMLInputElement> | undefined = (e) => {
+  // Функция для форматирования имени: каждое слово с заглавной буквы
+  const formatName = (value: string) =>
+    value
+      .split(' ')
+      .filter(Boolean) // убираем лишние пробелы
+      .map((word) => word[0].toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+
+  const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+
+    if (name === 'name') {
+      // Форматируем имя при вводе
+      const formattedName = formatName(value);
+      setFormData((prev) => ({
+        ...prev,
+        [name]: formattedName,
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     setError('');
+
     if (formData.password !== formData.confirmPassword) {
       setError('Пароли не совпадают');
       return;
@@ -38,7 +53,7 @@ function SignUpForm(): React.JSX.Element {
       setError('Слишком короткий пароль');
       return;
     }
-    if (formData.password.split('').every((c) => c.toLowerCase() !== c.toUpperCase())) {
+    if (formData.password.split('').every((c) => c.toLowerCase() === c.toUpperCase())) {
       setError('Нужны цифры или спецсимволы');
       return;
     }
@@ -48,7 +63,8 @@ function SignUpForm(): React.JSX.Element {
     dispatch(signup(formData))
       .unwrap()
       .then(() => navigate('/'))
-      .catch(console.error);
+      .catch(() => setError('Неверный email или пароль'))
+      .finally(() => setLoading(false));
   };
 
   const isValid =

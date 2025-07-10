@@ -20,12 +20,31 @@ function SignUpForm(): React.JSX.Element {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Форматируем имя с сохранением пробелов, каждое слово с заглавной буквы
+  const formatName = (value: string) =>
+    value
+      .split(/(\s+)/) // разделяем по пробелам, включая их
+      .map((word) => {
+        if (word.trim() === '') return word; // пробелы оставляем как есть
+        return word[0].toUpperCase() + word.slice(1).toLowerCase();
+      })
+      .join('');
+
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+
+    if (name === 'name') {
+      const formattedName = formatName(value);
+      setFormData((prev) => ({
+        ...prev,
+        [name]: formattedName,
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleRoleSelect = (role: 'parent' | 'specialist'): void => {
@@ -45,7 +64,7 @@ function SignUpForm(): React.JSX.Element {
       setError('Слишком короткий пароль');
       return;
     }
-    if (formData.password.split('').every((c) => c.toLowerCase() !== c.toUpperCase())) {
+    if (formData.password.split('').every((c) => c.toLowerCase() === c.toUpperCase())) {
       setError('Нужны цифры или спецсимволы');
       return;
     }
@@ -56,19 +75,21 @@ function SignUpForm(): React.JSX.Element {
       .unwrap()
       .then(() => {
         if (formData.role === 'parent') {
-          navigate('/parent/home');
+          void navigate('/parent/home');
         } else {
-          navigate('/specialist/home');
+          void navigate('/specialist/home');
         }
       })
       .catch(() => setError('Ошибка при регистрации'))
       .finally(() => setLoading(false));
   };
 
+  const passwordsMatch = formData.password === formData.confirmPassword;
+
   const isValid =
-    formData.name.length > 0 &&
+    formData.name.trim().length > 0 &&
     formData.password.length > 0 &&
-    formData.password === formData.confirmPassword &&
+    passwordsMatch &&
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) &&
     !!selectedRole;
 
@@ -89,11 +110,18 @@ function SignUpForm(): React.JSX.Element {
 
       <div className="leftAndRight">
         <div className="leftPartContainer">
-          <h2 className={`${!selectedRole ? 'center-align' : ''} chooseYourRole`}>Выберите свою роль</h2>
+          <h2 className={`${!selectedRole ? 'center-align' : ''} chooseYourRole`}>
+            Выберите свою роль
+          </h2>
           <div className="yourRoles">
             <div
               className={`imParent ${selectedRole === 'parent' ? 'selected' : ''}`}
               onClick={() => handleRoleSelect('parent')}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') handleRoleSelect('parent');
+              }}
             >
               <img src={babyLogo} alt="логотип с ребёнком" />
               <h2>Я родитель</h2>
@@ -102,6 +130,11 @@ function SignUpForm(): React.JSX.Element {
             <div
               className={`imSpecialist ${selectedRole === 'specialist' ? 'selected' : ''}`}
               onClick={() => handleRoleSelect('specialist')}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') handleRoleSelect('specialist');
+              }}
             >
               <img src={graduationHat} alt="логотип с шапкой выпускника" />
               <h2>Я специалист</h2>
@@ -126,9 +159,10 @@ function SignUpForm(): React.JSX.Element {
                 <input
                   name="name"
                   type="text"
-                  placeholder="Введите своё имя"
+                  placeholder="Введите фамилию, имя и отчество"
                   onChange={handleChange}
                   value={formData.name}
+                  autoComplete="name"
                 />
               </div>
 
@@ -140,6 +174,7 @@ function SignUpForm(): React.JSX.Element {
                   placeholder="Введите свой email"
                   onChange={handleChange}
                   value={formData.email}
+                  autoComplete="email"
                 />
               </div>
 
@@ -151,6 +186,7 @@ function SignUpForm(): React.JSX.Element {
                   placeholder="Введите пароль"
                   onChange={handleChange}
                   value={formData.password}
+                  autoComplete="new-password"
                 />
               </div>
 
@@ -162,13 +198,19 @@ function SignUpForm(): React.JSX.Element {
                   placeholder="Подтвердите пароль"
                   onChange={handleChange}
                   value={formData.confirmPassword}
+                  autoComplete="new-password"
+                  className={passwordsMatch ? '' : 'inputError'}
                 />
               </div>
 
-              <button type="submit" className="createAccountButton" disabled={!isValid || loading}>
+              <button
+                type="submit"
+                className={`createAccountButton ${!isValid || loading ? 'buttonDisabled' : ''}`}
+                disabled={!isValid || loading}
+              >
                 {loading ? 'Регистрация...' : 'Создать аккаунт'}
               </button>
-              <div>{error}</div>
+              <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>
             </div>
           </div>
         )}

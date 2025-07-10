@@ -7,16 +7,22 @@ type Props = {
 };
 
 export default function ContactInfoForm({
-  initialPhone = '',
-  initialAdress = '',
+  initialPhone = '+7',
+  initialAdress = 'Москва',
   onSubmit,
 }: Props): React.JSX.Element {
   const [phone, setPhone] = useState(initialPhone);
   const [adress, setAdress] = useState(initialAdress);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleAdressChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setAdress(e.target.value);
+  };
+
+  const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
-    onSubmit({ phone, adress });
+    // Если адрес пустой, подставляем "Москва"
+    const finalAdress = adress.trim() === '' ? 'Москва' : adress.trim();
+    onSubmit({ phone, adress: finalAdress });
   };
 
   return (
@@ -24,11 +30,30 @@ export default function ContactInfoForm({
       <h3>Контактная информация</h3>
       <label>
         Телефон:
-        <input value={phone} onChange={(e) => setPhone(e.target.value)} />
+        <input
+          value={phone}
+          type="tel"
+          onChange={(e) => {
+            let val = e.target.value;
+            if (!val.startsWith('+7')) val = '+7';
+            if (val.length > 2) {
+              const numbersOnly = val.slice(2).replace(/\D/g, '');
+              val = `+7${numbersOnly}`;
+            }
+            setPhone(val);
+          }}
+          maxLength={12}
+          pattern="\+7\d{10}"
+          title="Телефон должен начинаться с +7 и содержать 10 цифр"
+        />
       </label>
       <label>
         Адрес:
-        <input value={adress} onChange={(e) => setAdress(e.target.value)} />
+        <input
+          value={adress}
+          onChange={handleAdressChange}
+          placeholder="Москва, ул. Ленина, д. 1"
+        />
       </label>
       <button type="submit">Сохранить</button>
     </form>
