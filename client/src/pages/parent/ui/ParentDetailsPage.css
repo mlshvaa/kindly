@@ -1,0 +1,47 @@
+.parentDetailsContainer {
+  background: linear-gradient(135deg, #feeef5, #f4dff9);
+  min-height: 100vh;
+  padding: 40px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(34, 34, 34);
+}
+
+.parentDetailsContainer h2,
+.parentDetailsContainer h3 {
+  color: #f6519d;
+  margin-bottom: 16px;
+}
+
+.parentDetailsContainer p,
+.parentDetailsContainer li {
+  font-size: 18px;
+  line-height: 1.5;
+  margin: 6px 0;
+}
+
+.parentDetailsContainer ul {
+  margin-left: 20px;
+  margin-top: 12px;
+}
+
+.parentDetailsContainer button {
+  background-color: #4fb3d8;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.parentDetailsContainer button:hover {
+  background-color: #1e99c6;
+  transform: scale(1.05);
+}
+
+.parentDetailsContainer hr {
+  margin: 20px 0;
+  border: none;
+  border-top: 1px solid #ddd;
+}

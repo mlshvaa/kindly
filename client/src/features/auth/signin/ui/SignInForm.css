@@ -1,0 +1,252 @@
+.signInMainContainers {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  color: rgb(34, 34, 34);
+  font-family: Arial, Helvetica, sans-serif;
+  gap: 20px;
+  flex-grow: 1;
+  background: linear-gradient(135deg, #feeef5, #f4dff9);
+  padding: 0px 60px 60px 60px;
+}
+
+.rightPartSignIn {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.pink {
+  color: #f6519d;
+}
+
+.headerSectionSignIn {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.headerSectionSignIn h2 {
+  font-size: 48px;
+}
+
+.headerSectionSignIn p {
+  font-size: 24px;
+  color: rgb(72, 72, 72);
+}
+
+.happyFamilyWrapper {
+  position: relative;
+  width: 600px;
+  height: auto;
+  border-radius: 32px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+.happyFamilyOfFour {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 32px;
+  position: relative;
+  z-index: 2;
+}
+
+.circle {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  z-index: 1;
+  opacity: 0.9;
+}
+
+.topLeft {
+  background-color: #f4c842;
+  top: -20px;
+  left: -20px;
+}
+
+.bottomRight {
+  background-color: #f2af78;
+  bottom: -35px;
+  right: -45px;
+}
+
+.middleLeft {
+  background-color: #ed7c7c;
+  top: 250px;
+  left: -36px;
+}
+
+.leftPartSignIn {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 26px;
+  background-color: white;
+  margin-top: 70px;
+  padding: 0px 20px 20px 20px;
+  height: 728px;
+  width: 520px;
+  border-radius: 12px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.1);
+}
+
+.leftPartHeader {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.leftPartHeader h2 {
+  font-size: 28px;
+}
+
+.leftPartHeader p {
+  font-size: 20px;
+  color: rgb(72, 72, 72);
+  text-align: center;
+}
+
+.emailSectionSignIn {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.passwordSectionSignIn {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.signInParagraph {
+  font-size: 20px;
+}
+
+.signInInput {
+  width: 400px;
+  height: 32px;
+  border-radius: 16px;
+  padding: 8px 8px 8px 10px;
+  font-size: 18px;
+  border: 2px solid rgb(206, 206, 206);
+}
+
+.signInButton {
+  width: 300px;
+  height: 48px;
+  font-size: 19px;
+  padding: 12px;
+  border: none;
+  border-radius: 26px;
+  color: white;
+  background-color: #f6519d;
+  margin-top: 12px;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.signInButton:hover {
+  background-color: #d82679;
+  transform: scale(1.05);
+}
+
+.gotNoAcc {
+  font-size: 18px;
+}
+
+.signInDevider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #6b6b6b;
+  font-size: 14px;
+  margin: 24px 0;
+  width: 100%;
+}
+
+.signInDevider::before,
+.signInDevider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background-color: #e0e0e0;
+}
+
+.signInDevider::before {
+  margin-right: 12px;
+}
+
+.signInDevider::after {
+  margin-left: 12px;
+}
+
+.createAccountButtonSignIn {
+  width: 300px;
+  height: 48px;
+  font-size: 19px;
+  padding: 12px;
+  border: none;
+  border-radius: 26px;
+  color: white;
+  background-color: #4fb3d8;
+  margin-bottom: 12px;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.createAccountButtonSignIn:hover {
+  background-color: #1e99c6;
+  transform: scale(1.05);
+}
+
+.bottomPartSignIn {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 64px;
+}
+
+.bottomPartSignIn p {
+  font-size: 20px;
+  color: rgb(72, 72, 72);
+  text-align: center;
+}
+
+.logoAndParagraphContainer {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.logoAndParagraphContainer p {
+  color: #f6519d;
+  font-size: 20px;
+}
+
+.logoAndParapraphContainer {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  vertical-align: middle;
+}
+
+.logosContainer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.signInLogos {
+  width: 50px;
+  height: 50px;
+}
+
+.safeAndSecure p {
+  font-size: 16px;
+}

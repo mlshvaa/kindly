@@ -39,7 +39,6 @@ function AppRoutes(): React.JSX.Element {
             <Route path="/chat" element={<ChatListPage/>} />
 
             <Route path="/chat/:chatId" element={<ChatRoomPage />} /> 
-            <Route path="/parent/specialist/:id" element={<OneSpecialistCard />} />
             <Route path="/my-chats" element={<MyChatsPage />} />
 
           </Route>

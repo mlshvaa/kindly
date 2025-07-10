@@ -6,6 +6,7 @@ import { getAllServiceSpecialists } from '@/entities/service-specialist/model/se
 import DiplomaGallery from '@/features/diploma-gallery/DiplomaGallery';
 import AddRequestSpecialist from '@/features/add-request-to-specialist/AddRequestSpecialist';
 import Calendar from '@/widgets/calendar/Calendar';
+import './OneSpecialistCard.css';
 
 const BACKEND_URL = 'http://localhost:3000';
 
@@ -35,17 +36,20 @@ function OneSpecialistCard(): React.JSX.Element {
   const { data: specialist, links: specialistServices } = specialistWithLinks;
 
   return (
-    <div>
+    <div className="specialistCardContainer">
       <h2>{specialist.name || 'Имя не указано'}</h2>
       <img
         src={specialist.photo ? `${BACKEND_URL}/${specialist.photo}` : '/default-avatar.png'}
         alt={specialist.name || 'Фото специалиста'}
-        style={{ width: 150, height: 150, borderRadius: '50%', objectFit: 'cover' }}
+        className="specialistPhoto"
       />
-      <div>Возраст: {specialist.age}</div>
-      <div>Опыт работы: {specialist.clescription}</div>
-      <div>Образование: {specialist.education}</div>
-      <div>Специализация: {specialist.position}</div>
+      <div className="specialistDetails">
+        <p>Возраст: {specialist.age}</p>
+        <p>Опыт: {specialist.clescription}</p>
+        <p>Образование: {specialist.education}</p>
+        <p>Специализация: {specialist.position}</p>
+      </div>
+
       {specialist.diplomaPhoto && specialist.diplomaPhoto.length > 0 && (
         <DiplomaGallery
           photos={specialist.diplomaPhoto}
@@ -54,8 +58,12 @@ function OneSpecialistCard(): React.JSX.Element {
         />
       )}
 
-      <div style={{ marginTop: 20 }}>
-        Услуги:
+      <div className="specialistServices">
+        <h3>Услуги:</h3>
+        <div className="serviceTabs">
+          <button onClick={() => setActiveTab('myServices')}>Мои услуги</button>
+          <button onClick={() => setActiveTab('allServices')}>Все услуги</button>
+        </div>
         {activeTab === 'myServices' && (
           <ul>
             {specialistServices.length ? (
@@ -84,18 +92,19 @@ function OneSpecialistCard(): React.JSX.Element {
         )}
       </div>
 
-      {/* Кнопка для показа формы */}
-      <button onClick={() => setShowAddRequest(true)} style={{ marginTop: 20 }}>
+      <button className="offerButton" onClick={() => setShowAddRequest(true)}>
         Оказать услугу
       </button>
 
-      {/* Условный рендеринг формы */}
       {showAddRequest && (
         <div style={{ marginTop: 20 }}>
           <AddRequestSpecialist id={Number(id)} onClose={() => setShowAddRequest(false)} />
         </div>
       )}
-      <Calendar specialistId={Number(specialist.id)} editable={false} />
+
+      <div style={{ marginTop: '40px', width: '100%' }}>
+        <Calendar specialistId={Number(specialist.id)} editable={false} />
+      </div>
     </div>
   );
 }

@@ -4,7 +4,7 @@
   justify-content: space-between;
   gap: 20px;
   background: linear-gradient(135deg, #feeef5, #f4dff9);
-  padding: 0px 36px;
+  padding: 20px 44px;
   height: 100vh;
   color: rgb(34, 34, 34);
   font-family: Arial, Helvetica, sans-serif;
@@ -173,6 +173,7 @@ h1 {
   font-family: Arial, Helvetica, sans-serif;
   height: 100vh;
   background-color: #fff6fa;
+  padding: 0px 44px 0px 44px;
 }
 
 .howItWorks {

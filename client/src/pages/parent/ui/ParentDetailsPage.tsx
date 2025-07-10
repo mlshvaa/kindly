@@ -7,11 +7,11 @@ import {
   updateRequestStatus,
 } from '@/entities/request/model/requestThunks';
 import StartChatButton from '@/features/start-chat/ui/StartChatButton';
+import './ParentDetailsPage.css';
 
 export default function ParentDetailsPage(): React.JSX.Element {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
-  console.log(id);
 
   const parent = useAppSelector((state) => state.parent.currentParent);
   const loading = useAppSelector((state) => state.parent.loading);
@@ -24,7 +24,6 @@ export default function ParentDetailsPage(): React.JSX.Element {
 
   useEffect(() => {
     if (!id) return;
-    // void dispatch(getParentById(Number(id)));
     void dispatch(getFullParentById(Number(id)));
     void dispatch(getRequestsFromParentToMe(Number(id)));
   }, [dispatch, id]);
@@ -37,11 +36,8 @@ export default function ParentDetailsPage(): React.JSX.Element {
   if (loading || loadingRequests) return <p>Загрузка...</p>;
   if (!parent) return <p>Родитель не найден.</p>;
 
-  console.log('Requests:', requests);
-
   return (
-    <div>
-
+    <div className="parentDetailsContainer">
       <h2>Информация о родителе</h2>
       <p>
         <strong>👤 Имя:</strong> {parent.user?.name ?? 'Не указано'}
@@ -56,7 +52,7 @@ export default function ParentDetailsPage(): React.JSX.Element {
       <h3>👧 Дети</h3>
       <ul>
         {parent.children.map((child, idx) => (
-          <li key={Number(idx)}>
+          <li key={idx}>
             {child.name}, возраст: {child.age}
           </li>
         ))}
@@ -79,7 +75,7 @@ export default function ParentDetailsPage(): React.JSX.Element {
                 <strong>Статус:</strong> {req.status}
               </p>
               {req.status === 'ожидание' && (
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
                   <button onClick={() => handleStatusChange(req.id, 'одобрено')}>Одобрить</button>
                   <button onClick={() => handleStatusChange(req.id, 'отклонено')}>Отклонить</button>
                   <StartChatButton parentId={parent.id} specialistId={specialist?.userId ?? 0} />
