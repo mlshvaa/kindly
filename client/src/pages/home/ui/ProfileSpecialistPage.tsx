@@ -15,7 +15,6 @@ import './ProfileSpecialistPage.css';
 
 import RequestSpecialistList from '@/features/request-specialist-list/RequestSpecialistList';
 
-
 const BACKEND_URL = 'http://localhost:3000';
 
 function ProfileSpecialistPage(): React.JSX.Element {
@@ -38,13 +37,7 @@ function ProfileSpecialistPage(): React.JSX.Element {
 
   const onClickEdit = (): void => {
     if (isClicked && user?.id) {
-      void dispatch(
-        updateSpecialistUser({
-          userId: user.id,
-          data: { name },
-        }),
-      );
-
+      void dispatch(updateSpecialistUser({ userId: user.id, data: { name } }));
       void dispatch(
         updateSpecialistUser({
           userId: user.id,
@@ -119,6 +112,7 @@ function ProfileSpecialistPage(): React.JSX.Element {
 
       {activeSection === 'profile' && (
         <div className="specialistProfileInfoCard">
+          {/* ... твоя разметка профиля ... */}
           <div className="headerAndButton">
             <h2>Информация о профиле</h2>
             <button className="editSpecInfoButton" onClick={onClickEdit}>
@@ -137,6 +131,7 @@ function ProfileSpecialistPage(): React.JSX.Element {
             </div>
 
             <div className="specialistInfo">
+              {/* ... inputs для name, age, education, position, experience ... */}
               <div className="specialistMiniInfo">
                 <p>Имя</p>
                 <input
@@ -147,7 +142,7 @@ function ProfileSpecialistPage(): React.JSX.Element {
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
-
+              {/* Остальные поля */}
               <div className="specialistMiniInfo">
                 <p>Возраст</p>
                 <input
@@ -158,7 +153,6 @@ function ProfileSpecialistPage(): React.JSX.Element {
                   onChange={(e) => setAge(e.target.value)}
                 />
               </div>
-
               <div className="specialistMiniInfo">
                 <p>Образование</p>
                 <input
@@ -169,7 +163,6 @@ function ProfileSpecialistPage(): React.JSX.Element {
                   onChange={(e) => setEducation(e.target.value)}
                 />
               </div>
-
               <div className="specialistMiniInfo">
                 <p>Специализация</p>
                 <input
@@ -180,7 +173,6 @@ function ProfileSpecialistPage(): React.JSX.Element {
                   onChange={(e) => setPosition(e.target.value)}
                 />
               </div>
-
               <div className="specialistMiniInfo">
                 <p>Опыт работы</p>
                 <input
@@ -252,7 +244,6 @@ function ProfileSpecialistPage(): React.JSX.Element {
               />
             )}
           </div>
-
         </div>
       )}
 
@@ -260,26 +251,13 @@ function ProfileSpecialistPage(): React.JSX.Element {
         <div style={{ marginTop: 40 }}>
           <h2>Раздел запросов</h2>
           <p>Пока тут ничего нет 🐣</p>
+          <div>
+            Заявки родителей:
+            <RequestSpecialistList />
+          </div>
         </div>
       )}
     </div>
-
-        )}
-
-        {activeTab === 'allServices' && (
-          <AllServiseSpecialistList
-            specialistId={specialist.id}
-            specialistServicesIds={specialistServiceIds}
-            allServices={services}
-          />
-        )}
-      </div>
-      <div>
-        Заявки родителей:
-        <RequestSpecialistList />
-      </div>
-    </>
-
   );
 }
 
