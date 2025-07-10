@@ -40,8 +40,11 @@ export default function ChatRoomPage(): React.JSX.Element {
       <div style={{ border: '1px solid #ccc', padding: '1rem', height: 300, overflowY: 'scroll' }}>
         {messages.map((msg) => (
           <p key={msg.id}>
-            <strong>{msg.sender.role === 'parent' ? '👩 Родитель -' : '👩‍🏫 Специалист -'}  {msg.sender.name}:</strong>{' '}{msg.text}
-            
+            <strong>
+              {msg.sender.role === 'parent' ? '👩 Родитель -' : '👩‍🏫 Специалист -'} {msg.sender.name}
+              :
+            </strong>{' '}
+            {msg.text}
             <br />
             <small>{new Date(msg.createdAt).toLocaleString()}</small>
           </p>

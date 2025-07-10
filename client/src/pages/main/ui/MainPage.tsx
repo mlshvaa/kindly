@@ -13,6 +13,7 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks';
 import { getAllSpecialists } from '@/entities/specialist/model/specialistThunks';
 import { useNavigate } from 'react-router';
+import ReviewsCard from '@/features/reviews/ReviewsCard';
 
 function MainPage(): React.JSX.Element {
   const dispatch = useAppDispatch();
@@ -198,51 +199,7 @@ function MainPage(): React.JSX.Element {
           </p>
         </div>
         <div className="reviewsCards">
-          <div className="oneReviewCard">
-            <div className="parentInfo">
-              <h5>Ирина Ефимова</h5>
-              <p>Мама Полины (10 лет)</p>
-            </div>
-            <div className="reviewParagraph">
-              <p>
-                Татьяна — настоящее открытие для нашей семьи: дочка сразу влюбилась в глину
-                благодаря её подходу и доброму сердцу. Атмосфера была уютной и вдохновляющей, дочка
-                создала целую коллекцию фигурок. Спасибо за фотографии и видео — было очень приятно
-                видеть, как горят глаза у Полины 💛
-              </p>
-            </div>
-            {/* <button className="readFullReview">Читать отзыв</button> */}
-          </div>
-          <div className="oneReviewCard">
-            <div className="parentInfo">
-              <h5>Юлия Горячева</h5>
-              <p>Мама Артёма и Арсения (6 и 8 лет)</p>
-            </div>
-            <div className="reviewParagraph">
-              <p>
-                Татьяна провела волшебное занятие: сын, сначала стеснительный, уже через несколько
-                минут лепил с увлечением. Атмосфера была тёплой и творческой, Татьяна вдохновляла и
-                поддерживала каждого. Фото, видео и подробный отчёт стали приятным бонусом после
-                настоящего приключения 🎨
-              </p>{' '}
-            </div>
-            {/* <button className="readFullReview">Читать отзыв</button> */}
-          </div>
-          <div className="oneReviewCard">
-            <div className="parentInfo">
-              <h5>Светлана Белова</h5>
-              <p>Мама Лизы (7 лет)</p>
-            </div>
-            <div className="reviewParagraph">
-              <p>
-                С Татьяной даже застенчивая Лиза раскрылась, как цветок: уже через пару минут они
-                смеялись и лепили кружку из глины. Каждое занятие — это сказка, в которой ребёнок
-                чувствует себя художником. Фотоотчёт с комментариями тронул нас до глубины души —
-                спасибо за эту магию 💫💕
-              </p>{' '}
-            </div>
-            {/* <button className="readFullReview">Читать отзыв</button> */}
-          </div>
+          <ReviewsCard />
         </div>
         <div className="reviewesLogos">
           <div className="guaranted">

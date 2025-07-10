@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks';
 import { getFullParentById } from '@/entities/parent/model/parentThunks';
 import {
@@ -11,7 +11,7 @@ import StartChatButton from '@/features/start-chat/ui/StartChatButton';
 export default function ParentDetailsPage(): React.JSX.Element {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
-  console.log(id);
+  const navigate = useNavigate();
 
   const parent = useAppSelector((state) => state.parent.currentParent);
   const loading = useAppSelector((state) => state.parent.loading);
@@ -35,13 +35,19 @@ export default function ParentDetailsPage(): React.JSX.Element {
   };
 
   if (loading || loadingRequests) return <p>Загрузка...</p>;
-  if (!parent) return <p>Родитель не найден.</p>;
+  if (!parent) {
+    return (
+      <div>
+        <p>Родитель не найден.</p>
+        <button onClick={() => navigate(-1)}>Вернуться назад</button>
+      </div>
+    );
+  }
 
   console.log('Requests:', requests);
 
   return (
     <div>
-
       <h2>Информация о родителе</h2>
       <p>
         <strong>👤 Имя:</strong> {parent.user?.name ?? 'Не указано'}
