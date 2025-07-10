@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import type { ChildType } from '@/entities/parent/model/parentTypes';
 
 type Props = {
@@ -9,9 +9,7 @@ type Props = {
 };
 
 export default function ChildCard({ index, child, onUpdate, onDelete }: Props): React.JSX.Element {
-  const [isEditing, setIsEditing] = useState(false);
-  const [name, setName] = useState(child.name);
-  const [age, setAge] = useState(child.age);
+  const [isEditing, setIsEditing] = React.useState(false);
 
   // Функция для форматирования имени: каждое слово с заглавной буквы
   const formatName = (value: string) =>
@@ -45,7 +43,12 @@ export default function ChildCard({ index, child, onUpdate, onDelete }: Props): 
   const handleSave = () => {
     // Можно добавить валидацию перед сохранением, если нужно
     onUpdate(index, { name, age });
+
     setIsEditing(false);
+  };
+
+  const handleChange = (field: keyof ChildType, value: string):void => {
+    onUpdate(index, { ...child, [field]: value });
   };
 
   return (
@@ -58,6 +61,7 @@ export default function ChildCard({ index, child, onUpdate, onDelete }: Props): 
             min={0}
             value={age}
             onChange={handleAgeChange}
+
             placeholder="Возраст"
           />
           <button onClick={handleSave}>Сохранить</button>

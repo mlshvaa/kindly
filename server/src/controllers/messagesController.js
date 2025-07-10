@@ -1,7 +1,7 @@
 const messagesService = require('../services/messagesService');
 
 class MessagesController {
-  static async getByChatId(req, res) {
+static async getByChatId(req, res) {
     try {
       const { chatId } = req.params;
       const messages = await messagesService.getByChatId(Number(chatId));

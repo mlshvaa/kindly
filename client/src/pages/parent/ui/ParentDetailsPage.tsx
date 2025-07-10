@@ -88,7 +88,7 @@ export default function ParentDetailsPage(): React.JSX.Element {
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
                   <button onClick={() => handleStatusChange(req.id, 'одобрено')}>Одобрить</button>
                   <button onClick={() => handleStatusChange(req.id, 'отклонено')}>Отклонить</button>
-                  <StartChatButton parentId={parent.id} specialistId={specialist?.userId ?? 0} />
+                  <StartChatButton parentId={parent.id}  />
                 </div>
               )}
               <hr />
