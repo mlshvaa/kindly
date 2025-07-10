@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks';
 import { getMyChats } from '@/entities/chat/model/chatThunks';
 import { useNavigate } from 'react-router';
+import styles from './MyChatsPage.module.css';
 
 export default function MyChatsPage(): React.JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
   const { myChats, loading, error } = useAppSelector((state) => state.chat);
 
   useEffect(() => {
@@ -18,39 +18,28 @@ export default function MyChatsPage(): React.JSX.Element {
   };
 
   return (
-    <div style={{ padding: '1rem' }}>
-      <h2>Мои чаты</h2>
+    <div className={styles.container}>
+      <h2 className={styles.title}>Мои чаты</h2>
 
       {loading && <p>Загрузка...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
-
       {myChats.length === 0 && !loading && <p>Чатов пока нет</p>}
 
-      <ul style={{ listStyle: 'none', padding: 0 }}>
+      <ul className={styles.chatList}>
         {myChats.map((chat) => {
-          const partner = String(
-            chat.parent?.user.name ?? chat.specialist?.user.name ?? 'Неизвестный собеседник',
-          );
-
+          const partner =
+            chat.parent?.user.name ?? chat.specialist?.user.name ?? 'Неизвестный собеседник';
           const lastMessage =
-            chat.messages && chat.messages.length > 0
-              ? chat.messages[chat.messages.length - 1].text
-              : 'Сообщений пока нет';
+            chat.messages?.[chat.messages.length - 1]?.text ?? 'Сообщений пока нет';
 
           return (
             <li
               key={chat.id}
-              style={{
-                border: '1px solid #ccc',
-                padding: '1rem',
-                marginBottom: '1rem',
-                borderRadius: '8px',
-                cursor: 'pointer',
-              }}
+              className={styles.chatItem}
               onClick={() => handleOpenChat(chat.id)}
             >
-              <strong>Собеседник:</strong> {partner} <br />
-              <strong>Последнее сообщение:</strong> {lastMessage}
+              <div className={styles.chatPartner}>Собеседник: {partner}</div>
+              <div className={styles.lastMessage}>Последнее сообщение: {lastMessage}</div>
             </li>
           );
         })}

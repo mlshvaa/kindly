@@ -1,7 +1,7 @@
 import { signinSchema } from '@/entities/user/model/userSchema';
 import { signin } from '@/entities/user/model/userThunks';
 import { useAppDispatch } from '@/shared/lib/hooks';
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import './SignInForm.css';
 import happyFamily from '@/images/happyFamilyOfFour.png';
@@ -12,14 +12,31 @@ function SignInForm(): React.JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const [error, setError] = useState<string | null>(null);
+
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
+    setError(null); // Сбрасываем ошибку при новом сабмите
+
     const data = Object.fromEntries(new FormData(e.currentTarget));
-    const validated = signinSchema.parse(data);
+    let validated;
+    try {
+      validated = signinSchema.parse(data);
+    } catch {
+      setError('Неверный формат данных');
+      return;
+    }
+
     dispatch(signin(validated))
       .unwrap()
       .then(() => navigate('/'))
-      .catch(console.error);
+      .catch((err: unknown) => {
+        if (typeof err === 'object' && err !== null && 'message' in err) {
+          setError((err as { message: string }).message);
+        } else {
+          setError('Произошла ошибка при входе');
+        }
+      });
   };
 
   const onClickSignUp = () => {
@@ -27,6 +44,7 @@ function SignInForm(): React.JSX.Element {
   };
 
   return (
+
     <form onSubmit={handleSubmit} className="signInMainContainers">
       <div className="rightPartSignIn">
         <div className="headerSectionSignIn">

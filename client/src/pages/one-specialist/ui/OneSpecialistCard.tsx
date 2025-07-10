@@ -16,6 +16,7 @@ function OneSpecialistCard(): React.JSX.Element {
 
   const { specialistWithLinks, loading, error } = useAppSelector((state) => state.specialist);
   const { services: allServices } = useAppSelector((state) => state.serviceSpecialist);
+  const role = useAppSelector((state) => state.user.user?.role);
 
   const [activeTab, setActiveTab] = useState<'myServices' | 'allServices'>('myServices');
 
@@ -92,9 +93,12 @@ function OneSpecialistCard(): React.JSX.Element {
         )}
       </div>
 
-      <button className="offerButton" onClick={() => setShowAddRequest(true)}>
-        Оказать услугу
-      </button>
+      {/* Кнопка для показа формы */}
+      {role === 'parent' && (
+        <button onClick={() => setShowAddRequest(true)} style={{ marginTop: 20 }}>
+          Оказать услугу
+        </button>
+      )}
 
       {showAddRequest && (
         <div style={{ marginTop: 20 }}>

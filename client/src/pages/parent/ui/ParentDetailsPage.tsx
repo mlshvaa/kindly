@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks';
 import { getFullParentById } from '@/entities/parent/model/parentThunks';
 import {
@@ -12,6 +12,9 @@ import './ParentDetailsPage.css';
 export default function ParentDetailsPage(): React.JSX.Element {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
+
 
   const parent = useAppSelector((state) => state.parent.currentParent);
   const loading = useAppSelector((state) => state.parent.loading);
@@ -34,9 +37,17 @@ export default function ParentDetailsPage(): React.JSX.Element {
   };
 
   if (loading || loadingRequests) return <p>Загрузка...</p>;
-  if (!parent) return <p>Родитель не найден.</p>;
+  if (!parent) {
+    return (
+      <div>
+        <p>Родитель не найден.</p>
+        <button onClick={() => navigate(-1)}>Вернуться назад</button>
+      </div>
+    );
+  }
 
   return (
+
     <div className="parentDetailsContainer">
       <h2>Информация о родителе</h2>
       <p>
@@ -78,7 +89,7 @@ export default function ParentDetailsPage(): React.JSX.Element {
                 <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
                   <button onClick={() => handleStatusChange(req.id, 'одобрено')}>Одобрить</button>
                   <button onClick={() => handleStatusChange(req.id, 'отклонено')}>Отклонить</button>
-                  <StartChatButton parentId={parent.id} specialistId={specialist?.userId ?? 0} />
+                  <StartChatButton parentId={parent.id}  />
                 </div>
               )}
               <hr />

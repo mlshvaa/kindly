@@ -36,7 +36,13 @@ export default function ParentCabinetPage(): React.JSX.Element {
     await dispatch(createParentProfile(data));
   };
 
-  const handleUpdateContact = async ({ phone, adress }: { phone: string; adress: string }) => {
+  const handleUpdateContact = async ({
+    phone,
+    adress,
+  }: {
+    phone: string;
+    adress: string;
+  }): Promise<void> => {
     if (!parent?.id) return;
     startTransition(() => {
       dispatch(updateContactInfoLocally({ phone, adress }));
@@ -45,11 +51,11 @@ export default function ParentCabinetPage(): React.JSX.Element {
     setIsEditingContact(false);
   };
 
-  const handleAddChild = () => {
+  const handleAddChild = (): void => {
     setNewChildFormVisible(true);
   };
 
-  const handleSaveNewChild = async () => {
+  const handleSaveNewChild = async (): Promise<void> => {
     if (!parent?.id) return;
     const updatedChildren = [...(parent.children ?? []), newChildData];
 
@@ -62,12 +68,12 @@ export default function ParentCabinetPage(): React.JSX.Element {
     setNewChildData({ name: '', age: '' });
   };
 
-  const handleCancelNewChild = () => {
+  const handleCancelNewChild = (): void => {
     setNewChildFormVisible(false);
     setNewChildData({ name: '', age: '' });
   };
 
-  const handleUpdateChild = async (index: number, updated: ChildType) => {
+  const handleUpdateChild = async (index: number, updated: ChildType): Promise<void> => {
     if (!parent?.id) return;
     const newChildren = [...(parent.children ?? [])];
     newChildren[index] = updated;
@@ -79,7 +85,7 @@ export default function ParentCabinetPage(): React.JSX.Element {
     await parentService.updateChild(parent.id, index, updated);
   };
 
-  const handleDeleteChild = async (index: number) => {
+  const handleDeleteChild = async (index: number): Promise<void> => {
     if (!parent?.id) return;
     const newChildren = parent.children?.filter((_, i) => i !== index) ?? [];
 
@@ -90,7 +96,7 @@ export default function ParentCabinetPage(): React.JSX.Element {
     await parentService.deleteChild(parent.id, index);
   };
 
-  const handleDeleteProfile = async () => {
+  const handleDeleteProfile = async (): Promise<void> => {
     if (!parent?.id) return;
     await dispatch(deleteParentProfile(parent.id));
   };
@@ -111,6 +117,7 @@ export default function ParentCabinetPage(): React.JSX.Element {
   }
 
   return (
+
     <div className="parentCabinetContainer">
       <div className="parentSection">
         <h2>Ваш профиль</h2>
@@ -150,7 +157,8 @@ export default function ParentCabinetPage(): React.JSX.Element {
               onChange={(e) => setNewChildData({ ...newChildData, name: e.target.value })}
             />
             <input
-              type="text"
+              type="number"
+              min={0}
               placeholder="Возраст"
               value={newChildData.age}
               onChange={(e) => setNewChildData({ ...newChildData, age: e.target.value })}
@@ -168,11 +176,10 @@ export default function ParentCabinetPage(): React.JSX.Element {
         <MyRequests />
       </div>
 
-      <div className="parentSection">
-        <button onClick={handleDeleteProfile} style={{ color: 'red' }}>
-          Очистить профиль
-        </button>
-      </div>
+      {/* <button onClick={handleDeleteProfile} style={{ marginTop: '2rem', color: 'red' }}>
+        Удалить профиль
+      </button> */}
+
     </div>
   );
 }

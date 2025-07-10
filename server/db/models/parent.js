@@ -11,24 +11,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
 
-  // Parent.init(
-  //   {
-  //     userId: {
-  //       type: DataTypes.INTEGER,
-  //       allowNull: false,
-  //     },
-  //     phone: DataTypes.STRING,
-  //     adress: DataTypes.STRING,
-  //     child: DataTypes.STRING,
-  //     childAge: DataTypes.STRING,
-  //   },
-  //   {
-  //     sequelize,
-  //     modelName: 'Parent',
-  //   },
-  // );
-
-  // Денис исправил модель для того, чтобы в личном кабинете дети были массивом и можно было отобразить их списком
   Parent.init(
     {
       userId: DataTypes.INTEGER,

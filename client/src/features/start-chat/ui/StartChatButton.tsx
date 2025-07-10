@@ -3,17 +3,16 @@ import { startChatThunk } from '@/entities/chat/model/chatThunks';
 import { useNavigate } from 'react-router';
 
 export default function StartChatButton({
-  parentId,
-  specialistId,
+  parentId
 }: {
   parentId: number;
-  specialistId: number;
+  
 }): React.JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const handleStartChat = async (): Promise<void> => {
-    const resultAction = await dispatch(startChatThunk({ parentId, specialistId }));
+    const resultAction = await dispatch(startChatThunk({ parentId}));
 
     if (startChatThunk.fulfilled.match(resultAction)) {
       void navigate(`/chat/${resultAction.payload.id.toString()}`);
