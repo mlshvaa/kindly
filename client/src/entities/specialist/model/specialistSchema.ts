@@ -25,7 +25,7 @@ export const specialistSchema = z.object({
   clescription: z.string().nullable(),
   education: z.string().nullable(),
   position: z.string().nullable(),
-  user: userSchema,
+  user: userSchema.optional(),
 });
 
 // Расширяем specialistSchema, добавляя поле name

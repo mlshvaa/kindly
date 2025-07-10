@@ -34,7 +34,16 @@ class SpecialistService {
 
   // Получить специалиста по userId
   static async getSpecialistByUserId(userId) {
-    return Specialist.findOne({ where: { userId } });
+    return Specialist.findOne({
+      where: { userId },
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['name', 'email', 'isApproved'],
+        },
+      ],
+    });
   }
 
   // Получить всех специалистов
