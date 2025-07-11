@@ -28,9 +28,9 @@ function NannyCard({ specialist, onClick }: Props): React.JSX.Element {
       <img src={photoUrl || defaultAvatar} alt="Фотография няни" />
       <h4>{specialist.user?.name}</h4>
 
-      <p>{specialist.age ? `${specialist.age} лет` : ''}</p>
-      <p>{specialist.education}</p>
-      <p>{specialist.clescription}</p>
+      {specialist.age && <p>Возраст: {specialist.age} лет</p>}
+      {specialist.education && <p>Образование: {specialist.education}</p>}
+      {specialist.clescription && <p>Опыт: {specialist.clescription}</p>}
     </div>
   );
 }

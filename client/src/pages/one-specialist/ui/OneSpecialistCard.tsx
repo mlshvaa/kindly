@@ -6,6 +6,7 @@ import { getAllServiceSpecialists } from '@/entities/service-specialist/model/se
 import DiplomaGallery from '@/features/diploma-gallery/DiplomaGallery';
 import AddRequestSpecialist from '@/features/add-request-to-specialist/AddRequestSpecialist';
 import Calendar from '@/widgets/calendar/Calendar';
+import diplomaLogo from '@/images/diplomaLogo.jpg';
 import './OneSpecialistCard.css';
 
 const BACKEND_URL = 'http://localhost:3000';
@@ -38,74 +39,53 @@ function OneSpecialistCard(): React.JSX.Element {
 
   return (
     <div className="specialistCardContainer">
-      <h2>{specialist.name || 'Имя не указано'}</h2>
-      <img
-        src={specialist.photo ? `${BACKEND_URL}/${specialist.photo}` : '/default-avatar.png'}
-        alt={specialist.name || 'Фото специалиста'}
-        className="specialistPhoto"
-      />
-      <div className="specialistDetails">
-        <p>Возраст: {specialist.age}</p>
-        <p>Опыт: {specialist.clescription}</p>
-        <p>Образование: {specialist.education}</p>
-        <p>Специализация: {specialist.position}</p>
-      </div>
-
-      {specialist.diplomaPhoto && specialist.diplomaPhoto.length > 0 && (
-        <DiplomaGallery
-          photos={specialist.diplomaPhoto}
-          userId={specialist.userId}
-          backendUrl={BACKEND_URL}
-        />
-      )}
-      <div className="specialistServices">
-        <h3>Услуги:</h3>
-        <div className="serviceTabs">
-          <button onClick={() => setActiveTab('myServices')}>Мои услуги</button>
-          <button onClick={() => setActiveTab('allServices')}>Все услуги</button>
+      <div className="specialistTopPartCardContainer">
+        <div className="rightPartPhoto">
+          <img
+            src={specialist.photo ? `${BACKEND_URL}/${specialist.photo}` : '/default-avatar.png'}
+            alt={specialist.name || 'Фото специалиста'}
+            className="specialistPhoto"
+          />
         </div>
-        {activeTab === 'myServices' && (
-          <ul>
-            {specialistServices.length ? (
-              specialistServices.map((service) => (
-                <li key={service.id}>
-                  {service.name} — {service.price} ₽
-                </li>
-              ))
-            ) : (
-              <li>Услуги не найдены</li>
+        <div className="leftPartNoPhoto">
+          <h2 className="specialistNameOrNone">{specialist.name || 'Имя не указано'}</h2>
+          <div className="specialistDetails">
+            <div className="specialistDetailsDetails">
+              <p className="ageAndMore">Возраст</p>
+              <p className="ageAndMoreAccurate">{specialist.age}</p>
+            </div>
+            <div className="specialistDetailsDetails">
+              <p className="ageAndMore">Опыт работы</p>
+              <p className="ageAndMoreAccurate">{specialist.clescription}</p>
+            </div>
+            <div className="specialistDetailsDetails">
+              <p className="ageAndMore">Образование</p>
+              <p className="ageAndMoreAccurate">{specialist.education}</p>
+            </div>
+            <div className="specialistDetailsDetails">
+              <p className="ageAndMore">Специализация</p>
+              <p className="ageAndMoreAccurate">{specialist.position}</p>
+            </div>
+            {role !== 'specialist' && (
+              <button
+                onClick={() => {
+                  if (role === 'parent') {
+                    setShowAddRequest(true);
+                  } else {
+                    void navigate('/signup/parent');
+                  }
+                }}
+                className="requestButton"
+              >
+                Отправить запрос
+              </button>
             )}
-          </ul>
-        )}
-        {activeTab === 'allServices' && (
-          <ul>
-            {allServices.length ? (
-              allServices.map((service) => (
-                <li key={service.id}>
-                  {service.name} — {service.price} ₽
-                </li>
-              ))
-            ) : (
-              <li>Услуги не найдены</li>
-            )}
-          </ul>
-        )}
+          </div>
+        </div>
+        <div className="oneSpecialistCalendar">
+          <Calendar specialistId={Number(specialist.id)} editable={false} />
+        </div>
       </div>
-      {/* Кнопка для показа формы */}
-      {role !== 'specialist' && (
-        <button
-          onClick={() => {
-            if (role === 'parent') {
-              setShowAddRequest(true);
-            } else {
-              void navigate('/signup/parent');
-            }
-          }}
-          style={{ marginTop: 20 }}
-        >
-          Оказать услугу
-        </button>
-      )}
 
       {showAddRequest && (
         <div style={{ marginTop: 20 }}>
@@ -113,8 +93,37 @@ function OneSpecialistCard(): React.JSX.Element {
         </div>
       )}
 
-      <div style={{ marginTop: '40px', width: '100%' }}>
-        <Calendar specialistId={Number(specialist.id)} editable={false} />
+      <div className="specialistDiplomaContainer">
+        <div className="diplomaLogoAndHeader">
+          <img src={diplomaLogo} alt="логотип медальки" />
+          <h1>Дипломы и сертификаты специалиста</h1>
+        </div>
+        <div className="diplomaContainerContainerMain">
+          {specialist.diplomaPhoto && specialist.diplomaPhoto.length > 0 && (
+            <DiplomaGallery
+              photos={specialist.diplomaPhoto}
+              userId={specialist.userId}
+              backendUrl={BACKEND_URL}
+              isBig={true}
+            />
+          )}
+        </div>
+      </div>
+      <div className="specialistServices">
+        <h1>Услуги и цены</h1>
+        {activeTab === 'myServices' && (
+          <ul>
+            {specialistServices.length ? (
+              specialistServices.map((service) => (
+                <div key={service.id} className="oneServiceStyle">
+                  {service.name} — <span className="pinkPink">{service.price} ₽</span>
+                </div>
+              ))
+            ) : (
+              <li>Услуги не найдены</li>
+            )}
+          </ul>
+        )}
       </div>
     </div>
   );

@@ -9,35 +9,188 @@
   min-height: 100vh;
 }
 
+.specialistTopPartCardContainer {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 20px;
+  width: 1300px;
+  height: 400px;
+  padding: 60px;
+  gap: 70px;
+}
+
+.rightPartPhoto img {
+  width: 300px;
+  height: 300px;
+}
+
+.leftPartNoPhoto {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.specialistDetailsDetails {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 400px;
+}
+
+.ageAndMore {
+  font-weight: bold;
+}
+
+.ageAndMoreAccurate {
+  color: rgb(34, 34, 34);
+}
+
+.requestButton {
+  margin-top: 64px;
+  margin-bottom: 56px;
+  width: 300px;
+  height: 56px;
+  font-size: 22px;
+  padding: 12px;
+  border: none;
+  border-radius: 29px;
+  color: white;
+  background-color: #f6519d;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.requestButton:hover {
+  background-color: #d82679;
+  transform: scale(1.05);
+}
+
 .specialistPhoto {
   width: 160px;
   height: 160px;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
 }
 
 .specialistDetails {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  text-align: start;
   font-size: 20px;
   margin-bottom: 28px;
   line-height: 1.6;
 }
 
-.specialistServices {
+.oneSpecialistCalendar {
+  width: 400px;
+  height: 300px;
+  margin-left: 100px;
+}
+
+.specialistDiplomaContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   background-color: white;
-  padding: 24px;
+  border-radius: 20px;
+  width: 1300px;
+  height: 350px;
+  padding: 60px;
+  margin-top: 40px;
+}
+
+.specialistDiplomaContainer h1 {
+  font-size: 32px;
+  padding: 0;
+}
+
+.diplomaLogoAndHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+
+.diplomaLogoAndHeader img {
+  width: 60px;
+  height: 60px;
+}
+
+.diplomaPhotoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 300px;
+  height: 250px;
+  background-color: rgb(248, 248, 248);
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  margin-top: 20px;
+}
+
+.diplomaPhotoContainer_profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 100px;
+  background-color: rgb(248, 248, 248);
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  margin-top: 20px;
+}
+
+.diplomaPhotoLast {
+  width: 100px;
+  height: auto;
+}
+
+.diplomaContainerContainerMain {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.specialistNameOrNone {
+  font-size: 32px;
+  margin: 0px 0px 40px 0px;
+}
+
+.specialistServices {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  flex-direction: column;
+  background-color: white;
   border-radius: 20px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   margin-top: 28px;
   width: 500px;
   text-align: left;
+  min-width: 1300px;
+  height: 300px;
+  padding: 60px;
 }
 
-.specialistServices ul {
-  padding-left: 16px;
-  margin-top: 12px;
+.specialistServices h1 {
+  font-size: 32px;
+  padding: 0;
+  margin-bottom: 40px;
+}
+
+.oneServiceStyle {
+  display: flex;
+  align-items: center;
+  background-color: rgb(252, 252, 252);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  width: 1000px;
+  height: 80px;
+  margin-top: 30px;
+  padding: 0px 0px 0px 20px;
+  font-size: 24px;
 }
 
 .serviceTabs {
@@ -76,3 +229,8 @@
   background-color: #d82679;
   transform: scale(1.05);
 }
+
+.pinkPink {
+    color: #f6519d;
+    margin-left: 6px;
+  }

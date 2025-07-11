@@ -9,6 +9,7 @@ import DiplomaGallery from '@/features/diploma-gallery/DiplomaGallery';
 import ServiseSpecialistList from '@/features/servise-specialist-list/ServiseSpecialistList';
 import { getServiceSpecialistsBySpecialistId } from '@/entities/service-specialist/model/serviceSpecialistThunks';
 import AllServiseSpecialistList from '@/features/all-servise-specialist-list/AllServiseSpecialistList';
+import defaultAvatar from '@/images/defaultAvatar.jpg';
 
 import Calendar from '@/widgets/calendar/Calendar';
 import './ProfileSpecialistPage.css';
@@ -26,7 +27,6 @@ function ProfileSpecialistPage(): React.JSX.Element {
   const [activeSection, setActiveSection] = useState<'profile' | 'services' | 'requests'>(
     'profile',
   );
-  const [activeTab, setActiveTab] = useState<'myServices' | 'allServices'>('myServices');
   const [isClicked, setIsClicked] = useState(false);
 
   const [name, setName] = useState('');
@@ -79,6 +79,9 @@ function ProfileSpecialistPage(): React.JSX.Element {
 
   const specialistServiceIds = myServiceSpecialists?.map((s) => s.serviceId) ?? [];
 
+  const getImageSrc = (img: string): string =>
+    img.startsWith('http') ? img : `http://localhost:3000/${img.replace(/^\/?/, '')}`;
+
   return (
     <div className="specialistProfileMain">
       <div className="topPartAndActive">
@@ -112,7 +115,6 @@ function ProfileSpecialistPage(): React.JSX.Element {
 
       {activeSection === 'profile' && (
         <div className="specialistProfileInfoCard">
-          {/* ... твоя разметка профиля ... */}
           <div className="headerAndButton">
             <h2>Информация о профиле</h2>
             <button className="editSpecInfoButton" onClick={onClickEdit}>
@@ -121,17 +123,19 @@ function ProfileSpecialistPage(): React.JSX.Element {
           </div>
           <div className="leftAndRightParts">
             <div className="photoAndCalendar">
-              <div className="specialistPhoto">
-                Личное фото:
-                {isClicked && (
-                  <UploadPhoto field="photo" currentPhoto={specialist.photo} userId={user.id} />
-                )}
-              </div>
+              {isClicked ? (
+                <UploadPhoto field="photo" currentPhoto={specialist.photo} userId={user.id} />
+              ) : (
+                <img
+                  src={specialist.photo ? getImageSrc(specialist.photo) : defaultAvatar}
+                  alt="Ава хДДДД"
+                  className="specialistProfileImage"
+                />
+              )}
               <Calendar specialistId={specialist.id} editable={true} />
             </div>
 
             <div className="specialistInfo">
-              {/* ... inputs для name, age, education, position, experience ... */}
               <div className="specialistMiniInfo">
                 <p>Имя</p>
                 <input
@@ -142,7 +146,6 @@ function ProfileSpecialistPage(): React.JSX.Element {
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
-              {/* Остальные поля */}
               <div className="specialistMiniInfo">
                 <p>Возраст</p>
                 <input
@@ -184,15 +187,19 @@ function ProfileSpecialistPage(): React.JSX.Element {
                 />
               </div>
 
-              <div className="specialistMiniInfo">
+              <div className="diplomaInfo">
                 <p>Дипломы</p>
-                {specialist.diplomaPhoto && specialist.diplomaPhoto.length > 0 && (
-                  <DiplomaGallery
-                    photos={specialist.diplomaPhoto}
-                    userId={user.id}
-                    backendUrl={BACKEND_URL}
-                  />
-                )}
+                <div className="diplomaContainerProfile">
+                  {specialist.diplomaPhoto && specialist.diplomaPhoto.length > 0 && (
+                    <DiplomaGallery
+                      photos={specialist.diplomaPhoto}
+                      userId={user.id}
+                      backendUrl={BACKEND_URL}
+                      isBig={false}
+                    />
+                  )}
+                </div>
+
                 {isClicked && (
                   <UploadPhoto
                     field="diplomaPhoto"
@@ -207,52 +214,49 @@ function ProfileSpecialistPage(): React.JSX.Element {
       )}
 
       {activeSection === 'services' && (
-        <div style={{ marginTop: 20 }}>
-          <button
-            onClick={() => setActiveTab('myServices')}
-            style={{ fontWeight: activeTab === 'myServices' ? 'bold' : 'normal', marginRight: 10 }}
-          >
-            Мои услуги
-          </button>
-          <button
-            onClick={() => setActiveTab('allServices')}
-            style={{ fontWeight: activeTab === 'allServices' ? 'bold' : 'normal' }}
-          >
-            Все услуги
-          </button>
+        <div className="servicesSection">
+          <div className="servicesSectionHeader">
+            <h2>Все услуги</h2>
+          </div>
 
-          <div style={{ marginTop: 20 }}>
-            {activeTab === 'myServices' && (
-              <div>
-                {myServiceSpecialists.length ? (
-                  myServiceSpecialists.map((serviceSpecialist) => (
-                    <div key={`my-${serviceSpecialist.service.id.toString()}`}>
-                      <ServiseSpecialistList serviceSpecialist={serviceSpecialist} />
-                    </div>
-                  ))
-                ) : (
-                  <div>Услуги не найдены</div>
-                )}
-              </div>
-            )}
+          <div className="servicesContent">
+            <div className="myServicesHeader">
+              <h3>Мои услуги</h3>
+            </div>
+            <div className="myServicesList">
+              {myServiceSpecialists.length ? (
+                myServiceSpecialists.map((serviceSpecialist) => (
+                  <div
+                    key={`my-${serviceSpecialist.service.id.toString()}`}
+                    className="serviceItem"
+                  >
+                    <ServiseSpecialistList serviceSpecialist={serviceSpecialist} />
+                  </div>
+                ))
+              ) : (
+                <div className="emptyServices">Услуги не найдены</div>
+              )}
+            </div>
 
-            {activeTab === 'allServices' && (
+            <div className="allServicesSection">
               <AllServiseSpecialistList
                 specialistId={specialist.id}
                 specialistServicesIds={specialistServiceIds}
                 allServices={services}
               />
-            )}
+            </div>
           </div>
         </div>
       )}
 
       {activeSection === 'requests' && (
-        <div style={{ marginTop: 40 }}>
-          <h2>Раздел запросов</h2>
-          <p>Пока тут ничего нет 🐣</p>
-          <div>
-            Заявки родителей:
+        <div className="requestsSection">
+          <div className="requestsSectionHeader">
+            <h2>Раздел запросов</h2>
+          </div>
+
+          <div className="requestsContent">
+            <h3>Заявки родителей:</h3>
             <RequestSpecialistList />
           </div>
         </div>

@@ -21,5 +21,5 @@ export default function StartChatButton({
     }
   };
 
-  return <button onClick={handleStartChat}>💬 Начать чат</button>;
+  return <button onClick={handleStartChat} className='startChattingButton'>Начать чат</button>;
 }
