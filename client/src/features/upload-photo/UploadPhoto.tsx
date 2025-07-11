@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks';
+import { useAppDispatch } from '@/shared/lib/hooks';
 import {
   updateSpecialistPhoto,
   updateSpecialistDiplomas,
 } from '@/entities/specialist/model/specialistThunks';
+import './UploadPhoto.css';
+import upload from '@/images/upload.png';
 
 type Props = {
   field: 'photo' | 'diplomaPhoto';
@@ -13,38 +15,36 @@ type Props = {
 
 function UploadPhoto({ field, currentPhoto, userId }: Props): React.JSX.Element {
   const dispatch = useAppDispatch();
-  const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
 
-  const onFileChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+  const inputId = field === 'photo' ? 'photo-upload' : 'diploma-photo-upload';
+
+  const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     if (e.target.files && e.target.files.length > 0) {
-      setFile(e.target.files[0]);
-    }
-  };
+      const file = e.target.files[0];
 
-  const onUpload = async (): Promise<void> => {
-    if (!file) return;
+      console.log('field', field);
 
-    setUploading(true);
-    const formData = new FormData();
+      setUploading(true);
+      const formData = new FormData();
 
-    if (field === 'photo') {
-      formData.append('photo', file);
-    } else {
-      formData.append('photos', file);
-    }
-
-    try {
       if (field === 'photo') {
-        await dispatch(updateSpecialistPhoto({ userId, data: formData })).unwrap();
+        formData.append('photo', file);
       } else {
-        await dispatch(updateSpecialistDiplomas({ userId, data: formData })).unwrap();
+        formData.append('photos', file);
       }
-      setFile(null);
-    } catch (error) {
-      console.error('Ошибка загрузки фото:', error);
-    } finally {
-      setUploading(false);
+
+      try {
+        if (field === 'photo') {
+          await dispatch(updateSpecialistPhoto({ userId, data: formData })).unwrap();
+        } else {
+          await dispatch(updateSpecialistDiplomas({ userId, data: formData })).unwrap();
+        }
+      } catch (error) {
+        console.error('Ошибка загрузки фото:', error);
+      } finally {
+        setUploading(false);
+      }
     }
   };
 
@@ -58,13 +58,17 @@ function UploadPhoto({ field, currentPhoto, userId }: Props): React.JSX.Element 
               : `http://localhost:3000/${currentPhoto.replace(/^\/?/, '')}`
           }
           alt="Фото"
-          style={{ maxWidth: 300, maxHeight: 300, objectFit: 'cover' }}
+          className="specialistProfileImage"
         />
       )}
-      <input type="file" accept="image/*" onChange={onFileChange} />
-      <button onClick={onUpload} disabled={!file || uploading}>
-        {uploading ? 'Загрузка...' : `Загрузить ${field === 'photo' ? 'Фото' : 'Диплом'}`}
-      </button>
+      <>
+        <label htmlFor={inputId} className="uploadButton">
+          <img src={upload} alt="Фото" style={{ maxWidth: 16, maxHeight: 16 }} />
+
+          {uploading ? 'Загрузка...' : `Загрузить ${field === 'photo' ? 'фото' : 'диплом'}`}
+        </label>
+        <input id={inputId} type="file" accept="image/*" onChange={onFileChange} />
+      </>
     </div>
   );
 }

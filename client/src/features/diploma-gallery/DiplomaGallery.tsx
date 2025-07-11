@@ -6,9 +6,10 @@ type Props = {
   photos: string[];
   userId: number;
   backendUrl: string;
+  isBig: boolean;
 };
 
-const DiplomaGallery = ({ photos, userId, backendUrl }: Props): React.JSX.Element => {
+const DiplomaGallery = ({ photos, userId, backendUrl, isBig }: Props): React.JSX.Element => {
   const dispatch = useAppDispatch();
   const currentUser = useAppSelector((state) => state.user.user);
   const onDelete = (photoPath: string): void => {
@@ -18,13 +19,16 @@ const DiplomaGallery = ({ photos, userId, backendUrl }: Props): React.JSX.Elemen
   const isOwner = currentUser && currentUser.id === userId;
 
   return (
-    <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+    <div style={{ display: 'flex', gap: 40, flexWrap: 'wrap' }}>
       {photos.map((photo) => (
-        <div key={photo} style={{ position: 'relative' }}>
+        <div
+          key={photo}
+          className={isBig ? 'diplomaPhotoContainer' : 'diplomaPhotoContainer_profile'}
+        >
           <img
             src={`${backendUrl}/${photo.replace(/^\/?/, '')}`}
             alt="Диплом"
-            style={{ width: 120, height: 120, objectFit: 'cover', borderRadius: 8 }}
+            className="diplomaPhotoLast"
           />
           {isOwner && (
             <button

@@ -12,15 +12,10 @@ import './ParentDetailsPage.css';
 export default function ParentDetailsPage(): React.JSX.Element {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
-
   const navigate = useNavigate();
-
-
   const parent = useAppSelector((state) => state.parent.currentParent);
   const loading = useAppSelector((state) => state.parent.loading);
-
   const specialist = useAppSelector((state) => state.specialist.specialist);
-
   const requests = useAppSelector((state) => state.request.requestsFromParent);
   const loadingRequests = useAppSelector((state) => state.request.loadingFromParent);
   const { user } = useAppSelector((state) => state.user);
@@ -36,67 +31,151 @@ export default function ParentDetailsPage(): React.JSX.Element {
     void dispatch(getRequestsFromParentToMe(Number(id)));
   };
 
-  if (loading || loadingRequests) return <p>Загрузка...</p>;
+  if (loading || loadingRequests) {
+    return (
+      <div className="loadingContainer">
+        <div className="loadingSpinner"></div>
+        <p>Загрузка...</p>
+      </div>
+    );
+  }
+
   if (!parent) {
     return (
-      <div>
-        <p>Родитель не найден.</p>
-        <button onClick={() => navigate(-1)}>Вернуться назад</button>
+      <div className="notFoundContainer">
+        <div className="notFoundCard">
+          <h2>Родитель не найден</h2>
+          <p>К сожалению, информация о родителе недоступна.</p>
+          <button className="backButton" onClick={() => navigate(-1)}>
+            ← Вернуться назад
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-
     <div className="parentDetailsContainer">
-      <h2>Информация о родителе</h2>
-      <p>
-        <strong>👤 Имя:</strong> {parent.user?.name ?? 'Не указано'}
-      </p>
-      <p>
-        <strong>📞 Телефон:</strong> {parent.phone ?? 'Не указано'}
-      </p>
-      <p>
-        <strong>🏠 Адрес:</strong> {parent.adress ?? 'Не указано'}
-      </p>
+      <div className="detailsHeader">
+        <button className="backButton" onClick={() => navigate(-1)}>
+          ← Назад
+        </button>
+        <h1>
+          Информация о <span className="pink">Родителе</span>
+        </h1>
+      </div>
 
-      <h3>👧 Дети</h3>
-      <ul>
-        {parent.children.map((child, idx) => (
-          <li key={idx}>
-            {child.name}, возраст: {child.age}
-          </li>
-        ))}
-      </ul>
+      <div className="contentWrapper">
+        <div className="parentInfoSection">
+          <div className="infoCard">
+            <div className="infoCardHeader">
+              <div className="iconWrapper userIcon">
+                <span>👤</span>
+              </div>
+              <h2>Основная информация</h2>
+            </div>
+            <div className="infoCardContent">
+              <div className="infoRow">
+                <span className="infoLabel">Имя:</span>
+                <span className="infoValue">{parent.user?.name ?? 'Не указано'}</span>
+              </div>
+              <div className="infoRow">
+                <span className="infoLabel">Телефон:</span>
+                <span className="infoValue">{parent.phone ?? 'Не указано'}</span>
+              </div>
+              <div className="infoRow">
+                <span className="infoLabel">Адрес:</span>
+                <span className="infoValue">{parent.adress ?? 'Не указано'}</span>
+              </div>
+            </div>
+          </div>
 
-      <h3>📬 Заявки от этого родителя</h3>
-      {requests.length === 0 ? (
-        <p>Заявок пока нет.</p>
-      ) : (
-        <ul>
-          {requests.map((req) => (
-            <li key={req.id}>
-              <p>
-                <strong>Педагог:</strong> {user?.name}
-              </p>
-              <p>
-                <strong>Сообщение:</strong> {req.message ?? '—'}
-              </p>
-              <p>
-                <strong>Статус:</strong> {req.status}
-              </p>
-              {req.status === 'ожидание' && (
-                <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
-                  <button onClick={() => handleStatusChange(req.id, 'одобрено')}>Одобрить</button>
-                  <button onClick={() => handleStatusChange(req.id, 'отклонено')}>Отклонить</button>
-                  <StartChatButton parentId={parent.id}  />
+          <div className="infoCard">
+            <div className="infoCardHeader">
+              <div className="iconWrapper childIcon">
+                <span>👶</span>
+              </div>
+              <h2>Дети</h2>
+            </div>
+            <div className="infoCardContent">
+              {parent.children.length === 0 ? (
+                <p className="emptyMessage">Информация о детях не указана</p>
+              ) : (
+                <div className="childrenList">
+                  {parent.children.map((child, idx) => (
+                    <div key={idx} className="childCard">
+                      <div className="childIcon">🧒</div>
+                      <div className="childInfo">
+                        <span className="childName">{child.name}</span>
+                        <span className="childAge">{child.age} лет</span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
-              <hr />
-            </li>
-          ))}
-        </ul>
-      )}
+            </div>
+          </div>
+        </div>
+
+        <div className="requestsSection">
+          <div className="requestsHeader">
+            <div className="iconWrapper requestIcon">
+              <span>📬</span>
+            </div>
+            <h2>Заявки от этого родителя</h2>
+          </div>
+
+          {requests.length === 0 ? (
+            <div className="emptyRequests">
+              <p>Заявок пока нет</p>
+            </div>
+          ) : (
+            <div className="requestsList">
+              {requests.map((req) => (
+                <div key={req.id} className="requestCard">
+                  <div className="requestHeader">
+                    <span className="requestLabel">Заявка #{req.id}</span>
+                    <span className={`statusBadge status-${req.status}`}>
+                      {req.status}
+                    </span>
+                  </div>
+                  
+                  <div className="requestContent">
+                    <div className="requestInfo">
+                      <span className="requestInfoLabel">Педагог:</span>
+                      <span className="requestInfoValue">{user?.name}</span>
+                    </div>
+                    {req.message && (
+                      <div className="requestMessage">
+                        <span className="requestInfoLabel">Сообщение:</span>
+                        <p className="messageText">{req.message}</p>
+                      </div>
+                    )}
+                  </div>
+
+                  {req.status === 'ожидание' && (
+                    <div className="requestActions">
+                      <button 
+                        className="approveButton" 
+                        onClick={() => handleStatusChange(req.id, 'одобрено')}
+                      >
+                        ✓ Одобрить
+                      </button>
+                      <button 
+                        className="rejectButton" 
+                        onClick={() => handleStatusChange(req.id, 'отклонено')}
+                      >
+                        ✗ Отклонить
+                      </button>
+                      <StartChatButton parentId={parent.id} />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

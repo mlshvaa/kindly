@@ -3,6 +3,7 @@ import { createRequest } from '@/entities/request/model/requestThunks';
 import { useAppDispatch } from '@/shared/lib/hooks';
 import React from 'react';
 import { useNavigate } from 'react-router';
+import './AddRequestSpecialist.css';
 
 type AddRequestSpecialistProps = {
   onClose: () => void;
@@ -15,10 +16,8 @@ const AddRequestSpecialist = ({ onClose, id }: AddRequestSpecialistProps): React
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-
     // Получаем данные из формы
     const formData = Object.fromEntries(new FormData(e.currentTarget)) as { message?: string };
-
     // Формируем объект с нужными полями и дефолтным статусом
     const dataToValidate = {
       message: formData.message ?? null, // если пусто, ставим null
@@ -29,10 +28,8 @@ const AddRequestSpecialist = ({ onClose, id }: AddRequestSpecialistProps): React
     try {
       // Валидация по схеме
       const validated = newRequestSchema.parse(dataToValidate);
-
       // Отправляем запрос
       void dispatch(createRequest(validated));
-
       // Навигация и закрытие формы
       void navigate('/parent/cabinet');
       onClose();
@@ -45,21 +42,53 @@ const AddRequestSpecialist = ({ onClose, id }: AddRequestSpecialistProps): React
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ border: '1px solid #ccc', padding: 10, width: 300 }}>
-      <label htmlFor="serviceInput">Введите дату, время и название услуги</label>
-      <textarea
-        id="serviceInput"
-        name="message" // имя поля должно совпадать с именем в схеме
-        placeholder="Введите дату, время и название услуги"
-        style={{ width: 150, height: 100 }}
-      />
-      <div style={{ marginTop: 10 }}>
-        <button type="submit">Оставить заявку</button>
-        <button type="button" onClick={onClose} style={{ marginLeft: 10 }}>
-          Отмена
-        </button>
+    <>
+      <div className="modalOverlay" onClick={onClose} />
+      <div className="requestModalContainer">
+        <div className="modalHeader">
+          <div className="modalIconWrapper">
+            <span>📬</span>
+          </div>
+          <h2>Оставить <span className="pink">Заявку</span></h2>
+          <button className="closeButton" onClick={onClose}>
+            ✕
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="requestForm">
+          <div className="formContent">
+            <label htmlFor="serviceInput" className="formLabel">
+              <span className="labelIcon">📝</span>
+              Опишите ваши пожелания
+            </label>
+            <p className="formHint">
+              Укажите удобную дату, время и какие услуги вам необходимы
+            </p>
+            <textarea
+              id="serviceInput"
+              name="message"
+              className="formTextarea"
+              placeholder="Например: Нужна няня на 15 января с 14:00 до 18:00. Забрать ребенка из школы и помочь с домашним заданием."
+              rows={5}
+              required
+            />
+          </div>
+
+          <div className="formActions">
+            <button type="submit" className="submitButton">
+              <span>✓</span>
+              Отправить заявку
+            </button>
+            <button type="button" onClick={onClose} className="cancelButton">
+              Отмена
+            </button>
+          </div>
+        </form>
+
+        <div className="modalFooter">
+        </div>
       </div>
-    </form>
+    </>
   );
 };
 
