@@ -5,6 +5,7 @@ import { useAppSelector, useAppDispatch } from '@/shared/lib/hooks';
 import { addMessage, clearMessages } from '@/entities/chat/model/chatSlice';
 import { useChat } from '@/entities/chat/model/chatContext';
 import styles from './ChatRoomPage.module.css';
+import type { ChatPreview } from '@/entities/chat/model/chatTypes';
 
 export default function ChatRoomPage(): React.JSX.Element {
   const { chatId } = useParams();
@@ -16,6 +17,9 @@ export default function ChatRoomPage(): React.JSX.Element {
   const [inputText, setInputText] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const [chatInfo, setChatInfo] = useState<ChatPreview | null>(null);
+  
 
   useEffect(() => {
     if (!chatId || !user) return;
@@ -30,7 +34,7 @@ export default function ChatRoomPage(): React.JSX.Element {
     dispatch(clearMessages());
 
     getChatById(numericChatId)
-      .then((chat) => {
+      .then((chat: ChatPreview) => {
         const isAllowed = user.id === chat.parent?.userId || user.id === chat.specialist?.userId;
 
         if (!isAllowed) {
@@ -45,6 +49,7 @@ export default function ChatRoomPage(): React.JSX.Element {
         }
 
         setLoading(false);
+        setChatInfo(chat);
       })
       .catch((err: unknown) => {
         console.error('Ошибка при загрузке чата:', err);
@@ -64,7 +69,13 @@ export default function ChatRoomPage(): React.JSX.Element {
 
   return (
     <div className={styles.chatContainer}>
-      <h2>Чат №{chatId}</h2>
+      <div className={styles.chatBox}>
+      <h2>
+        Чат с{' '}
+        {user?.role === 'parent'
+          ? chatInfo?.specialist?.user.name ?? 'Специалистом'
+          : chatInfo?.parent?.user.name ?? 'Родителем'}
+      </h2>
       <div className={styles.messagesBox}>
         {messages.map((msg) => {
           const isCurrentUser = msg.sender.id === user?.id;
@@ -99,6 +110,7 @@ export default function ChatRoomPage(): React.JSX.Element {
         <button onClick={handleSend} className={styles.sendButton}>
           Отправить
         </button>
+      </div>
       </div>
     </div>
   );
