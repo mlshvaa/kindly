@@ -10,9 +10,12 @@ type Props = {
 
 export default function ChildCard({ index, child, onUpdate, onDelete }: Props): React.JSX.Element {
   const [isEditing, setIsEditing] = React.useState(false);
+  const [name, setName] = React.useState('');
+  const [age, setAge] = React.useState('');
+
 
   // Функция для форматирования имени: каждое слово с заглавной буквы
-  const formatName = (value: string) =>
+  const formatName = (value: string): string =>
     value
       .split(' ')
       .filter(Boolean)
@@ -22,12 +25,12 @@ export default function ChildCard({ index, child, onUpdate, onDelete }: Props): 
       })
       .join(' ');
 
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const formatted = formatName(e.target.value);
     setName(formatted);
   };
 
-  const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>): void  => {
     const val = e.target.value;
     // Не позволяем вводить отрицательное число
     if (val === '') {
@@ -40,16 +43,16 @@ export default function ChildCard({ index, child, onUpdate, onDelete }: Props): 
     }
   };
 
-  const handleSave = () => {
+  const handleSave = (): void => {
     // Можно добавить валидацию перед сохранением, если нужно
     onUpdate(index, { name, age });
 
     setIsEditing(false);
   };
 
-  const handleChange = (field: keyof ChildType, value: string):void => {
-    onUpdate(index, { ...child, [field]: value });
-  };
+  // const handleChange = (field: keyof ChildType, value: string):void => {
+  //   onUpdate(index, { ...child, [field]: value });
+  // };
 
   return (
     <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
