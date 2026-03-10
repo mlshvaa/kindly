@@ -45,6 +45,7 @@ const DiplomaGallery = ({ photos, userId, backendUrl, isBig }: Props): React.JSX
                 width: 24,
                 height: 24,
                 cursor: 'pointer',
+                zIndex: 20,
               }}
               title="Удалить диплом"
             >

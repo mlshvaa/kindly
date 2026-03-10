@@ -22,10 +22,10 @@ function AddNewService(): React.JSX.Element {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input name="name" type="text" placeholder="Название услуги" />
-      <input name="price" type="number" placeholder="Цена" min="0" />
-      <button type="submit">Добавить новую услугу</button>
+    <form onSubmit={handleSubmit} className='inputsFormAndButton'>
+      <input name="name" type="text" placeholder="Название услуги" className='imGoingInsaneInput'/>
+      <input name="price" type="number" placeholder="Цена" min="0" className='imGoingInsaneInput'/>
+      <button type="submit" className='addNewService'>Добавить новую услугу</button>
     </form>
   );
 }
