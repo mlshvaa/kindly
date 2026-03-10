@@ -222,7 +222,6 @@ function ProfileSpecialistPage(): React.JSX.Element {
           <div className="servicesContent">
             <div className="myServicesHeader">
               <h3>Мои услуги</h3>
-            </div>
             <div className="myServicesList">
               {myServiceSpecialists.length ? (
                 myServiceSpecialists.map((serviceSpecialist) => (
@@ -236,6 +235,7 @@ function ProfileSpecialistPage(): React.JSX.Element {
               ) : (
                 <div className="emptyServices">Услуги не найдены</div>
               )}
+            </div>
             </div>
 
             <div className="allServicesSection">

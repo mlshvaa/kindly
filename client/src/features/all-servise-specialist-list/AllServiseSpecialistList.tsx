@@ -54,11 +54,11 @@ function AllServiseSpecialistList({
             <button
               disabled={specialistServicesIds.includes(service.id)}
               onClick={() => onAdd(service.id)}
-              style={{ marginLeft: 10 }}
+              className='addedFcknButton'
             >
               {specialistServicesIds.includes(service.id) ? 'Добавлено' : 'Добавить'}
             </button>
-            <button onClick={() => onDelete(service.id)} style={{ marginLeft: 10, color: 'red' }}>
+            <button onClick={() => onDelete(service.id)} className='deleteFcknButton'>
               Удалить
             </button>
           </li>

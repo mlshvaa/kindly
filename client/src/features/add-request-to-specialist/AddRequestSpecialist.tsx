@@ -31,7 +31,7 @@ const AddRequestSpecialist = ({ onClose, id }: AddRequestSpecialistProps): React
       // Отправляем запрос
       void dispatch(createRequest(validated));
       // Навигация и закрытие формы
-      void navigate('/parent/cabinet');
+      // void navigate('/parent/cabinet');
       onClose();
     } catch (error) {
       // Обработка ошибок валидации

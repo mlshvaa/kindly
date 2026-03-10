@@ -27,7 +27,7 @@ export default function ServiseSpecialistList(serviceSpecialist: Props): React.J
                 serviceSpecialist.serviceSpecialist.serviceId,
               )
             }
-            style={{ marginLeft: 10, color: 'red' }}
+            className="deleteFcknButton"
           >
             Удалить
           </button>

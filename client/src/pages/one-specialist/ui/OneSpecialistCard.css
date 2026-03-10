@@ -70,6 +70,7 @@
   height: 160px;
   border-radius: 50%;
   object-fit: cover;
+  object-position: top;
   margin-bottom: 10px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
 }
@@ -131,6 +132,7 @@
 }
 
 .diplomaPhotoContainer_profile {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -140,11 +142,13 @@
   border-radius: 20px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   margin-top: 20px;
+  /* overflow: hidden; */
 }
 
 .diplomaPhotoLast {
-  width: 100px;
-  height: auto;
+  /* width: 100px; */
+  height: 100%;
+  /* object-fit: contain; */
 }
 
 .diplomaContainerContainerMain {
@@ -231,6 +235,6 @@
 }
 
 .pinkPink {
-    color: #f6519d;
-    margin-left: 6px;
-  }
+  color: #f6519d;
+  margin-left: 6px;
+}
